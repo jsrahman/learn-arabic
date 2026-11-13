@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-amiri: 'Amiri', 'Scheherazade New', serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply antialiased selection:bg-gold-500/30 selection:text-emerald-950 dark:selection:text-gold-200;
+  }
+}
+
+/* Islamic Geometric Background Subtle Accent */
+.bg-arabesque {
+  background-color: transparent;
+  background-image: radial-gradient(rgba(6, 78, 59, 0.06) 1px, transparent 1px), radial-gradient(rgba(217, 119, 6, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+}
+
+.dark .bg-arabesque {
+  background-image: radial-gradient(rgba(52, 211, 153, 0.05) 1px, transparent 1px), radial-gradient(rgba(245, 158, 11, 0.04) 1px, transparent 1px);
+}
+
+/* Quranic Border Accent */
+.border-quranic {
+  border-image: linear-gradient(to bottom, #d97706, #047857, #d97706) 1;
+}
+
+/* Arabic typography clarity */
+.font-arabic {
+  font-family: var(--font-amiri);
+  line-height: 1.8;
+  font-feature-settings: "cv01", "cv02", "calt", "liga";
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(6, 78, 59, 0.2);
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 78, 59, 0.4);
+}
