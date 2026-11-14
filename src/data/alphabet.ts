@@ -1,24 +1,5 @@
-export interface ArabicLetter {
-  id: string;
-  arabic: string;
-  name: string;
-  nameBangla: string;
-  transliteration: string;
-  audioUrl: string;
-  makhraj: string; // Articulation point
-  makhrajBangla: string;
-  forms: {
-    isolated: string;
-    initial: string;
-    medial: string;
-    final: string;
-  };
-  connectsAfter: boolean; // false for the 6 non-connecting letters (ا د ذ ر ز و)
-  category: "throat" | "tongue" | "lips" | "empty_space" | "nasal";
-  exampleWord: string;
-  exampleTranslit: string;
-  exampleTranslation: string;
-}
+import type { ArabicLetter, LetterForms, MakhrajCategory } from "@/types";
+export type { ArabicLetter, LetterForms, MakhrajCategory };
 
 export const ARABIC_ALPHABET: ArabicLetter[] = [
   {

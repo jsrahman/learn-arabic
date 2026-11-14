@@ -1,25 +1,5 @@
-export interface LearningLevel {
-  id: number;
-  slug: string;
-  number: number;
-  title: string;
-  titleBangla?: string;
-  titleArabic: string;
-  subtitle: string;
-  subtitleBangla: string;
-  description: string;
-  descriptionBangla: string;
-  color: string;
-  accentColor: string;
-  lessonsCount: number;
-  estimatedMinutes: number;
-  objectives: string[];
-  objectivesBangla: string[];
-  tier?: "Foundations" | "Vowels & Orthography" | "Core Tajweed" | "Quranic Mastery";
-  tierNumber?: 1 | 2 | 3 | 4;
-  tierBangla?: string;
-  difficulty?: "Foundational" | "Fundamental" | "Intermediate" | "Advanced" | "Mastery";
-}
+import type { LearningLevel } from "@/types";
+export type { LearningLevel };
 
 export const LEARNING_LEVELS: LearningLevel[] = [
   // ==========================================

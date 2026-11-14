@@ -20,7 +20,9 @@ import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { resetStoredProgress } from "@/lib/storage";
 import { translations } from "@/lib/translations";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
+import { StatCard } from "@/components/StatCard";
+import { DifficultyBadge } from "@/components/DifficultyBadge";
 
 export default function ProgressPage() {
   const { progress, refreshProgress, preferences } = useThemeContext();
@@ -37,16 +39,6 @@ export default function ProgressPage() {
     resetStoredProgress();
     refreshProgress();
     setResetConfirmOpen(false);
-  };
-
-  const getDifficultyLabel = (diff?: string) => {
-    if (!diff) return "";
-    if (!isBangla) return diff;
-    if (diff === "Foundational" || diff === "Fundamental") return "বুনিয়াদি";
-    if (diff === "Intermediate") return "মধ্যবর্তী";
-    if (diff === "Advanced") return "উচ্চতর";
-    if (diff === "Mastery") return "মাস্টারি";
-    return diff;
   };
 
   return (
@@ -78,64 +70,33 @@ export default function ProgressPage() {
 
       {/* Top 4 Stat Bento Tiles */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-        {/* Streak */}
-        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
-          <div
-            className={cn(
-              "w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold shrink-0",
-              progress.streakDays > 0
-                ? "bg-amber-500/15 text-amber-600 dark:text-amber-400"
-                : "bg-sand-200/50 dark:bg-night-800 text-sand-400 dark:text-sand-500"
-            )}
-          >
-            <Flame className={cn("w-5 h-5 sm:w-6 sm:h-6", progress.streakDays > 0 && "fill-current animate-bounce-short")} />
-          </div>
-          <div>
-            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.dailyStreak}</span>
-            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {progress.streakDays} {t.days}
-            </span>
-          </div>
-        </div>
+        <StatCard
+          icon={<Flame className={cn("w-5 h-5 sm:w-6 sm:h-6", progress.streakDays > 0 && "fill-current animate-bounce-short")} />}
+          label={t.dailyStreak}
+          value={`${progress.streakDays} ${t.days}`}
+          iconBgColor={progress.streakDays > 0 ? "bg-amber-500/15 text-amber-600 dark:text-amber-400" : "bg-sand-200/50 dark:bg-night-800 text-sand-400 dark:text-sand-500"}
+        />
 
-        {/* Lessons Completed */}
-        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
-            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
-          </div>
-          <div>
-            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.lessonsDone}</span>
-            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {completedCount} / {totalLessons}
-            </span>
-          </div>
-        </div>
+        <StatCard
+          icon={<BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />}
+          label={t.lessonsDone}
+          value={`${completedCount} / ${totalLessons}`}
+          iconBgColor="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+        />
 
-        {/* XP Points */}
-        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-teal-500/15 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold shrink-0">
-            <Award className="w-5 h-5 sm:w-6 sm:h-6" />
-          </div>
-          <div>
-            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.knowledgeXP}</span>
-            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {progress.xpPoints} {isBangla ? "এক্সপি" : "XP"}
-            </span>
-          </div>
-        </div>
+        <StatCard
+          icon={<Award className="w-5 h-5 sm:w-6 sm:h-6" />}
+          label={t.knowledgeXP}
+          value={`${progress.xpPoints} ${isBangla ? "এক্সপি" : "XP"}`}
+          iconBgColor="bg-teal-500/15 text-teal-600 dark:text-teal-400"
+        />
 
-        {/* Practice Time */}
-        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold shrink-0">
-            <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
-          </div>
-          <div>
-            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.timeInvested}</span>
-            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {progress.totalMinutesPracticed} {isBangla ? "মিনিট" : "Mins"}
-            </span>
-          </div>
-        </div>
+        <StatCard
+          icon={<Clock className="w-5 h-5 sm:w-6 sm:h-6" />}
+          label={t.timeInvested}
+          value={`${progress.totalMinutesPracticed} ${isBangla ? "মিনিট" : "Mins"}`}
+          iconBgColor="bg-indigo-500/15 text-indigo-600 dark:text-indigo-400"
+        />
       </div>
 
       {/* Level-by-Level Breakdown */}
@@ -166,11 +127,7 @@ export default function ProgressPage() {
                       <h3 className="text-xs sm:text-sm font-bold text-sand-900 dark:text-sand-100">
                         {isBangla ? level.titleBangla || level.title : level.title}
                       </h3>
-                      {level.difficulty && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 font-medium">
-                          {getDifficultyLabel(level.difficulty)}
-                        </span>
-                      )}
+                      <DifficultyBadge difficulty={level.difficulty} isBangla={isBangla} />
                     </div>
                     <p className="text-[11px] sm:text-xs text-sand-500 mt-0.5">
                       {completedInLevel} / {level.lessonsCount} {isBangla ? "টি পাঠ সম্পন্ন" : "lessons completed"}

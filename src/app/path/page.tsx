@@ -21,7 +21,8 @@ import { LEARNING_LEVELS } from "@/data/levels";
 import { LESSONS } from "@/data/lessons";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { translations } from "@/lib/translations";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
+import { DifficultyBadge } from "@/components/DifficultyBadge";
 
 export default function LearningPathPage() {
   const { progress, preferences } = useThemeContext();
@@ -53,16 +54,6 @@ export default function LearningPathPage() {
     if (selectedTier === "tier-4") return level.tier === "Quranic Mastery";
     return true;
   });
-
-  const getDifficultyLabel = (diff?: string) => {
-    if (!diff) return "";
-    if (!isBangla) return diff;
-    if (diff === "Foundational" || diff === "Fundamental") return t.difficultyFoundational;
-    if (diff === "Intermediate") return t.difficultyIntermediate;
-    if (diff === "Advanced") return t.difficultyAdvanced;
-    if (diff === "Mastery") return t.difficultyMastery;
-    return diff;
-  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -190,28 +181,7 @@ export default function LearningPathPage() {
                           {isBangla ? (level.tierBangla || level.tier) : level.tier}
                         </span>
                       )}
-                      {level.difficulty && (
-                        <span
-                          className={cn(
-                            "text-[10px] font-semibold px-2 py-0.5 rounded-full border flex items-center gap-1",
-                            (level.difficulty === "Foundational" || level.difficulty === "Fundamental") && "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20",
-                            level.difficulty === "Intermediate" && "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20",
-                            level.difficulty === "Advanced" && "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20",
-                            level.difficulty === "Mastery" && "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20"
-                          )}
-                        >
-                          <span
-                            className={cn(
-                              "w-1.5 h-1.5 rounded-full",
-                              (level.difficulty === "Foundational" || level.difficulty === "Fundamental") && "bg-emerald-500",
-                              level.difficulty === "Intermediate" && "bg-blue-500",
-                              level.difficulty === "Advanced" && "bg-amber-500",
-                              level.difficulty === "Mastery" && "bg-purple-500"
-                            )}
-                          />
-                          <span>{getDifficultyLabel(level.difficulty)}</span>
-                        </span>
-                      )}
+                      <DifficultyBadge difficulty={level.difficulty} isBangla={isBangla} />
                       {hasPassedQuiz && (
                         <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20 flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3 text-emerald-600" />

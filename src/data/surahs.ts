@@ -1,26 +1,5 @@
-export interface Verse {
-  number: number;
-  arabic: string;
-  transliteration: string;
-  translationEn: string;
-  translationBn: string;
-  tajweedRule?: string;
-  tajweedRuleBn?: string;
-  audioUrl?: string; // High quality reciter audio URL
-}
-
-export interface Surah {
-  number: number;
-  nameArabic: string;
-  nameTransliterated: string;
-  nameEn: string;
-  nameBn: string;
-  meaningEn: string;
-  meaningBn: string;
-  versesCount: number;
-  revelationType: "Meccan" | "Medinan";
-  verses: Verse[];
-}
+import type { Verse, Surah } from "@/types";
+export type { Verse, Surah };
 
 export const SHORT_SURAHS: Surah[] = [
   {

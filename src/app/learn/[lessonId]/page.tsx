@@ -21,7 +21,8 @@ import { useThemeContext } from "@/components/ThemeWrapper";
 import { markLessonCompleted, recordDailyActivity } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
+import { RuleBadge } from "@/components/RuleBadge";
 
 export default function LessonViewerPage() {
   const params = useParams();
@@ -50,31 +51,6 @@ export default function LessonViewerPage() {
     (l) => l.arabic === slide.arabic || l.name.toLowerCase() === slide.arabic.toLowerCase()
   );
   const slideAudioUrl = slide.audioUrl || matchedLetter?.audioUrl;
-
-  const getRuleBadgeLabel = (badge?: string) => {
-    if (!badge) return "";
-    if (!isBangla) return badge;
-    const map: Record<string, string> = {
-      "Imālah Kubrā": "ইমালাহ কুবরা",
-      "Tashīl": "তাসহীল",
-      "Madd al-Farq": "মাদ্দে ফারক্ব",
-      "Ishmām": "ইশমাম",
-      "Ikhtilās": "ইখতিলাস",
-      "Rawm al-Waqf": "রউম আল-ওয়াকফ",
-      "Naql": "নাক্বল",
-      "Sīn Inscription": "সীন অঙ্কন",
-      "Ṣād Inscription": "সোয়াদ অঙ্কন",
-      "Saktah": "সাকতাহ",
-      "7 Alifs": "৭টি আলিফ",
-      "Tafkheem/Tarqeeq": "তাফখীম / তারক্বীক্ব",
-      "Mastery Integration": "মাস্টারি অনুশীলন",
-      "Waqf Science": "ওয়াকফ বিজ্ঞান",
-      "Sajdah Tilāwah": "সিজদায়ে তিলাওয়াত",
-      "Khatm Sunnah": "খতমের সুন্নাহ",
-      "Al-Ḥall wal-Murtaḥal": "আল-হাল্লু ওয়াল মুরতাহাল",
-    };
-    return map[badge] || badge;
-  };
 
   const handleNextSlide = () => {
     setSelectedAnswer(null);
@@ -159,11 +135,7 @@ export default function LessonViewerPage() {
             </p>
           </div>
 
-          {slide.ruleBadge && (
-            <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-gold-500/15 text-gold-700 dark:text-gold-300 border border-gold-500/25 shrink-0">
-              {getRuleBadgeLabel(slide.ruleBadge)}
-            </span>
-          )}
+          <RuleBadge badge={slide.ruleBadge} isBangla={isBangla} />
         </div>
 
         {/* Hero Arabic Typography Focus Box */}

@@ -24,12 +24,10 @@ import { saveQuizScore, recordDailyActivity } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
 import { translations } from "@/lib/translations";
-import { cn } from "@/lib/utils";
-
-interface QuestionResult {
-  selectedIndex: number;
-  isCorrect: boolean;
-}
+import { cn, getOptionLabel } from "@/utils";
+import { QuizScorePill } from "@/components/quiz/QuizScorePill";
+import { QuizNavigator } from "@/components/quiz/QuizNavigator";
+import type { QuestionResult } from "@/types";
 
 export default function QuizArenaPage() {
   const params = useParams();
@@ -147,31 +145,17 @@ export default function QuizArenaPage() {
           </div>
 
           {/* Score Pill */}
-          <div className="p-3 sm:p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800 grid grid-cols-3 divide-x divide-sand-200 dark:divide-night-800 text-center">
-            <div className="px-1">
-              <div className="text-[11px] sm:text-xs text-sand-500">{t.yourScore}</div>
-              <div className="text-xl sm:text-2xl font-bold text-emerald-950 dark:text-sand-50 mt-0.5">
-                {finalPercent}%
-              </div>
-            </div>
-            <div className="px-1">
-              <div className="text-[11px] sm:text-xs text-sand-500">{t.accuracy}</div>
-              <div className="text-xl sm:text-2xl font-bold text-emerald-600 mt-0.5">
-                {correctCount}/{totalQuestions}
-              </div>
-            </div>
-            <div className="px-1">
-              <div className="text-[11px] sm:text-xs text-sand-500">{t.status}</div>
-              <div
-                className={cn(
-                  "text-xs sm:text-sm font-bold mt-1",
-                  passed ? "text-emerald-600" : "text-amber-600"
-                )}
-              >
-                {passed ? t.statusPassed : t.statusNeedsRetry}
-              </div>
-            </div>
-          </div>
+          <QuizScorePill
+            scorePercent={finalPercent}
+            correctCount={correctCount}
+            totalQuestions={totalQuestions}
+            passed={passed}
+            yourScoreLabel={t.yourScore}
+            accuracyLabel={t.accuracy}
+            statusLabel={t.status}
+            passedText={t.statusPassed}
+            failedText={t.statusNeedsRetry}
+          />
 
           {/* Results Summary Grid */}
           <div className="pt-2">
@@ -254,46 +238,15 @@ export default function QuizArenaPage() {
       </div>
 
       {/* 35 Question Navigator Grid */}
-      <div className="rounded-2xl p-3 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 space-y-2">
-        <div className="flex items-center justify-between text-[11px] font-semibold text-sand-600 dark:text-sand-400">
-          <div className="flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{t.paletteTitle}</span>
-          </div>
-          <div>
-            <span className="text-emerald-600 font-bold">{correctCount} {t.correct}</span>
-            <span className="text-sand-400 mx-1.5">•</span>
-            <span>{answeredCount}/{totalQuestions} {t.answered}</span>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-1.5 justify-start">
-          {quiz.questions.map((_, i) => {
-            const res = results[i];
-            const isCurrent = i === currentIndex;
-            return (
-              <button
-                key={i}
-                type="button"
-                onClick={() => handleJumpToQuestion(i)}
-                className={cn(
-                  "w-7 h-7 rounded-lg text-[10px] font-bold border transition-all flex items-center justify-center shrink-0",
-                  isCurrent && "ring-2 ring-gold-400 font-extrabold scale-110 z-10",
-                  res === undefined
-                    ? isCurrent
-                      ? "bg-sand-200 dark:bg-night-800 text-sand-900 dark:text-sand-100 border-sand-400 dark:border-night-600"
-                      : "bg-sand-50 dark:bg-night-950 text-sand-600 dark:text-sand-400 border-sand-200 dark:border-night-850 hover:bg-sand-200 dark:hover:bg-night-800"
-                    : res.isCorrect
-                    ? "bg-emerald-600 text-white border-emerald-700"
-                    : "bg-rose-600 text-white border-rose-700"
-                )}
-              >
-                {i + 1}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <QuizNavigator
+        totalQuestions={totalQuestions}
+        currentIndex={currentIndex}
+        results={results}
+        onSelectQuestion={handleJumpToQuestion}
+        paletteTitle={t.paletteTitle}
+        correctLabel={t.correct}
+        answeredLabel={t.answered}
+      />
 
       {/* Progress Bar */}
       <div className="w-full h-2 rounded-full bg-sand-200 dark:bg-night-800 overflow-hidden">
@@ -376,7 +329,7 @@ export default function QuizArenaPage() {
               >
                 <div className="flex items-center gap-2.5 sm:gap-3">
                   <span className="w-6 h-6 rounded-lg bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 text-xs flex items-center justify-center shrink-0 font-bold font-mono">
-                    {isBangla ? ["ক", "খ", "গ", "ঘ"][idx] || String(idx + 1) : String.fromCharCode(65 + idx)}
+                    {getOptionLabel(idx, isBangla)}
                   </span>
                   <span dir="auto" className="leading-snug">{opt}</span>
                 </div>

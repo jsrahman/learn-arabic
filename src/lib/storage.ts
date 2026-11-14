@@ -1,22 +1,5 @@
-export interface UserProgress {
-  completedLessons: string[]; // lesson ids e.g. "l1-1", "l1-2"
-  unlockedLevels: number[]; // [1, 2, 3, 4, 5, 6]
-  quizScores: Record<string, number>; // quizId -> score percentage e.g. {"q1": 100}
-  masteredLetters: string[]; // letter ids or symbols
-  streakDays: number;
-  lastActiveDate: string; // YYYY-MM-DD
-  totalMinutesPracticed: number;
-  xpPoints: number;
-}
-
-export interface UserPreferences {
-  theme: "light" | "dark";
-  audioSpeed: number; // 0.75, 1.0, 1.25
-  autoPlayAudio: boolean;
-  showTransliteration: boolean;
-  arabicFontSize: "normal" | "large" | "xlarge";
-  explanationLanguage: "en" | "bn"; // English or Bangla
-}
+import type { UserProgress, UserPreferences } from "@/types";
+export type { UserProgress, UserPreferences };
 
 const STORAGE_PROGRESS_KEY = "quranpath_user_progress_v1";
 const STORAGE_PREFS_KEY = "quranpath_user_prefs_v1";
