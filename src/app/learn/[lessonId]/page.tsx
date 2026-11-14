@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -18,7 +18,7 @@ import { LESSONS } from "@/data/lessons";
 import { ARABIC_ALPHABET } from "@/data/alphabet";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { markLessonCompleted } from "@/lib/storage";
+import { markLessonCompleted, recordDailyActivity } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
 import { cn } from "@/lib/utils";
@@ -35,6 +35,12 @@ export default function LessonViewPage() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Record daily activity as soon as the learner studies a lesson
+    recordDailyActivity(1, 5);
+    refreshProgress();
+  }, [lessonId]);
 
   const slide = lesson.slides[currentSlideIndex];
   const isLastSlide = currentSlideIndex === lesson.slides.length - 1;
@@ -184,7 +190,7 @@ export default function LessonViewPage() {
               <span className="text-xs font-bold uppercase tracking-wider text-sand-600 dark:text-sand-400">
                 Word Examples & Shapes:
               </span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" dir="rtl">
                 {slide.formExamples.map((ex, i) => (
                   <div
                     key={i}
@@ -193,10 +199,10 @@ export default function LessonViewPage() {
                     <span className="text-[10px] text-sand-500 font-medium block">
                       {ex.label}
                     </span>
-                    <span className="font-arabic text-2xl font-bold text-emerald-950 dark:text-gold-200 block">
+                    <span className="font-arabic text-2xl font-bold text-emerald-950 dark:text-gold-200 block" dir="rtl">
                       {ex.text}
                     </span>
-                    <span className="text-[11px] font-mono text-sand-600 dark:text-sand-400 block">
+                    <span className="text-[11px] font-mono text-sand-600 dark:text-sand-400 block" dir="ltr">
                       {ex.translit}
                     </span>
                   </div>
@@ -312,17 +318,36 @@ export default function LessonViewPage() {
 
             {/* Actions */}
             <div className="space-y-2.5">
+              {LESSONS[`l${lesson.levelId}-${lesson.lessonNumber + 1}`] ? (
+                <Link
+                  href={`/learn/l${lesson.levelId}-${lesson.lessonNumber + 1}`}
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-gold-200 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
+                >
+                  <span>Continue to Lesson {lesson.lessonNumber + 1} of 4</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              ) : (
+                <Link
+                  href={`/quiz/${lesson.quizId}`}
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
+                >
+                  <Sparkles className="w-4 h-4 text-gold-300" />
+                  <span>Take Level {lesson.levelId} Mastery Quiz (35 Questions)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
+
               <Link
                 href={`/quiz/${lesson.quizId}`}
-                className="w-full py-3 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
+                className="w-full py-2.5 px-4 rounded-xl bg-sand-100 hover:bg-sand-200 dark:bg-night-850 dark:hover:bg-night-800 border border-sand-300 dark:border-night-700 text-sand-800 dark:text-sand-200 font-medium text-xs flex items-center justify-center gap-2 transition-all"
               >
-                <Sparkles className="w-4 h-4 text-gold-300" />
-                <span>Test Knowledge in Quiz</span>
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                <span>Jump to Level {lesson.levelId} Quiz</span>
               </Link>
 
               <Link
                 href="/path"
-                className="w-full py-3 px-4 rounded-xl bg-sand-200 hover:bg-sand-300 dark:bg-night-800 dark:hover:bg-night-700 text-sand-800 dark:text-sand-200 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-2.5 px-4 rounded-xl bg-sand-200 hover:bg-sand-300 dark:bg-night-800 dark:hover:bg-night-700 text-sand-800 dark:text-sand-200 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
               >
                 <span>Return to Learning Path</span>
               </Link>

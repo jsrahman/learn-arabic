@@ -37,6 +37,8 @@
   font-family: var(--font-amiri);
   line-height: 1.8;
   font-feature-settings: "cv01", "cv02", "calt", "liga";
+  direction: rtl;
+  unicode-bidi: isolate;
 }
 
 /* Custom scrollbars */

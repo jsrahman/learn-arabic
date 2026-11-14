@@ -9,7 +9,7 @@ export const Footer = () => {
         {/* Hadith Banner */}
         <div className="mb-10 p-6 rounded-2xl bg-gradient-to-r from-emerald-900 via-emerald-850 to-teal-950 text-sand-50 border border-gold-500/30 text-center shadow-lg relative overflow-hidden">
           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-gold-500/10 rounded-full blur-2xl pointer-events-none" />
-          <p className="font-arabic text-2xl md:text-3xl font-medium text-gold-300 mb-2 leading-relaxed">
+          <p className="font-arabic text-2xl md:text-3xl font-medium text-gold-300 mb-2 leading-relaxed" dir="rtl">
             «خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»
           </p>
           <p className="text-sm text-sand-200 italic max-w-2xl mx-auto">

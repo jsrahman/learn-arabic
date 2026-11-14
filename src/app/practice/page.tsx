@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BookOpen,
   Volume2,
@@ -16,13 +16,20 @@ import { ARABIC_ALPHABET, ArabicLetter } from "@/data/alphabet";
 import { SHORT_SURAHS, Surah, Verse } from "@/data/surahs";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
+import { recordDailyActivity } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
 type PracticeTab = "alphabet" | "harakat" | "surahs";
 
 export default function PracticePage() {
-  const { preferences, fontSizeClass } = useThemeContext();
+  const { preferences, refreshProgress, fontSizeClass } = useThemeContext();
   const isBangla = preferences.explanationLanguage === "bn";
+
+  useEffect(() => {
+    // Record daily practice activity
+    recordDailyActivity(1, 5);
+    refreshProgress();
+  }, []);
 
   const [activeTab, setActiveTab] = useState<PracticeTab>("alphabet");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -160,14 +167,14 @@ export default function PracticePage() {
           </div>
 
           {/* Letter Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4" dir="rtl">
             {filteredLetters.map((letter) => (
               <div
                 key={letter.id}
                 className="group rounded-2xl p-4 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card hover:shadow-card-hover hover:border-emerald-600/40 transition-all flex flex-col items-center justify-between text-center relative overflow-hidden"
               >
-                <div className="my-2 select-none">
-                  <span className="font-arabic text-5xl font-normal text-emerald-950 dark:text-gold-100 group-hover:scale-110 transition-transform block">
+                <div className="my-2 select-none" dir="rtl">
+                  <span className="font-arabic text-5xl font-normal text-emerald-950 dark:text-gold-100 group-hover:scale-110 transition-transform block" dir="rtl">
                     {letter.arabic}
                   </span>
                 </div>
@@ -228,10 +235,10 @@ export default function PracticePage() {
             <h3 className="text-lg font-bold text-sand-950 dark:text-sand-50 mb-4">
               Vowel Drills (First 8 Letters)
             </h3>
-            <table className="w-full text-center">
+            <table className="w-full text-center" dir="rtl">
               <thead>
                 <tr className="border-b border-sand-300 dark:border-night-800 text-xs font-bold text-sand-600 dark:text-sand-400">
-                  <th className="py-3 px-4 text-left">Letter</th>
+                  <th className="py-3 px-4 text-right">Letter (الحرف)</th>
                   <th className="py-3 px-4">Fathah ( َ )</th>
                   <th className="py-3 px-4">Kasrah ( ِ )</th>
                   <th className="py-3 px-4">Dammah ( ُ )</th>
@@ -244,8 +251,8 @@ export default function PracticePage() {
                     key={letter.id}
                     className="hover:bg-sand-50/60 dark:hover:bg-night-950/60"
                   >
-                    <td className="py-3 px-4 text-left font-bold text-sm text-sand-900 dark:text-sand-100">
-                      {letter.name} ({letter.arabic})
+                    <td className="py-3 px-4 text-right font-bold text-sm text-sand-900 dark:text-sand-100 font-arabic text-xl" dir="rtl">
+                      {letter.arabic} <span className="font-sans text-xs font-normal text-sand-500">({letter.name})</span>
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center justify-center gap-2">

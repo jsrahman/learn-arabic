@@ -18,7 +18,8 @@ import { LEARNING_LEVELS } from "@/data/levels";
 import { ARABIC_ALPHABET } from "@/data/alphabet";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { DEFAULT_PROGRESS, saveStoredProgress } from "@/lib/storage";
+import { resetStoredProgress } from "@/lib/storage";
+import { cn } from "@/lib/utils";
 
 export default function ProgressPage() {
   const { progress, refreshProgress, preferences } = useThemeContext();
@@ -29,7 +30,7 @@ export default function ProgressPage() {
   const completionPercent = Math.min(100, Math.round((completedCount / totalLessons) * 100));
 
   const handleResetProgress = () => {
-    saveStoredProgress(DEFAULT_PROGRESS);
+    resetStoredProgress();
     refreshProgress();
     setResetConfirmOpen(false);
   };
@@ -65,8 +66,15 @@ export default function ProgressPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Streak */}
         <div className="rounded-3xl p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-            <Flame className="w-6 h-6 fill-current animate-bounce-short" />
+          <div
+            className={cn(
+              "w-12 h-12 rounded-2xl flex items-center justify-center font-bold",
+              progress.streakDays > 0
+                ? "bg-amber-500/15 text-amber-600 dark:text-amber-400"
+                : "bg-sand-200/50 dark:bg-night-800 text-sand-400 dark:text-sand-500"
+            )}
+          >
+            <Flame className={cn("w-6 h-6", progress.streakDays > 0 && "fill-current animate-bounce-short")} />
           </div>
           <div>
             <span className="text-xs font-medium text-sand-500 block">Daily Streak</span>
@@ -136,13 +144,20 @@ export default function ProgressPage() {
                 className="p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-850 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-800 text-gold-300 flex items-center justify-center font-bold text-sm">
-                    0{level.number}
+                  <div className="w-10 h-10 rounded-xl bg-emerald-800 text-gold-300 flex items-center justify-center font-bold text-sm shrink-0">
+                    {String(level.number).padStart(2, "0")}
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-sand-900 dark:text-sand-100">
-                      {level.title}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-bold text-sand-900 dark:text-sand-100">
+                        {level.title}
+                      </h3>
+                      {level.difficulty && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 font-medium">
+                          {level.difficulty}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-sand-500">
                       {completedInLevel} of {level.lessonsCount} lessons completed
                     </p>
@@ -162,11 +177,17 @@ export default function ProgressPage() {
                   </div>
                 </div>
 
-                <div className="text-xs text-sand-500 flex items-center gap-2">
+                <div className="text-xs text-sand-500 flex items-center gap-2 shrink-0">
                   <span>Quiz Score:</span>
                   <span className="font-bold text-sand-900 dark:text-sand-100">
                     {quizScore !== null ? `${quizScore}%` : "Not attempted"}
                   </span>
+                  <Link
+                    href={`/quiz/q${level.number}`}
+                    className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
+                  >
+                    Quiz
+                  </Link>
                 </div>
               </div>
             );
@@ -188,13 +209,13 @@ export default function ProgressPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
+        <div className="grid grid-cols-4 sm:grid-cols-7 gap-3" dir="rtl">
           {ARABIC_ALPHABET.map((item) => (
             <div
               key={item.id}
               className="p-3 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800 flex flex-col items-center justify-center text-center hover:border-emerald-500/40 transition-colors"
             >
-              <span className="font-arabic text-3xl text-emerald-950 dark:text-gold-200">
+              <span className="font-arabic text-3xl text-emerald-950 dark:text-gold-200" dir="rtl">
                 {item.arabic}
               </span>
               <span className="text-[10px] font-bold text-sand-700 dark:text-sand-300 mt-1">

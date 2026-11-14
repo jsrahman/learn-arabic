@@ -25,7 +25,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# OS & Editor
+# TypeScript build info
+*.tsbuildinfo
+next-env.d.ts
 .DS_Store
 Thumbs.db
 *.swp

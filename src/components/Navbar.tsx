@@ -51,7 +51,7 @@ export const Navbar = () => {
                 Qaida
               </span>
             </div>
-            <p className="text-[10px] text-sand-600 dark:text-sand-400 font-arabic -mt-0.5">
+            <p className="text-[10px] text-sand-600 dark:text-sand-400 font-arabic -mt-0.5" dir="rtl">
               طَرِيقُ الْقُرْآنِ
             </p>
           </div>
@@ -85,10 +85,26 @@ export const Navbar = () => {
           {/* Streak Indicator */}
           <Link
             href="/progress"
-            title={`${progress.streakDays} Day Learning Streak`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-colors"
+            title={
+              progress.streakDays > 0
+                ? `${progress.streakDays} Day Learning Streak`
+                : "0 Day Streak — Complete a lesson or quiz today to start!"
+            }
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors",
+              progress.streakDays > 0
+                ? "bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 hover:bg-amber-500/20"
+                : "bg-sand-200/50 dark:bg-night-850 border border-sand-300 dark:border-night-700 text-sand-500 dark:text-sand-400 hover:bg-sand-200"
+            )}
           >
-            <Flame className="w-4 h-4 text-amber-500 fill-amber-500 animate-bounce-short" />
+            <Flame
+              className={cn(
+                "w-4 h-4",
+                progress.streakDays > 0
+                  ? "text-amber-500 fill-amber-500 animate-bounce-short"
+                  : "text-sand-400 dark:text-sand-500"
+              )}
+            />
             <span>{progress.streakDays}d</span>
           </Link>
 

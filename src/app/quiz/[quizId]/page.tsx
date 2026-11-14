@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -13,42 +13,65 @@ import {
   Award,
   Volume2,
   HelpCircle,
+  Layers,
+  Check,
 } from "lucide-react";
 import { QUIZZES, QuizQuestion } from "@/data/quizzes";
+import { LEARNING_LEVELS } from "@/data/levels";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { saveQuizScore } from "@/lib/storage";
+import { saveQuizScore, recordDailyActivity } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
 import { cn } from "@/lib/utils";
+
+interface QuestionResult {
+  selectedIndex: number;
+  isCorrect: boolean;
+}
 
 export default function QuizArenaPage() {
   const params = useParams();
   const router = useRouter();
   const quizId = (params?.quizId as string) || "q1";
   const quiz = QUIZZES[quizId] || QUIZZES["q1"];
+  const levelInfo = LEARNING_LEVELS.find((l) => l.number === quiz.levelId);
 
   const { preferences, refreshProgress, fontSizeClass } = useThemeContext();
   const isBangla = preferences.explanationLanguage === "bn";
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [correctCount, setCorrectCount] = useState(0);
+  const [results, setResults] = useState<Record<number, QuestionResult>>({});
   const [quizFinished, setQuizFinished] = useState(false);
 
+  useEffect(() => {
+    // Record daily learning activity as soon as the learner enters any quiz
+    recordDailyActivity(1, 5);
+    refreshProgress();
+  }, [quizId]);
+
+  const totalQuestions = quiz.questions.length;
   const question: QuizQuestion = quiz.questions[currentIndex];
-  const progressPercent = Math.round(((currentIndex + 1) / quiz.questions.length) * 100);
+  const currentResult = results[currentIndex];
+  const isAnswered = currentResult !== undefined;
+
+  const answeredCount = Object.keys(results).length;
+  const correctCount = Object.values(results).filter((r) => r.isCorrect).length;
+  const progressPercent = Math.round((answeredCount / totalQuestions) * 100);
 
   const handleSelectOption = (idx: number) => {
     if (isAnswered) return;
 
-    setSelectedAnswer(idx);
-    setIsAnswered(true);
-
     const isCorrect = idx === question.correctIndex;
+    setResults((prev) => ({
+      ...prev,
+      [currentIndex]: {
+        selectedIndex: idx,
+        isCorrect,
+      },
+    }));
+
     if (isCorrect) {
-      setCorrectCount((prev) => prev + 1);
       audioService.playSuccessSound();
     } else {
       audioService.playErrorSound();
@@ -56,13 +79,11 @@ export default function QuizArenaPage() {
   };
 
   const handleNextQuestion = () => {
-    if (currentIndex < quiz.questions.length - 1) {
+    if (currentIndex < totalQuestions - 1) {
       setCurrentIndex((prev) => prev + 1);
-      setSelectedAnswer(null);
-      setIsAnswered(false);
     } else {
-      // Finish quiz
-      const finalScorePercent = Math.round(((correctCount + (selectedAnswer === question.correctIndex ? 0 : 0)) / quiz.questions.length) * 100);
+      // Quiz complete
+      const finalScorePercent = Math.round((correctCount / totalQuestions) * 100);
       const passed = finalScorePercent >= quiz.passingScore;
 
       saveQuizScore(quiz.id, finalScorePercent, passed ? 100 : 25);
@@ -76,17 +97,19 @@ export default function QuizArenaPage() {
     }
   };
 
+  const handleJumpToQuestion = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   const handleRestartQuiz = () => {
     setCurrentIndex(0);
-    setSelectedAnswer(null);
-    setIsAnswered(false);
-    setCorrectCount(0);
+    setResults({});
     setQuizFinished(false);
   };
 
   // Final Results Screen
   if (quizFinished) {
-    const finalPercent = Math.round((correctCount / quiz.questions.length) * 100);
+    const finalPercent = Math.round((correctCount / totalQuestions) * 100);
     const passed = finalPercent >= quiz.passingScore;
 
     return (
@@ -105,15 +128,15 @@ export default function QuizArenaPage() {
 
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Quiz Completed
+              Level {quiz.levelId} Assessment Completed
             </span>
             <h1 className="text-3xl font-extrabold text-sand-950 dark:text-sand-50">
-              {passed ? "Excellent Achievement!" : "Keep Practicing!"}
+              {passed ? "Excellent Mastery!" : "Keep Practicing!"}
             </h1>
             <p className="text-sm text-sand-600 dark:text-sand-400">
               {passed
-                ? "Masha'Allah! You demonstrated great accuracy in this assessment."
-                : "Review the lesson materials and try again to achieve mastery."}
+                ? `Masha'Allah! You passed the 35-question rigorous test with ${finalPercent}%. The next level has been unlocked!`
+                : `You scored ${finalPercent}%. You need ${quiz.passingScore}% to unlock the next level. Review the rules and retry!`}
             </p>
           </div>
 
@@ -127,9 +150,9 @@ export default function QuizArenaPage() {
             </div>
             <div className="h-8 w-px bg-sand-300 dark:bg-night-800" />
             <div>
-              <div className="text-xs text-sand-500">Correct</div>
+              <div className="text-xs text-sand-500">Accuracy</div>
               <div className="text-2xl font-bold text-emerald-600">
-                {correctCount} / {quiz.questions.length}
+                {correctCount} / {totalQuestions}
               </div>
             </div>
             <div className="h-8 w-px bg-sand-300 dark:bg-night-800" />
@@ -141,8 +164,33 @@ export default function QuizArenaPage() {
                   passed ? "text-emerald-600" : "text-amber-600"
                 )}
               >
-                {passed ? "PASSED" : "NEEDS PRACTICE"}
+                {passed ? "PASSED" : "NEEDS RETRY"}
               </div>
+            </div>
+          </div>
+
+          {/* Results Summary Grid */}
+          <div className="pt-2">
+            <div className="text-xs font-semibold text-sand-600 dark:text-sand-400 mb-2 text-left">
+              Question Summary (35 Questions):
+            </div>
+            <div className="grid grid-cols-7 sm:grid-cols-10 gap-1.5 p-3 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800">
+              {quiz.questions.map((_, i) => {
+                const res = results[i];
+                return (
+                  <div
+                    key={i}
+                    className={cn(
+                      "w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-bold border",
+                      res?.isCorrect
+                        ? "bg-emerald-500 text-white border-emerald-600"
+                        : "bg-rose-500 text-white border-rose-600"
+                    )}
+                  >
+                    {i + 1}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -154,8 +202,18 @@ export default function QuizArenaPage() {
               className="w-full py-3 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Retake This Quiz</span>
+              <span>Retake Level {quiz.levelId} Quiz</span>
             </button>
+
+            {passed && quiz.levelId < 16 && (
+              <Link
+                href={`/quiz/q${quiz.levelId + 1}`}
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
+              >
+                <span>Advance to Level {quiz.levelId + 1} Quiz</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
 
             <Link
               href="/path"
@@ -170,7 +228,7 @@ export default function QuizArenaPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Top Header */}
       <div className="flex items-center justify-between gap-4">
         <Link
@@ -181,9 +239,56 @@ export default function QuizArenaPage() {
           <span>Exit Quiz</span>
         </Link>
 
-        <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-          Question {currentIndex + 1} of {quiz.questions.length}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+            Level {String(quiz.levelId).padStart(2, "0")}
+          </span>
+          <span className="text-xs font-bold uppercase tracking-wider text-sand-700 dark:text-sand-300">
+            Question {currentIndex + 1} of {totalQuestions}
+          </span>
+        </div>
+      </div>
+
+      {/* 35 Question Navigator Grid */}
+      <div className="rounded-2xl p-3 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 space-y-2">
+        <div className="flex items-center justify-between text-[11px] font-semibold text-sand-600 dark:text-sand-400">
+          <div className="flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Question Palette (35 Total)</span>
+          </div>
+          <div>
+            <span className="text-emerald-600 font-bold">{correctCount} Correct</span>
+            <span className="text-sand-400 mx-1.5">•</span>
+            <span>{answeredCount}/{totalQuestions} Answered</span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 justify-start">
+          {quiz.questions.map((_, i) => {
+            const res = results[i];
+            const isCurrent = i === currentIndex;
+            return (
+              <button
+                key={i}
+                type="button"
+                onClick={() => handleJumpToQuestion(i)}
+                className={cn(
+                  "w-7 h-7 rounded-lg text-[10px] font-bold border transition-all flex items-center justify-center shrink-0",
+                  isCurrent && "ring-2 ring-gold-400 font-extrabold scale-110 z-10",
+                  res === undefined
+                    ? isCurrent
+                      ? "bg-sand-200 dark:bg-night-800 text-sand-900 dark:text-sand-100 border-sand-400 dark:border-night-600"
+                      : "bg-sand-50 dark:bg-night-950 text-sand-600 dark:text-sand-400 border-sand-200 dark:border-night-850 hover:bg-sand-200 dark:hover:bg-night-800"
+                    : res.isCorrect
+                    ? "bg-emerald-600 text-white border-emerald-700"
+                    : "bg-rose-600 text-white border-rose-700"
+                )}
+              >
+                {i + 1}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Progress Bar */}
@@ -198,7 +303,12 @@ export default function QuizArenaPage() {
       <div className="rounded-3xl p-6 sm:p-10 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-6">
         {/* Question Title */}
         <div className="space-y-1">
-          <h2 className="text-xl sm:text-2xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+              Q{currentIndex + 1} of {totalQuestions}
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
             {isBangla ? question.questionBangla : question.question}
           </h2>
         </div>
@@ -233,7 +343,7 @@ export default function QuizArenaPage() {
         {/* Answer Options */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           {question.options.map((opt, idx) => {
-            const isSelected = selectedAnswer === idx;
+            const isSelected = currentResult?.selectedIndex === idx;
             const isCorrect = idx === question.correctIndex;
 
             let buttonClass =
@@ -260,7 +370,12 @@ export default function QuizArenaPage() {
                   buttonClass
                 )}
               >
-                <span>{opt}</span>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-lg bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 text-xs flex items-center justify-center shrink-0 font-bold">
+                    {String.fromCharCode(65 + idx)}
+                  </span>
+                  <span dir="auto">{opt}</span>
+                </div>
                 {isAnswered && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />}
                 {isAnswered && isSelected && !isCorrect && (
                   <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
@@ -275,7 +390,7 @@ export default function QuizArenaPage() {
           <div className="p-4 rounded-2xl bg-sand-50/90 dark:bg-night-950/90 border border-sand-200 dark:border-night-800 space-y-2 animate-fade-in">
             <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
               <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>Explanation</span>
+              <span>Explanation & Tajweed Rule</span>
             </div>
             <p className="text-xs sm:text-sm text-sand-700 dark:text-sand-300 leading-relaxed">
               {isBangla ? question.explanationBangla : question.explanation}
@@ -285,13 +400,16 @@ export default function QuizArenaPage() {
 
         {/* Footer Next Button */}
         {isAnswered && (
-          <div className="pt-4 flex justify-end">
+          <div className="pt-4 flex items-center justify-between">
+            <span className="text-xs text-sand-500">
+              {currentIndex + 1} of {totalQuestions} answered
+            </span>
             <button
               type="button"
               onClick={handleNextQuestion}
               className="px-7 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center gap-2 shadow-md transition-all active:scale-95"
             >
-              <span>{currentIndex < quiz.questions.length - 1 ? "Next Question" : "View Results"}</span>
+              <span>{currentIndex < totalQuestions - 1 ? "Next Question" : "Complete & View Score"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -300,4 +418,3 @@ export default function QuizArenaPage() {
     </div>
   );
 }
-
