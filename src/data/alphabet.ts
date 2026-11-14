@@ -441,3 +441,4 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
     exampleTranslation: "Day",
   },
 ];
+

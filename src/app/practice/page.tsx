@@ -36,10 +36,34 @@ export default function PracticePage() {
       : ARABIC_ALPHABET.filter((l) => l.category === selectedCategory);
 
   const harakatVowels = [
-    { name: "Fathah ( َ )", nameBn: "যবর", symbol: "َ", sound: "a", example: "بَ" },
-    { name: "Kasrah ( ِ )", nameBn: "যের", symbol: "ِ", sound: "i", example: "بِ" },
-    { name: "Dammah ( ُ )", nameBn: "পেশ", symbol: "ُ", sound: "u", example: "بُ" },
-    { name: "Sukoon ( ْ )", nameBn: "জযম", symbol: "ْ", sound: "stop", example: "أَبْ" },
+    {
+      name: "Fathah ( َ )",
+      nameBn: "যবর",
+      symbol: "َ",
+      sound: "a",
+      example: "بَ",
+    },
+    {
+      name: "Kasrah ( ِ )",
+      nameBn: "যের",
+      symbol: "ِ",
+      sound: "i",
+      example: "بِ",
+    },
+    {
+      name: "Dammah ( ُ )",
+      nameBn: "পেশ",
+      symbol: "ُ",
+      sound: "u",
+      example: "بُ",
+    },
+    {
+      name: "Sukoon ( ْ )",
+      nameBn: "জযম",
+      symbol: "ْ",
+      sound: "stop",
+      example: "أَبْ",
+    },
   ];
 
   return (
@@ -55,7 +79,8 @@ export default function PracticePage() {
             Practice Arena
           </h1>
           <p className="text-sm text-sand-600 dark:text-sand-400 mt-1">
-            Revisit letters, drill vowel markings, or practice reading short Quran Surahs.
+            Revisit letters, drill vowel markings, or practice reading short
+            Quran Surahs.
           </p>
         </div>
 
@@ -68,7 +93,7 @@ export default function PracticePage() {
               "px-4 py-2 rounded-xl text-xs font-bold transition-all",
               activeTab === "alphabet"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800",
             )}
           >
             Alphabet (28)
@@ -80,7 +105,7 @@ export default function PracticePage() {
               "px-4 py-2 rounded-xl text-xs font-bold transition-all",
               activeTab === "harakat"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800",
             )}
           >
             Harakat & Vowels
@@ -92,7 +117,7 @@ export default function PracticePage() {
               "px-4 py-2 rounded-xl text-xs font-bold transition-all",
               activeTab === "surahs"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800",
             )}
           >
             Quran Surahs
@@ -126,7 +151,7 @@ export default function PracticePage() {
                   "px-3 py-1.5 rounded-full text-xs font-semibold transition-colors border",
                   selectedCategory === cat.id
                     ? "bg-emerald-800 text-gold-200 border-emerald-700"
-                    : "bg-sand-100 dark:bg-night-900 text-sand-700 dark:text-sand-300 border-sand-300 dark:border-night-800 hover:border-emerald-600/40"
+                    : "bg-sand-100 dark:bg-night-900 text-sand-700 dark:text-sand-300 border-sand-300 dark:border-night-800 hover:border-emerald-600/40",
                 )}
               >
                 {cat.label}
@@ -187,7 +212,12 @@ export default function PracticePage() {
                   {v.name}
                 </h3>
                 <p className="text-xs text-sand-500">Bangla: {v.nameBn}</p>
-                <AudioButton arabicText={v.example} size="sm" variant="gold" label="Listen" />
+                <AudioButton
+                  arabicText={v.example}
+                  size="sm"
+                  variant="gold"
+                  label="Listen"
+                />
               </div>
             ))}
           </div>
@@ -209,7 +239,10 @@ export default function PracticePage() {
               </thead>
               <tbody className="divide-y divide-sand-200 dark:divide-night-800">
                 {ARABIC_ALPHABET.slice(0, 8).map((letter) => (
-                  <tr key={letter.id} className="hover:bg-sand-50/60 dark:hover:bg-night-950/60">
+                  <tr
+                    key={letter.id}
+                    className="hover:bg-sand-50/60 dark:hover:bg-night-950/60"
+                  >
                     <td className="py-3 px-4 text-left font-bold text-sm text-sand-900 dark:text-sand-100">
                       {letter.name} ({letter.arabic})
                     </td>
@@ -218,7 +251,11 @@ export default function PracticePage() {
                         <span className="font-arabic text-3xl text-emerald-900 dark:text-gold-200">
                           {letter.arabic}َ
                         </span>
-                        <AudioButton arabicText={`${letter.arabic}َ`} size="sm" variant="subtle" />
+                        <AudioButton
+                          arabicText={`${letter.arabic}َ`}
+                          size="sm"
+                          variant="subtle"
+                        />
                       </div>
                     </td>
                     <td className="py-3 px-4">
@@ -226,7 +263,11 @@ export default function PracticePage() {
                         <span className="font-arabic text-3xl text-emerald-900 dark:text-gold-200">
                           {letter.arabic}ِ
                         </span>
-                        <AudioButton arabicText={`${letter.arabic}ِ`} size="sm" variant="subtle" />
+                        <AudioButton
+                          arabicText={`${letter.arabic}ِ`}
+                          size="sm"
+                          variant="subtle"
+                        />
                       </div>
                     </td>
                     <td className="py-3 px-4">
@@ -234,7 +275,11 @@ export default function PracticePage() {
                         <span className="font-arabic text-3xl text-emerald-900 dark:text-gold-200">
                           {letter.arabic}ُ
                         </span>
-                        <AudioButton arabicText={`${letter.arabic}ُ`} size="sm" variant="subtle" />
+                        <AudioButton
+                          arabicText={`${letter.arabic}ُ`}
+                          size="sm"
+                          variant="subtle"
+                        />
                       </div>
                     </td>
                     <td className="py-3 px-4">
@@ -242,7 +287,11 @@ export default function PracticePage() {
                         <span className="font-arabic text-3xl text-emerald-900 dark:text-gold-200">
                           أَ{letter.arabic}ْ
                         </span>
-                        <AudioButton arabicText={`أَ${letter.arabic}ْ`} size="sm" variant="subtle" />
+                        <AudioButton
+                          arabicText={`أَ${letter.arabic}ْ`}
+                          size="sm"
+                          variant="subtle"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -269,10 +318,12 @@ export default function PracticePage() {
                   "px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-2",
                   selectedSurah.number === surah.number
                     ? "bg-emerald-800 text-gold-200 border-emerald-700 shadow-sm"
-                    : "bg-sand-100 dark:bg-night-900 text-sand-800 dark:text-sand-300 border-sand-300 dark:border-night-800"
+                    : "bg-sand-100 dark:bg-night-900 text-sand-800 dark:text-sand-300 border-sand-300 dark:border-night-800",
                 )}
               >
-                <span className="font-arabic text-base">{surah.nameArabic}</span>
+                <span className="font-arabic text-base">
+                  {surah.nameArabic}
+                </span>
                 <span>{surah.nameTransliterated}</span>
               </button>
             ))}
@@ -290,7 +341,8 @@ export default function PracticePage() {
                 {selectedSurah.nameTransliterated} — {selectedSurah.nameEn}
               </h2>
               <p className="text-xs text-sand-500 mt-1">
-                {selectedSurah.versesCount} Verses • {isBangla ? selectedSurah.nameBn : selectedSurah.meaningEn}
+                {selectedSurah.versesCount} Verses •{" "}
+                {isBangla ? selectedSurah.nameBn : selectedSurah.meaningEn}
               </p>
             </div>
 
@@ -308,7 +360,7 @@ export default function PracticePage() {
                   "rounded-2xl p-6 bg-sand-100/80 dark:bg-night-900/80 border transition-all duration-200 space-y-4",
                   activeVerseNum === verse.number
                     ? "border-emerald-600 ring-2 ring-emerald-500/20 bg-sand-50 dark:bg-night-950"
-                    : "border-sand-200 dark:border-night-800 hover:border-sand-300"
+                    : "border-sand-200 dark:border-night-800 hover:border-sand-300",
                 )}
               >
                 {/* Verse Header & Audio */}

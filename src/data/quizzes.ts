@@ -328,3 +328,4 @@ export const QUIZZES: Record<string, Quiz> = {
     ],
   },
 };
+

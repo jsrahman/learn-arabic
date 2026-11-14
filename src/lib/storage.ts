@@ -140,3 +140,4 @@ export function saveStoredPreferences(prefs: UserPreferences): void {
     console.error("Failed to save preferences", e);
   }
 }
+

@@ -99,3 +99,4 @@ export const ArabicDisplay: React.FC<ArabicDisplayProps> = ({
     </div>
   );
 };
+

@@ -273,3 +273,4 @@ export const SHORT_SURAHS: Surah[] = [
     ],
   },
 ];
+
