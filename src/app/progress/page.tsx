@@ -19,10 +19,14 @@ import { ARABIC_ALPHABET } from "@/data/alphabet";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { resetStoredProgress } from "@/lib/storage";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 export default function ProgressPage() {
   const { progress, refreshProgress, preferences } = useThemeContext();
+  const isBangla = preferences.explanationLanguage === "bn";
+  const t = translations[isBangla ? "bn" : "en"].progress;
+
   const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
 
   const totalLessons = LEARNING_LEVELS.reduce((sum, l) => sum + l.lessonsCount, 0);
@@ -35,6 +39,16 @@ export default function ProgressPage() {
     setResetConfirmOpen(false);
   };
 
+  const getDifficultyLabel = (diff?: string) => {
+    if (!diff) return "";
+    if (!isBangla) return diff;
+    if (diff === "Foundational" || diff === "Fundamental") return "বুনিয়াদি";
+    if (diff === "Intermediate") return "মধ্যবর্তী";
+    if (diff === "Advanced") return "উচ্চতর";
+    if (diff === "Mastery") return "মাস্টারি";
+    return diff;
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* Header */}
@@ -42,13 +56,13 @@ export default function ProgressPage() {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
             <BarChart2 className="w-4 h-4" />
-            <span>Learning Analytics</span>
+            <span>{t.analyticsTag}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight">
-            My Learning Progress
+            {t.title}
           </h1>
           <p className="text-sm text-sand-600 dark:text-sand-400 mt-1">
-            Track your lessons completed, daily practice streaks, and mastered letters.
+            {t.subtitle}
           </p>
         </div>
 
@@ -58,7 +72,7 @@ export default function ProgressPage() {
           className="text-xs font-semibold px-4 py-2 rounded-xl text-sand-600 dark:text-sand-400 hover:text-rose-600 border border-sand-300 dark:border-night-700 hover:border-rose-400 flex items-center gap-1.5 transition-colors"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>Reset Progress</span>
+          <span>{t.resetProgress}</span>
         </button>
       </div>
 
@@ -77,9 +91,9 @@ export default function ProgressPage() {
             <Flame className={cn("w-6 h-6", progress.streakDays > 0 && "fill-current animate-bounce-short")} />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">Daily Streak</span>
+            <span className="text-xs font-medium text-sand-500 block">{t.dailyStreak}</span>
             <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {progress.streakDays} Days
+              {progress.streakDays} {t.days}
             </span>
           </div>
         </div>
@@ -90,7 +104,7 @@ export default function ProgressPage() {
             <BookOpen className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">Lessons Done</span>
+            <span className="text-xs font-medium text-sand-500 block">{t.lessonsDone}</span>
             <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
               {completedCount} / {totalLessons}
             </span>
@@ -103,9 +117,9 @@ export default function ProgressPage() {
             <Award className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">Knowledge XP</span>
+            <span className="text-xs font-medium text-sand-500 block">{t.knowledgeXP}</span>
             <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {progress.xpPoints} XP
+              {progress.xpPoints} {isBangla ? "এক্সপি" : "XP"}
             </span>
           </div>
         </div>
@@ -116,9 +130,9 @@ export default function ProgressPage() {
             <Clock className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">Time Invested</span>
+            <span className="text-xs font-medium text-sand-500 block">{t.timeInvested}</span>
             <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
-              {progress.totalMinutesPracticed} Mins
+              {progress.totalMinutesPracticed} {isBangla ? "মিনিট" : "Mins"}
             </span>
           </div>
         </div>
@@ -127,7 +141,7 @@ export default function ProgressPage() {
       {/* Level-by-Level Breakdown */}
       <div className="rounded-3xl p-6 sm:p-8 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card space-y-6">
         <h2 className="text-xl font-bold text-sand-950 dark:text-sand-50">
-          Level-by-Level Progress Breakdown
+          {t.breakdownTitle}
         </h2>
 
         <div className="space-y-4">
@@ -150,23 +164,23 @@ export default function ProgressPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-bold text-sand-900 dark:text-sand-100">
-                        {level.title}
+                        {isBangla ? level.titleBangla || level.title : level.title}
                       </h3>
                       {level.difficulty && (
                         <span className="text-[10px] px-1.5 py-0.5 rounded bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 font-medium">
-                          {level.difficulty}
+                          {getDifficultyLabel(level.difficulty)}
                         </span>
                       )}
                     </div>
                     <p className="text-xs text-sand-500">
-                      {completedInLevel} of {level.lessonsCount} lessons completed
+                      {completedInLevel} / {level.lessonsCount} {isBangla ? "টি পাঠ সম্পন্ন" : "lessons completed"}
                     </p>
                   </div>
                 </div>
 
                 <div className="w-full sm:w-64 space-y-1">
                   <div className="flex justify-between text-xs text-sand-500">
-                    <span>Mastery</span>
+                    <span>{t.mastery}</span>
                     <span>{levelPct}%</span>
                   </div>
                   <div className="w-full h-2 rounded-full bg-sand-200 dark:bg-night-800 overflow-hidden">
@@ -178,15 +192,15 @@ export default function ProgressPage() {
                 </div>
 
                 <div className="text-xs text-sand-500 flex items-center gap-2 shrink-0">
-                  <span>Quiz Score:</span>
+                  <span>{t.quizScore}</span>
                   <span className="font-bold text-sand-900 dark:text-sand-100">
-                    {quizScore !== null ? `${quizScore}%` : "Not attempted"}
+                    {quizScore !== null ? `${quizScore}%` : t.notAttempted}
                   </span>
                   <Link
                     href={`/quiz/q${level.number}`}
                     className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
                   >
-                    Quiz
+                    {isBangla ? "কুইজ" : "Quiz"}
                   </Link>
                 </div>
               </div>
@@ -200,12 +214,12 @@ export default function ProgressPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-sand-950 dark:text-sand-50">
-              Alphabet Gallery (28 Letters)
+              {t.galleryTitle}
             </h2>
-            <p className="text-xs text-sand-500">Tap any letter to listen to its pronunciation.</p>
+            <p className="text-xs text-sand-500">{t.gallerySubtitle}</p>
           </div>
           <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-            28 Letters Available
+            28 {t.available}
           </span>
         </div>
 
@@ -219,10 +233,16 @@ export default function ProgressPage() {
                 {item.arabic}
               </span>
               <span className="text-[10px] font-bold text-sand-700 dark:text-sand-300 mt-1">
-                {item.name}
+                {isBangla ? item.nameBangla : item.name}
               </span>
               <div className="mt-2">
-                <AudioButton audioUrl={item.audioUrl} arabicText={item.name} size="sm" variant="subtle" />
+                <AudioButton
+                  audioUrl={item.audioUrl}
+                  arabicText={item.name}
+                  size="sm"
+                  variant="subtle"
+                  label={isBangla ? "শুনুন" : "Listen"}
+                />
               </div>
             </div>
           ))}
@@ -239,11 +259,10 @@ export default function ProgressPage() {
 
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-sand-950 dark:text-sand-50">
-                Reset All Progress?
+                {t.resetModalTitle}
               </h2>
               <p className="text-xs text-sand-600 dark:text-sand-400 leading-relaxed">
-                This will reset your completed lessons, quiz scores, and streak data back to zero.
-                This action cannot be undone.
+                {t.resetModalDesc}
               </p>
             </div>
 
@@ -253,14 +272,14 @@ export default function ProgressPage() {
                 onClick={() => setResetConfirmOpen(false)}
                 className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-sand-200 dark:bg-night-800 text-sand-800 dark:text-sand-200"
               >
-                Cancel
+                {t.cancel}
               </button>
               <button
                 type="button"
                 onClick={handleResetProgress}
                 className="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-sand-50 shadow-md"
               >
-                Yes, Reset
+                {t.confirmReset}
               </button>
             </div>
           </div>
@@ -269,4 +288,3 @@ export default function ProgressPage() {
     </div>
   );
 }
-

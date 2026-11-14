@@ -1,8 +1,16 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { Heart, BookOpen, ShieldCheck, Sparkles } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
+import { useThemeContext } from "@/components/ThemeWrapper";
+import { translations } from "@/lib/translations";
 
 export const Footer = () => {
+  const { preferences } = useThemeContext();
+  const isBangla = preferences.explanationLanguage === "bn";
+  const t = translations[isBangla ? "bn" : "en"].footer;
+
   return (
     <footer className="mt-20 border-t border-sand-200 dark:border-night-800 bg-sand-100/60 dark:bg-night-900/60 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -13,9 +21,9 @@ export const Footer = () => {
             «خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»
           </p>
           <p className="text-sm text-sand-200 italic max-w-2xl mx-auto">
-            &ldquo;The best of you are those who learn the Quran and teach it to others.&rdquo;
+            {t.hadith}
           </p>
-          <p className="text-xs text-gold-400/80 mt-1 font-mono">— Sahih al-Bukhari 5027</p>
+          <p className="text-xs text-gold-400/80 mt-1 font-mono">{t.hadithSource}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
@@ -30,50 +38,48 @@ export const Footer = () => {
               </span>
             </div>
             <p className="text-xs text-sand-600 dark:text-sand-400 max-w-md leading-relaxed">
-              An interactive, structured learning platform guiding learners from recognizing
-              single Arabic letters to reading the Holy Quran with Tajweed. Built with high
-              respect for authentic Noorani Qaida pedagogy.
+              {t.brandDesc}
             </p>
             <div className="flex items-center gap-2 text-xs text-emerald-700 dark:text-emerald-400 font-medium pt-1">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>Offline-ready & Privacy First: Progress stored locally on your device</span>
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>{t.privacyNotice}</span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-sand-900 dark:text-sand-200 mb-3">
-              Learning Curriculum
+              {t.curriculumTitle}
             </h4>
             <ul className="space-y-2 text-xs text-sand-600 dark:text-sand-400">
               <li>
                 <Link href="/path#level-1" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Level 1: Arabic Alphabet
+                  {isBangla ? "লেভেল ১: আরবি বর্ণমালা" : "Level 1: Arabic Alphabet"}
                 </Link>
               </li>
               <li>
                 <Link href="/path#level-2" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Level 2: Letter Forms
+                  {isBangla ? "লেভেল ২: মাখারিজুল হুরুফ" : "Level 2: Makharij al-Huruf"}
                 </Link>
               </li>
               <li>
                 <Link href="/path#level-3" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Level 3: Harakat & Sukoon
+                  {isBangla ? "লেভেল ৩: অক্ষরের রূপান্তর" : "Level 3: Letter Forms"}
                 </Link>
               </li>
               <li>
                 <Link href="/path#level-4" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Level 4: Tanween & Shaddah
+                  {isBangla ? "লেভেল ৪: হরকত ও সুকূন" : "Level 4: Harakat & Sukoon"}
                 </Link>
               </li>
               <li>
                 <Link href="/path#level-5" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Level 5: Word Formation
+                  {isBangla ? "লেভেল ৫: তানবীন ও ওয়াকফ" : "Level 5: Tanween & Waqf"}
                 </Link>
               </li>
               <li>
                 <Link href="/path#level-6" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Level 6: Quran Reading
+                  {isBangla ? "লেভেল ৬: তাশদীদ ও গুন্নাহ" : "Level 6: Shaddah & Ghunnah"}
                 </Link>
               </li>
             </ul>
@@ -82,42 +88,41 @@ export const Footer = () => {
           {/* Practice & Tools */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-sand-900 dark:text-sand-200 mb-3">
-              Interactive Tools
+              {t.toolsTitle}
             </h4>
             <ul className="space-y-2 text-xs text-sand-600 dark:text-sand-400">
               <li>
                 <Link href="/practice" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Letter Pronunciation Drill
+                  {t.letterDrill}
                 </Link>
               </li>
               <li>
                 <Link href="/quiz" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Skill Assessment Quizzes
+                  {t.quizzes}
                 </Link>
               </li>
               <li>
                 <Link href="/progress" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  My Learning Progress & Stats
+                  {t.progressStats}
                 </Link>
               </li>
               <li>
-                <Link href="/profile" className="hover:text-emerald-600 dark:hover:text-emerald-400">
-                  Audio & Display Settings
+                <Link href="/path" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                  {isBangla ? "১৮টি লেভেলের পূর্ণাঙ্গ রোডম্যাপ" : "Full 18-Level Roadmap"}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-sand-200/60 dark:border-night-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-sand-500 dark:text-sand-500">
-          <p>© {new Date().getFullYear()} QuranPath. Crafted for sincere seekers of knowledge.</p>
-          <p className="flex items-center gap-1.5">
-            Designed with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> for independent Quran learners.
+        {/* Bottom copyright */}
+        <div className="pt-8 border-t border-sand-200 dark:border-night-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-sand-500">
+          <p>© {new Date().getFullYear()} QuranPath. {t.rights}</p>
+          <p className="font-arabic text-sm text-emerald-800 dark:text-emerald-400" dir="rtl">
+            رَبِّ زِدْنِي عِلْمًا
           </p>
         </div>
       </div>
     </footer>
   );
 };
-

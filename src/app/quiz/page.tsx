@@ -6,23 +6,26 @@ import { Sparkles, Award, ArrowRight, CheckCircle2, Clock, Zap, BookOpen } from 
 import { QUIZZES } from "@/data/quizzes";
 import { LEARNING_LEVELS } from "@/data/levels";
 import { useThemeContext } from "@/components/ThemeWrapper";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
-
-const TIER_FILTERS = [
-  { id: "all", label: "All Quizzes (18)" },
-  { id: "tier-1", tier: "Foundations", label: "Tier 1: Foundations (L1-4)" },
-  { id: "tier-2", tier: "Vowels & Orthography", label: "Tier 2: Orthography (L5-8)" },
-  { id: "tier-3", tier: "Core Tajweed", label: "Tier 3: Core Tajweed (L9-12)" },
-  { id: "tier-4", tier: "Quranic Mastery", label: "Tier 4: Quranic & Khatm (L13-18)" },
-];
 
 export default function QuizHubPage() {
   const { progress, preferences } = useThemeContext();
   const isBangla = preferences.explanationLanguage === "bn";
+  const t = translations[isBangla ? "bn" : "en"].quiz;
+  const pathT = translations[isBangla ? "bn" : "en"].path;
+
   const [selectedTier, setSelectedTier] = useState<string>("all");
 
+  const tierFilters = [
+    { id: "all", label: pathT.tierAll },
+    { id: "tier-1", tier: "Foundations", label: pathT.tier1 },
+    { id: "tier-2", tier: "Vowels & Orthography", label: pathT.tier2 },
+    { id: "tier-3", tier: "Core Tajweed", label: pathT.tier3 },
+    { id: "tier-4", tier: "Quranic Mastery", label: pathT.tier4 },
+  ];
+
   const quizList = Object.values(QUIZZES);
-  const totalQuestions = quizList.reduce((acc, q) => acc + q.questions.length, 0);
 
   const filteredQuizzes = quizList.filter((quiz) => {
     const level = LEARNING_LEVELS.find((l) => l.number === quiz.levelId);
@@ -35,6 +38,16 @@ export default function QuizHubPage() {
     return true;
   });
 
+  const getDifficultyLabel = (diff?: string) => {
+    if (!diff) return "";
+    if (!isBangla) return diff;
+    if (diff === "Foundational" || diff === "Fundamental") return pathT.difficultyFoundational;
+    if (diff === "Intermediate") return pathT.difficultyIntermediate;
+    if (diff === "Advanced") return pathT.difficultyAdvanced;
+    if (diff === "Mastery") return pathT.difficultyMastery;
+    return diff;
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header */}
@@ -42,13 +55,13 @@ export default function QuizHubPage() {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1">
             <Sparkles className="w-4 h-4" />
-            <span>High-Rigor Assessments • 18 Quizzes • 630 Questions</span>
+            <span>{t.quizTag}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight">
-            Tajweed & Arabic Mastery Arena
+            {t.quizHubTitle}
           </h1>
           <p className="text-sm text-sand-600 dark:text-sand-400 mt-1 max-w-2xl">
-            Each level features 35 comprehensive, challenging questions with authentic Quranic script, vocalization, and deep rule-based questions.
+            {t.quizHubSubtitle}
           </p>
         </div>
 
@@ -58,13 +71,13 @@ export default function QuizHubPage() {
           className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs shadow-md transition-all active:scale-95 shrink-0"
         >
           <Zap className="w-4 h-4 fill-current" />
-          <span>Launch Level 1 Quiz (35 Qs)</span>
+          <span>{t.launchLevel1}</span>
         </Link>
       </div>
 
       {/* Tier Filter Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {TIER_FILTERS.map((filter) => {
+        {tierFilters.map((filter) => {
           const isActive = selectedTier === filter.id;
           return (
             <button
@@ -94,7 +107,7 @@ export default function QuizHubPage() {
         })}
       </div>
 
-      {/* Grid of Quizzes with 2026 Visual-Direction Cards */}
+      {/* Grid of Quizzes */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredQuizzes.map((quiz) => {
           const level = LEARNING_LEVELS.find((l) => l.number === quiz.levelId) || LEARNING_LEVELS[0];
@@ -122,7 +135,7 @@ export default function QuizHubPage() {
                 <div className="flex items-center justify-between gap-2 mb-3.5">
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
-                      Level {String(quiz.levelId).padStart(2, "0")}
+                      {isBangla ? `লেভেল ${quiz.levelId}` : `Level ${String(quiz.levelId).padStart(2, "0")}`}
                     </span>
 
                     {level.difficulty && (
@@ -144,7 +157,7 @@ export default function QuizHubPage() {
                             level.difficulty === "Mastery" && "bg-purple-500"
                           )}
                         />
-                        <span>{level.difficulty}</span>
+                        <span>{getDifficultyLabel(level.difficulty)}</span>
                       </span>
                     )}
                   </div>
@@ -164,20 +177,20 @@ export default function QuizHubPage() {
                 </div>
 
                 <h3 className="text-lg sm:text-xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight leading-snug mb-1 group-hover:text-emerald-900 dark:group-hover:text-gold-200 transition-colors">
-                  {isBangla ? quiz.titleBangla : quiz.title}
+                  {isBangla ? quiz.titleBangla || quiz.title : quiz.title}
                 </h3>
                 <p className="text-xs text-sand-600 dark:text-sand-400 leading-relaxed mb-4 line-clamp-2">
-                  {isBangla ? quiz.descriptionBangla : quiz.description}
+                  {isBangla ? quiz.descriptionBangla || quiz.description : quiz.description}
                 </p>
 
                 <div className="flex items-center gap-3 text-xs text-sand-500 mb-6 font-mono pt-3 border-t border-sand-200/70 dark:border-night-800/70">
                   <span className="font-semibold text-sand-800 dark:text-sand-200">
-                    {quiz.questions.length} Questions
+                    {quiz.questions.length} {isBangla ? "টি প্রশ্ন" : "Questions"}
                   </span>
                   <span>•</span>
-                  <span>Pass: {quiz.passingScore}%</span>
+                  <span>{t.pass} {quiz.passingScore}%</span>
                   <span>•</span>
-                  <span className="text-gold-600 dark:text-gold-400 font-bold">+100 XP</span>
+                  <span className="text-gold-600 dark:text-gold-400 font-bold">+100 {isBangla ? "এক্সপি" : "XP"}</span>
                 </div>
               </div>
 
@@ -187,12 +200,12 @@ export default function QuizHubPage() {
                     href={`/quiz/${quiz.id}`}
                     className="w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-750 hover:to-teal-750 text-gold-100 shadow-sm transition-all duration-200 active:scale-[0.98]"
                   >
-                    <span>{bestScore !== null ? "Retake 35-Q Quiz" : "Launch 35-Q Quiz"}</span>
+                    <span>{bestScore !== null ? t.retakeQuiz : t.launchQuiz}</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 ) : (
                   <div className="w-full py-2.5 px-4 rounded-xl font-medium text-xs flex items-center justify-center gap-2 bg-sand-200/40 dark:bg-night-850/40 text-sand-500 dark:text-sand-500 border border-sand-200/50 dark:border-night-800/50 cursor-not-allowed">
-                    <span>Unlock Level {quiz.levelId} First</span>
+                    <span>{isBangla ? `প্রথমে লেভেল ${quiz.levelId} সম্পন্ন করুন` : `Unlock Level ${quiz.levelId} First`}</span>
                   </div>
                 )}
               </div>

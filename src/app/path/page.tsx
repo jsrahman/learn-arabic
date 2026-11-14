@@ -20,20 +20,23 @@ import {
 import { LEARNING_LEVELS } from "@/data/levels";
 import { LESSONS } from "@/data/lessons";
 import { useThemeContext } from "@/components/ThemeWrapper";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
-
-const TIER_FILTERS = [
-  { id: "all", label: "All Levels (18)", shortLabel: "All" },
-  { id: "tier-1", tier: "Foundations", label: "Tier 1: Foundations (L1-4)", shortLabel: "Foundations" },
-  { id: "tier-2", tier: "Vowels & Orthography", label: "Tier 2: Orthography & Vowels (L5-8)", shortLabel: "Orthography" },
-  { id: "tier-3", tier: "Core Tajweed", label: "Tier 3: Core Tajweed Rules (L9-12)", shortLabel: "Tajweed" },
-  { id: "tier-4", tier: "Quranic Mastery", label: "Tier 4: Quranic & Khatm Mastery (L13-18)", shortLabel: "Mastery" },
-];
 
 export default function LearningPathPage() {
   const { progress, preferences } = useThemeContext();
   const isBangla = preferences.explanationLanguage === "bn";
+  const t = translations[isBangla ? "bn" : "en"].path;
+
   const [selectedTier, setSelectedTier] = useState<string>("all");
+
+  const tierFilters = [
+    { id: "all", label: t.tierAll },
+    { id: "tier-1", tier: "Foundations", label: t.tier1 },
+    { id: "tier-2", tier: "Vowels & Orthography", label: t.tier2 },
+    { id: "tier-3", tier: "Core Tajweed", label: t.tier3 },
+    { id: "tier-4", tier: "Quranic Mastery", label: t.tier4 },
+  ];
 
   const totalLessons = LEARNING_LEVELS.reduce((sum, l) => sum + l.lessonsCount, 0);
   const completedLessonsCount = progress.completedLessons.length;
@@ -51,6 +54,16 @@ export default function LearningPathPage() {
     return true;
   });
 
+  const getDifficultyLabel = (diff?: string) => {
+    if (!diff) return "";
+    if (!isBangla) return diff;
+    if (diff === "Foundational" || diff === "Fundamental") return t.difficultyFoundational;
+    if (diff === "Intermediate") return t.difficultyIntermediate;
+    if (diff === "Advanced") return t.difficultyAdvanced;
+    if (diff === "Mastery") return t.difficultyMastery;
+    return diff;
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Page Header */}
@@ -58,13 +71,13 @@ export default function LearningPathPage() {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
             <Compass className="w-4 h-4" />
-            <span>Mastery Roadmap • 18 Comprehensive Levels</span>
+            <span>{t.roadmapTag}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight">
-            Comprehensive Learning Path
+            {t.title}
           </h1>
-          <p className="text-sm text-sand-600 dark:text-sand-400 mt-1 max-w-2xl">
-            A rigorous, deep-dive curriculum covering Makharij, Uthmani orthography, complex Tajweed rules, rare Quranic exceptions, and complete Tartil Khatm mastery.
+          <p className="text-sm text-sand-600 dark:text-sand-400 mt-1 max-w-2xl leading-relaxed">
+            {t.subtitle}
           </p>
         </div>
 
@@ -72,15 +85,15 @@ export default function LearningPathPage() {
         <div className="p-4 rounded-2xl bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 flex items-center gap-4 shadow-sm w-full md:w-auto backdrop-blur-sm">
           <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-800 to-teal-900 text-gold-300 flex flex-col items-center justify-center font-bold text-base shadow-sm shrink-0">
             <span>{overallPercent}%</span>
-            <span className="text-[9px] uppercase tracking-wider font-medium text-emerald-300">Mastered</span>
+            <span className="text-[9px] uppercase tracking-wider font-medium text-emerald-300">{t.done}</span>
           </div>
           <div>
-            <div className="text-xs font-medium text-sand-600 dark:text-sand-400">Total Progress</div>
+            <div className="text-xs font-medium text-sand-600 dark:text-sand-400">{t.totalProgress}</div>
             <div className="text-sm font-bold text-sand-900 dark:text-sand-100">
-              {completedLessonsCount} of {totalLessons} Lessons
+              {completedLessonsCount} / {totalLessons} {t.lessonsCompleted}
             </div>
             <div className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
-              18 Levels • 630 Quiz Questions
+              {t.statSummary}
             </div>
           </div>
         </div>
@@ -88,7 +101,7 @@ export default function LearningPathPage() {
 
       {/* Tier Filter Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {TIER_FILTERS.map((filter) => {
+        {tierFilters.map((filter) => {
           const isActive = selectedTier === filter.id;
           return (
             <button
@@ -118,7 +131,7 @@ export default function LearningPathPage() {
         })}
       </div>
 
-      {/* Visual Roadmap Stepper with 2026 Visual-Direction Cards */}
+      {/* Visual Roadmap Stepper */}
       <div className="space-y-8 relative">
         {filteredLevels.map((level) => {
           const isUnlocked = progress.unlockedLevels.includes(level.number);
@@ -170,7 +183,7 @@ export default function LearningPathPage() {
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
-                        Level {level.number}
+                        {isBangla ? `লেভেল ${level.number}` : `Level ${level.number}`}
                       </span>
                       {level.tier && (
                         <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-sand-200/80 dark:bg-night-800 text-sand-700 dark:text-sand-300">
@@ -196,18 +209,18 @@ export default function LearningPathPage() {
                               level.difficulty === "Mastery" && "bg-purple-500"
                             )}
                           />
-                          <span>{level.difficulty}</span>
+                          <span>{getDifficultyLabel(level.difficulty)}</span>
                         </span>
                       )}
                       {hasPassedQuiz && (
                         <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20 flex items-center gap-1">
                           <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                          <span>Quiz Passed ({quizScore}%)</span>
+                          <span>{t.quizPassed} ({quizScore}%)</span>
                         </span>
                       )}
                     </div>
                     <h2 className="text-2xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
-                      {level.title}
+                      {isBangla ? level.titleBangla || level.title : level.title}
                     </h2>
                     <p className="text-xs sm:text-sm font-semibold text-emerald-800 dark:text-emerald-300/90">
                       {isBangla ? level.subtitleBangla : level.subtitle}
@@ -220,11 +233,11 @@ export default function LearningPathPage() {
                     {level.titleArabic}
                   </span>
                   <div className="flex items-center gap-2 text-xs text-sand-500 mt-1 font-mono">
-                    <span>~{level.estimatedMinutes} mins</span>
+                    <span>~{level.estimatedMinutes} {t.mins}</span>
                     <span>•</span>
-                    <span>{level.lessonsCount} lessons</span>
+                    <span>{level.lessonsCount} {isBangla ? "টি পাঠ" : "lessons"}</span>
                     <span>•</span>
-                    <span>35 questions</span>
+                    <span>35 {t.questions}</span>
                   </div>
                 </div>
               </div>
@@ -237,7 +250,7 @@ export default function LearningPathPage() {
                   </p>
                   <div className="space-y-2">
                     <p className="text-xs font-bold uppercase tracking-wider text-sand-600 dark:text-sand-400">
-                      Learning Objectives:
+                      {t.learningObjectives}
                     </p>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-sand-600 dark:text-sand-400">
                       {(isBangla ? level.objectivesBangla : level.objectives).map((obj, i) => (
@@ -254,10 +267,10 @@ export default function LearningPathPage() {
                 <div className="md:col-span-5 rounded-2xl bg-sand-100/60 dark:bg-night-950/70 p-4 border border-sand-200/80 dark:border-night-800/80 space-y-2">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-bold uppercase tracking-wider text-sand-600 dark:text-sand-400 block">
-                      Lessons in Level {level.number}
+                      {t.lessonsInLevel} {level.number}
                     </span>
                     <span className="text-[11px] font-mono font-bold text-emerald-700 dark:text-emerald-400">
-                      {completedInThisLevel}/{level.lessonsCount} Done
+                      {completedInThisLevel}/{level.lessonsCount} {t.done}
                     </span>
                   </div>
 
@@ -281,7 +294,7 @@ export default function LearningPathPage() {
                               {isLessonDone ? "✓" : lesson.lessonNumber}
                             </span>
                             <span className="text-xs font-semibold text-sand-900 dark:text-sand-200 truncate">
-                              {lesson.title}
+                              {isBangla ? lesson.titleBangla || lesson.title : lesson.title}
                             </span>
                           </div>
 
@@ -290,7 +303,7 @@ export default function LearningPathPage() {
                               href={`/learn/${lesson.id}`}
                               className="text-xs px-2.5 py-1 rounded-lg bg-emerald-800 text-gold-200 hover:bg-emerald-700 font-medium shrink-0 transition-all active:scale-95"
                             >
-                              {isLessonDone ? "Review" : "Start"}
+                              {isLessonDone ? t.review : t.start}
                             </Link>
                           ) : (
                             <Lock className="w-3.5 h-3.5 text-sand-400 shrink-0" />
@@ -300,7 +313,9 @@ export default function LearningPathPage() {
                     })
                   ) : (
                     <div className="p-3 text-xs text-sand-500 italic">
-                      Structured exercises and guided drills available upon unlocking.
+                      {isBangla
+                        ? "এই লেভেলটি উন্মুক্ত হলে বিস্তারিত অনুশীলন ও পাঠ উপলব্ধ হবে।"
+                        : "Structured exercises and guided drills available upon unlocking."}
                     </div>
                   )}
 
@@ -318,10 +333,12 @@ export default function LearningPathPage() {
                       >
                         <div className="flex items-center gap-1.5">
                           <Sparkles className="w-4 h-4 text-amber-500" />
-                          <span>Level {level.number} Mastery Quiz</span>
+                          <span>
+                            {isBangla ? `লেভেল ${level.number} ${t.masteryQuiz}` : `Level ${level.number} ${t.masteryQuiz}`}
+                          </span>
                         </div>
                         <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-sand-200/80 dark:bg-night-800">
-                          {quizScore !== undefined ? `${quizScore}%` : "35 Questions"}
+                          {quizScore !== undefined ? `${quizScore}%` : isBangla ? "৩৫টি প্রশ্ন" : "35 Questions"}
                         </span>
                       </Link>
                     </div>

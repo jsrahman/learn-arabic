@@ -38,7 +38,7 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
   autoPlayAudio: true,
   showTransliteration: true,
   arabicFontSize: "large",
-  explanationLanguage: "en",
+  explanationLanguage: "bn",
 };
 
 export function getLocalDateString(date = new Date()): string {

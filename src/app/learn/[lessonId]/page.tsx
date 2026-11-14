@@ -8,8 +8,8 @@ import {
   ArrowRight,
   CheckCircle2,
   Volume2,
-  Award,
   Sparkles,
+  Award,
   HelpCircle,
   RotateCcw,
   BookOpen,
@@ -23,7 +23,7 @@ import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
 import { cn } from "@/lib/utils";
 
-export default function LessonViewPage() {
+export default function LessonViewerPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = (params?.lessonId as string) || "l1-1";
@@ -91,12 +91,14 @@ export default function LessonViewPage() {
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-sand-600 dark:text-sand-400 hover:text-emerald-700 dark:hover:text-emerald-300"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Exit to Learning Path</span>
+          <span>{isBangla ? "লার্নিং পাথে ফিরুন" : "Exit to Learning Path"}</span>
         </Link>
 
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-            Level {lesson.levelId} • Lesson {lesson.lessonNumber}
+            {isBangla
+              ? `লেভেল ${lesson.levelId} • পাঠ ${lesson.lessonNumber}`
+              : `Level ${lesson.levelId} • Lesson ${lesson.lessonNumber}`}
           </span>
         </div>
       </div>
@@ -105,7 +107,9 @@ export default function LessonViewPage() {
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs font-medium text-sand-600 dark:text-sand-400">
           <span>
-            Step {currentSlideIndex + 1} of {lesson.slides.length}: {slide.title}
+            {isBangla
+              ? `ধাপ ${currentSlideIndex + 1} / ${lesson.slides.length}: ${slide.titleBangla || slide.title}`
+              : `Step ${currentSlideIndex + 1} of ${lesson.slides.length}: ${slide.title}`}
           </span>
           <span>{progressPercent}%</span>
         </div>
@@ -123,10 +127,10 @@ export default function LessonViewPage() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
-              {isBangla ? slide.titleBangla : slide.title}
+              {isBangla ? slide.titleBangla || slide.title : slide.title}
             </h1>
             <p className="text-sm text-emerald-800 dark:text-emerald-300 mt-1 font-medium">
-              {lesson.title}
+              {isBangla ? lesson.titleBangla || lesson.title : lesson.title}
             </p>
           </div>
 
@@ -164,7 +168,7 @@ export default function LessonViewPage() {
               arabicText={slide.audioPrompt || slide.arabic}
               size="lg"
               variant="gold"
-              label="Listen Pronunciation"
+              label={isBangla ? "উচ্চারণ শুনুন" : "Listen Pronunciation"}
             />
           </div>
         </div>
@@ -173,12 +177,14 @@ export default function LessonViewPage() {
         <div className="space-y-4">
           <div className="p-4 rounded-xl bg-sand-50/80 dark:bg-night-950/80 border border-sand-200 dark:border-night-800 space-y-2">
             <p className="text-sm sm:text-base text-sand-800 dark:text-sand-200 leading-relaxed">
-              {isBangla ? slide.explanationBangla : slide.explanation}
+              {isBangla ? slide.explanationBangla || slide.explanation : slide.explanation}
             </p>
 
             {slide.makhrajInfo && (
               <div className="pt-2 border-t border-sand-200 dark:border-night-800 text-xs text-sand-600 dark:text-sand-400">
-                <span className="font-bold text-emerald-700 dark:text-emerald-400">Makhraj: </span>
+                <span className="font-bold text-emerald-700 dark:text-emerald-400">
+                  {isBangla ? "মাখরাজ: " : "Makhraj: "}
+                </span>
                 {slide.makhrajInfo}
               </div>
             )}
@@ -188,7 +194,7 @@ export default function LessonViewPage() {
           {slide.formExamples && slide.formExamples.length > 0 && (
             <div className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-wider text-sand-600 dark:text-sand-400">
-                Word Examples & Shapes:
+                {isBangla ? "শব্দে বিভিন্ন রূপ ও উদাহরণ:" : "Word Examples & Shapes:"}
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" dir="rtl">
                 {slide.formExamples.map((ex, i) => (
@@ -217,7 +223,7 @@ export default function LessonViewPage() {
           <div className="mt-6 p-5 rounded-2xl bg-amber-500/5 border border-amber-500/20 space-y-3">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
               <HelpCircle className="w-4 h-4" />
-              <span>Checkpoint Question</span>
+              <span>{isBangla ? "যাচাইমূলক প্রশ্ন" : "Checkpoint Question"}</span>
             </div>
             <p className="text-sm font-semibold text-sand-900 dark:text-sand-100">
               {slide.checkQuestion.question}
@@ -275,7 +281,7 @@ export default function LessonViewPage() {
             )}
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Previous</span>
+            <span>{isBangla ? "পূর্ববর্তী" : "Previous"}</span>
           </button>
 
           <button
@@ -283,7 +289,11 @@ export default function LessonViewPage() {
             onClick={handleNextSlide}
             className="px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 bg-emerald-800 hover:bg-emerald-700 text-gold-200 shadow-md transition-all active:scale-95"
           >
-            <span>{isLastSlide ? "Complete Lesson" : "Next Step"}</span>
+            <span>
+              {isLastSlide
+                ? isBangla ? "পাঠ সম্পন্ন করুন" : "Complete Lesson"
+                : isBangla ? "পরবর্তী ধাপ" : "Next Step"}
+            </span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -299,21 +309,22 @@ export default function LessonViewPage() {
 
             <div className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                Lesson Completed!
+                {isBangla ? "পাঠ সম্পন্ন হয়েছে!" : "Lesson Completed!"}
               </span>
               <h2 className="text-2xl font-bold text-sand-950 dark:text-sand-50">
-                Alhamdulillah!
+                {isBangla ? "আলহামদুলিল্লাহ!" : "Alhamdulillah!"}
               </h2>
               <p className="text-xs text-sand-600 dark:text-sand-400 leading-relaxed">
-                You have successfully completed <strong>{lesson.title}</strong>. Your reading skills
-                are growing stronger every day.
+                {isBangla
+                  ? `আপনি সফলভাবে "${lesson.titleBangla || lesson.title}" সম্পন্ন করেছেন। মাশাআল্লাহ! আপনার দক্ষতা প্রতিদিন বৃদ্ধি পাচ্ছে।`
+                  : `You have successfully completed ${lesson.title}. Your reading skills are growing stronger every day.`}
               </p>
             </div>
 
             {/* XP Awarded */}
             <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-sm font-bold flex items-center justify-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>+50 Knowledge XP Earned</span>
+              <span>{isBangla ? "+৫০ নলেজ এক্সপি অর্জিত" : "+50 Knowledge XP Earned"}</span>
             </div>
 
             {/* Actions */}
@@ -323,7 +334,11 @@ export default function LessonViewPage() {
                   href={`/learn/l${lesson.levelId}-${lesson.lessonNumber + 1}`}
                   className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-gold-200 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
                 >
-                  <span>Continue to Lesson {lesson.lessonNumber + 1} of 4</span>
+                  <span>
+                    {isBangla
+                      ? `পরবর্তী পাঠ ${lesson.lessonNumber + 1} এ যান (৪টির মধ্যে)`
+                      : `Continue to Lesson ${lesson.lessonNumber + 1} of 4`}
+                  </span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               ) : (
@@ -332,7 +347,11 @@ export default function LessonViewPage() {
                   className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
                 >
                   <Sparkles className="w-4 h-4 text-gold-300" />
-                  <span>Take Level {lesson.levelId} Mastery Quiz (35 Questions)</span>
+                  <span>
+                    {isBangla
+                      ? `লেভেল ${lesson.levelId} এর পূর্ণাঙ্গ কুইজ দিন (৩৫টি প্রশ্ন)`
+                      : `Take Level ${lesson.levelId} Mastery Quiz (35 Questions)`}
+                  </span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               )}
@@ -342,14 +361,16 @@ export default function LessonViewPage() {
                 className="w-full py-2.5 px-4 rounded-xl bg-sand-100 hover:bg-sand-200 dark:bg-night-850 dark:hover:bg-night-800 border border-sand-300 dark:border-night-700 text-sand-800 dark:text-sand-200 font-medium text-xs flex items-center justify-center gap-2 transition-all"
               >
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>Jump to Level {lesson.levelId} Quiz</span>
+                <span>
+                  {isBangla ? `লেভেল ${lesson.levelId} কুইজে যান` : `Jump to Level ${lesson.levelId} Quiz`}
+                </span>
               </Link>
 
               <Link
                 href="/path"
                 className="w-full py-2.5 px-4 rounded-xl bg-sand-200 hover:bg-sand-300 dark:bg-night-800 dark:hover:bg-night-700 text-sand-800 dark:text-sand-200 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
               >
-                <span>Return to Learning Path</span>
+                <span>{isBangla ? "লার্নিং পাথে ফিরে যান" : "Return to Learning Path"}</span>
               </Link>
             </div>
           </div>
@@ -358,4 +379,3 @@ export default function LessonViewPage() {
     </div>
   );
 }
-

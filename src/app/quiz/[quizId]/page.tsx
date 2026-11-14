@@ -23,6 +23,7 @@ import { useThemeContext } from "@/components/ThemeWrapper";
 import { saveQuizScore, recordDailyActivity } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 interface QuestionResult {
@@ -39,6 +40,7 @@ export default function QuizArenaPage() {
 
   const { preferences, refreshProgress, fontSizeClass } = useThemeContext();
   const isBangla = preferences.explanationLanguage === "bn";
+  const t = translations[isBangla ? "bn" : "en"].quiz;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<Record<number, QuestionResult>>({});
@@ -128,43 +130,47 @@ export default function QuizArenaPage() {
 
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Level {quiz.levelId} Assessment Completed
+              {isBangla ? `লেভেল ${quiz.levelId} ${t.assessmentCompleted}` : `Level ${quiz.levelId} ${t.assessmentCompleted}`}
             </span>
             <h1 className="text-3xl font-extrabold text-sand-950 dark:text-sand-50">
-              {passed ? "Excellent Mastery!" : "Keep Practicing!"}
+              {passed ? t.excellentMastery : t.keepPracticing}
             </h1>
             <p className="text-sm text-sand-600 dark:text-sand-400">
               {passed
-                ? `Masha'Allah! You passed the 35-question rigorous test with ${finalPercent}%. The next level has been unlocked!`
-                : `You scored ${finalPercent}%. You need ${quiz.passingScore}% to unlock the next level. Review the rules and retry!`}
+                ? isBangla
+                  ? `মাশাআল্লাহ! আপনি ৩৫টি কঠিন প্রশ্নের পরীক্ষায় ${finalPercent}% স্কোর নিয়ে সফলভাবে উত্তীর্ণ হয়েছেন। পরবর্তী লেভেল উন্মুক্ত হয়েছে!`
+                  : `Masha'Allah! You passed the 35-question rigorous test with ${finalPercent}%. The next level has been unlocked!`
+                : isBangla
+                  ? `আপনি পেয়েছেন ${finalPercent}%। পরবর্তী লেভেল আনলক করতে ন্যূনতম ${quiz.passingScore}% প্রয়োজন। নিয়মগুলো আবার পড়ে চেষ্টা করুন!`
+                  : `You scored ${finalPercent}%. You need ${quiz.passingScore}% to unlock the next level. Review the rules and retry!`}
             </p>
           </div>
 
           {/* Score Pill */}
           <div className="p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800 flex items-center justify-around">
             <div>
-              <div className="text-xs text-sand-500">Your Score</div>
+              <div className="text-xs text-sand-500">{t.yourScore}</div>
               <div className="text-2xl font-bold text-emerald-950 dark:text-sand-50">
                 {finalPercent}%
               </div>
             </div>
             <div className="h-8 w-px bg-sand-300 dark:bg-night-800" />
             <div>
-              <div className="text-xs text-sand-500">Accuracy</div>
+              <div className="text-xs text-sand-500">{t.accuracy}</div>
               <div className="text-2xl font-bold text-emerald-600">
                 {correctCount} / {totalQuestions}
               </div>
             </div>
             <div className="h-8 w-px bg-sand-300 dark:bg-night-800" />
             <div>
-              <div className="text-xs text-sand-500">Status</div>
+              <div className="text-xs text-sand-500">{t.status}</div>
               <div
                 className={cn(
                   "text-sm font-bold mt-1",
                   passed ? "text-emerald-600" : "text-amber-600"
                 )}
               >
-                {passed ? "PASSED" : "NEEDS RETRY"}
+                {passed ? t.statusPassed : t.statusNeedsRetry}
               </div>
             </div>
           </div>
@@ -172,7 +178,7 @@ export default function QuizArenaPage() {
           {/* Results Summary Grid */}
           <div className="pt-2">
             <div className="text-xs font-semibold text-sand-600 dark:text-sand-400 mb-2 text-left">
-              Question Summary (35 Questions):
+              {t.questionSummary}
             </div>
             <div className="grid grid-cols-7 sm:grid-cols-10 gap-1.5 p-3 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800">
               {quiz.questions.map((_, i) => {
@@ -202,15 +208,15 @@ export default function QuizArenaPage() {
               className="w-full py-3 px-4 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Retake Level {quiz.levelId} Quiz</span>
+              <span>{isBangla ? `লেভেল ${quiz.levelId} কুইজ পুনরায় দিন` : `Retake Level ${quiz.levelId} Quiz`}</span>
             </button>
 
-            {passed && quiz.levelId < 16 && (
+            {passed && quiz.levelId < 18 && (
               <Link
                 href={`/quiz/q${quiz.levelId + 1}`}
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
               >
-                <span>Advance to Level {quiz.levelId + 1} Quiz</span>
+                <span>{isBangla ? `পরবর্তী লেভেল ${quiz.levelId + 1} কুইজে যান` : `Advance to Level ${quiz.levelId + 1} Quiz`}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             )}
@@ -219,7 +225,7 @@ export default function QuizArenaPage() {
               href="/path"
               className="w-full py-3 px-4 rounded-xl bg-sand-200 hover:bg-sand-300 dark:bg-night-800 dark:hover:bg-night-700 text-sand-800 dark:text-sand-200 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
             >
-              <span>Return to Learning Path</span>
+              <span>{t.returnToPath}</span>
             </Link>
           </div>
         </div>
@@ -236,15 +242,15 @@ export default function QuizArenaPage() {
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-sand-600 dark:text-sand-400 hover:text-emerald-700 dark:hover:text-emerald-300"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Exit Quiz</span>
+          <span>{t.exitQuiz}</span>
         </Link>
 
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
-            Level {String(quiz.levelId).padStart(2, "0")}
+            {isBangla ? `লেভেল ${quiz.levelId}` : `Level ${String(quiz.levelId).padStart(2, "0")}`}
           </span>
           <span className="text-xs font-bold uppercase tracking-wider text-sand-700 dark:text-sand-300">
-            Question {currentIndex + 1} of {totalQuestions}
+            {t.question} {currentIndex + 1} {t.of} {totalQuestions}
           </span>
         </div>
       </div>
@@ -254,12 +260,12 @@ export default function QuizArenaPage() {
         <div className="flex items-center justify-between text-[11px] font-semibold text-sand-600 dark:text-sand-400">
           <div className="flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Question Palette (35 Total)</span>
+            <span>{t.paletteTitle}</span>
           </div>
           <div>
-            <span className="text-emerald-600 font-bold">{correctCount} Correct</span>
+            <span className="text-emerald-600 font-bold">{correctCount} {t.correct}</span>
             <span className="text-sand-400 mx-1.5">•</span>
-            <span>{answeredCount}/{totalQuestions} Answered</span>
+            <span>{answeredCount}/{totalQuestions} {t.answered}</span>
           </div>
         </div>
 
@@ -305,11 +311,11 @@ export default function QuizArenaPage() {
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Q{currentIndex + 1} of {totalQuestions}
+              Q{currentIndex + 1} {t.of} {totalQuestions}
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
-            {isBangla ? question.questionBangla : question.question}
+            {isBangla ? question.questionBangla || question.question : question.question}
           </h2>
         </div>
 
@@ -334,7 +340,7 @@ export default function QuizArenaPage() {
                 arabicText={question.audioPrompt}
                 size="lg"
                 variant="gold"
-                label="Click to Listen"
+                label={t.clickToListen}
               />
             )}
           </div>
@@ -371,7 +377,7 @@ export default function QuizArenaPage() {
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 text-xs flex items-center justify-center shrink-0 font-bold">
+                  <span className="w-6 h-6 rounded-lg bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 text-xs flex items-center justify-center shrink-0 font-bold font-mono">
                     {String.fromCharCode(65 + idx)}
                   </span>
                   <span dir="auto">{opt}</span>
@@ -390,10 +396,10 @@ export default function QuizArenaPage() {
           <div className="p-4 rounded-2xl bg-sand-50/90 dark:bg-night-950/90 border border-sand-200 dark:border-night-800 space-y-2 animate-fade-in">
             <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
               <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>Explanation & Tajweed Rule</span>
+              <span>{t.explanationRule}</span>
             </div>
             <p className="text-xs sm:text-sm text-sand-700 dark:text-sand-300 leading-relaxed">
-              {isBangla ? question.explanationBangla : question.explanation}
+              {isBangla ? question.explanationBangla || question.explanation : question.explanation}
             </p>
           </div>
         )}
@@ -402,14 +408,14 @@ export default function QuizArenaPage() {
         {isAnswered && (
           <div className="pt-4 flex items-center justify-between">
             <span className="text-xs text-sand-500">
-              {currentIndex + 1} of {totalQuestions} answered
+              {currentIndex + 1} {t.of} {totalQuestions} {t.answered}
             </span>
             <button
               type="button"
               onClick={handleNextQuestion}
               className="px-7 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center gap-2 shadow-md transition-all active:scale-95"
             >
-              <span>{currentIndex < totalQuestions - 1 ? "Next Question" : "Complete & View Score"}</span>
+              <span>{currentIndex < totalQuestions - 1 ? t.nextQuestion : t.completeViewScore}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

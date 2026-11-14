@@ -1,21 +1,40 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeWrapper } from "@/components/ThemeWrapper";
+import { PWAProvider } from "@/components/PWAProvider";
+import { PWAInstallModal } from "@/components/PWAInstallModal";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "QuranPath — Learn Arabic to Read the Holy Quran",
+  title: "QuranPath — পবিত্র কুরআন পাঠ ও তাজবীদ শিক্ষা",
   description:
-    "An interactive, quiz-based learning platform taking beginners from recognizing individual Arabic letters to reading complete Quranic verses with authentic Tajweed.",
+    "সহজ ও কার্যকর পদ্ধতিতে আরবি হরফ ও সহীহ তাজবীদ সহকারে পবিত্র কুরআন পাঠ শিখুন। ১৮টি প্রগ্রেসিভ লেভেল ও ৬৩০টি ইন্টারেক্টিভ কুইজ।",
+  manifest: "/manifest.json",
+  applicationName: "QuranPath",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "QuranPath",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   keywords: [
-    "Learn Arabic",
-    "Quran Reading",
+    "কুরআন শিক্ষা",
+    "নূরানী কায়দা",
+    "তাজবীদ",
+    "Learn Quran",
     "Arabic Alphabet",
     "Noorani Qaida",
-    "Tajweed for Beginners",
-    "Harakat",
-    "Arabic Pronunciation",
+    "Tajweed Rules",
+    "Quran Reading App",
   ],
   authors: [{ name: "QuranPath" }],
 };
@@ -24,6 +43,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  themeColor: "#064E3B",
 };
 
 export default function RootLayout({
@@ -32,12 +52,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="bn" suppressHydrationWarning>
       <body className="bg-sand-50 dark:bg-night-950 text-sand-900 dark:text-sand-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
         <ThemeWrapper>
-          <Navbar />
-          <main className="flex-1 w-full">{children}</main>
-          <Footer />
+          <PWAProvider>
+            <Navbar />
+            <main className="flex-1 w-full">{children}</main>
+            <Footer />
+            <PWAInstallModal />
+          </PWAProvider>
         </ThemeWrapper>
       </body>
     </html>

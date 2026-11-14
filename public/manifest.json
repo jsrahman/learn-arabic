@@ -1,0 +1,62 @@
+{
+  "name": "QuranPath — পবিত্র কুরআন পাঠ ও তাজবীদ",
+  "short_name": "QuranPath",
+  "description": "সহজ ও কার্যকর পদ্ধতিতে আরবি হরফ ও সহীহ তাজবীদ সহকারে পবিত্র কুরআন পাঠ শিখুন।",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#0E1713",
+  "theme_color": "#064E3B",
+  "lang": "bn",
+  "dir": "auto",
+  "categories": ["education", "books", "religion"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "লার্নিং পাথ (Learning Path)",
+      "url": "/path",
+      "description": "১৮টি লেভেলের পূর্ণাঙ্গ কুরআন পাঠ পরিকল্পনা",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "অনুশীলন (Practice)",
+      "url": "/practice",
+      "description": "হরফ, হরকত ও সূরা পাঠ অনুশীলন",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "কুইজ অঙ্গন (Quizzes)",
+      "url": "/quiz",
+      "description": "৩৫টি চ্যালেঞ্জিং প্রশ্নের স্কিল টেস্ট",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "অগ্রগতি (Progress)",
+      "url": "/progress",
+      "description": "আপনার শেখার অগ্রগতি ও ধারাবাহিকতা",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

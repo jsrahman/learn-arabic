@@ -13,10 +13,13 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useThemeContext } from "@/components/ThemeWrapper";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
   const { preferences, updatePreferences, toggleTheme } = useThemeContext();
+  const isBangla = preferences.explanationLanguage === "bn";
+  const t = translations[isBangla ? "bn" : "en"].profile;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -24,13 +27,13 @@ export default function ProfilePage() {
       <div className="pb-6 border-b border-sand-200 dark:border-night-800">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
           <Settings className="w-4 h-4" />
-          <span>Learner Preferences</span>
+          <span>{isBangla ? "পছন্দসমূহ ও সেটিংস" : "Learner Preferences"}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight">
-          Settings & Preferences
+          {t.title}
         </h1>
         <p className="text-sm text-sand-600 dark:text-sand-400 mt-1">
-          Customize your audio speeds, Arabic font sizes, and explanation language.
+          {t.subtitle}
         </p>
       </div>
 
@@ -42,21 +45,21 @@ export default function ProfilePage() {
               <Volume2 className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">Audio Pronunciation</h2>
-              <p className="text-xs text-sand-500">Configure speech rate and playback</p>
+              <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">{t.audioSection}</h2>
+              <p className="text-xs text-sand-500">{t.audioSubtitle}</p>
             </div>
           </div>
 
           <div className="space-y-4 pt-2">
             <div>
               <label className="text-xs font-bold text-sand-700 dark:text-sand-300 uppercase tracking-wider block mb-2">
-                Pronunciation Speed: {preferences.audioSpeed}x
+                {t.audioSpeed}: {preferences.audioSpeed}x
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 0.75, label: "0.75x (Slow & Clear)" },
-                  { value: 1.0, label: "1.0x (Natural)" },
-                  { value: 1.25, label: "1.25x (Brisk)" },
+                  { value: 0.75, label: isBangla ? "০.৭৫x (ধীর ও স্পষ্ট)" : "0.75x (Slow & Clear)" },
+                  { value: 1.0, label: isBangla ? "১.০x (স্বাভাবিক)" : "1.0x (Natural)" },
+                  { value: 1.25, label: isBangla ? "১.২৫x (দ্রুত)" : "1.25x (Brisk)" },
                 ].map((s) => (
                   <button
                     key={s.value}
@@ -78,10 +81,10 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-850">
               <div>
                 <span className="text-sm font-semibold text-sand-900 dark:text-sand-100 block">
-                  Autoplay Pronunciation
+                  {t.autoPlay}
                 </span>
                 <span className="text-xs text-sand-500">
-                  Play the letter audio automatically when entering a lesson step.
+                  {t.autoPlayDesc}
                 </span>
               </div>
               <button
@@ -110,21 +113,21 @@ export default function ProfilePage() {
               <Type className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">Typography & Sizing</h2>
-              <p className="text-xs text-sand-500">Ensure Arabic vowel marks and diacritics are comfortable to read</p>
+              <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">{t.typographySection}</h2>
+              <p className="text-xs text-sand-500">{t.typographySubtitle}</p>
             </div>
           </div>
 
           <div className="space-y-4 pt-2">
             <div>
               <label className="text-xs font-bold text-sand-700 dark:text-sand-300 uppercase tracking-wider block mb-2">
-                Arabic Letter Size
+                {t.arabicSize}
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: "normal", label: "Normal" },
-                  { value: "large", label: "Large (Recommended)" },
-                  { value: "xlarge", label: "Extra Large" },
+                  { value: "normal", label: t.sizeNormal },
+                  { value: "large", label: t.sizeLarge },
+                  { value: "xlarge", label: t.sizeXLarge },
                 ].map((s) => (
                   <button
                     key={s.value}
@@ -148,10 +151,10 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-850">
               <div>
                 <span className="text-sm font-semibold text-sand-900 dark:text-sand-100 block">
-                  Show English Transliteration
+                  {t.showTranslit}
                 </span>
                 <span className="text-xs text-sand-500">
-                  Display phonetic spelling (e.g. &apos;Alif&apos;, &apos;Ba&apos;) under Arabic script.
+                  {t.showTranslitDesc}
                 </span>
               </div>
               <button
@@ -182,29 +185,12 @@ export default function ProfilePage() {
               <Languages className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">Explanation Language</h2>
-              <p className="text-xs text-sand-500">Choose the language used for lesson descriptions and rules</p>
+              <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">{t.languageSection}</h2>
+              <p className="text-xs text-sand-500">{t.languageSubtitle}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 pt-2">
-            <button
-              type="button"
-              onClick={() => updatePreferences({ explanationLanguage: "en" })}
-              className={cn(
-                "p-4 rounded-2xl border text-left flex items-center justify-between transition-all",
-                preferences.explanationLanguage === "en"
-                  ? "bg-emerald-800 text-gold-200 border-emerald-700 shadow-sm"
-                  : "bg-sand-50 dark:bg-night-950 text-sand-800 dark:text-sand-200 border-sand-300 dark:border-night-800"
-              )}
-            >
-              <div>
-                <span className="text-sm font-bold block">English</span>
-                <span className="text-xs opacity-80">Default global explanations</span>
-              </div>
-              {preferences.explanationLanguage === "en" && <Check className="w-5 h-5 text-gold-300" />}
-            </button>
-
             <button
               type="button"
               onClick={() => updatePreferences({ explanationLanguage: "bn" })}
@@ -212,14 +198,31 @@ export default function ProfilePage() {
                 "p-4 rounded-2xl border text-left flex items-center justify-between transition-all",
                 preferences.explanationLanguage === "bn"
                   ? "bg-emerald-800 text-gold-200 border-emerald-700 shadow-sm"
-                  : "bg-sand-50 dark:bg-night-950 text-sand-800 dark:text-sand-200 border-sand-300 dark:border-night-800"
+                  : "bg-sand-50 dark:bg-night-950 text-sand-800 dark:text-sand-200 border-sand-300 dark:border-night-800 hover:border-emerald-600/40"
               )}
             >
               <div>
-                <span className="text-sm font-bold block">বাংলা (Bangla)</span>
-                <span className="text-xs opacity-80">বাংলায় পাঠ ও নিয়ম ব্যাখ্যা</span>
+                <span className="text-sm font-bold block">{t.langBangla}</span>
+                <span className="text-xs opacity-80">{t.langBanglaDesc}</span>
               </div>
-              {preferences.explanationLanguage === "bn" && <Check className="w-5 h-5 text-gold-300" />}
+              {preferences.explanationLanguage === "bn" && <Check className="w-5 h-5 text-gold-300 shrink-0" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => updatePreferences({ explanationLanguage: "en" })}
+              className={cn(
+                "p-4 rounded-2xl border text-left flex items-center justify-between transition-all",
+                preferences.explanationLanguage === "en"
+                  ? "bg-emerald-800 text-gold-200 border-emerald-700 shadow-sm"
+                  : "bg-sand-50 dark:bg-night-950 text-sand-800 dark:text-sand-200 border-sand-300 dark:border-night-800 hover:border-emerald-600/40"
+              )}
+            >
+              <div>
+                <span className="text-sm font-bold block">{t.langEnglish}</span>
+                <span className="text-xs opacity-80">{t.langEnglishDesc}</span>
+              </div>
+              {preferences.explanationLanguage === "en" && <Check className="w-5 h-5 text-gold-300 shrink-0" />}
             </button>
           </div>
         </div>
@@ -232,22 +235,52 @@ export default function ProfilePage() {
                 {preferences.theme === "dark" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
               </div>
               <div>
-                <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">Color Theme</h2>
-                <p className="text-xs text-sand-500">Switch between Warm Parchment and Deep Night</p>
+                <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">{t.themeSection}</h2>
+                <p className="text-xs text-sand-500">{t.themeSubtitle}</p>
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-sand-200 dark:bg-night-800 border border-sand-300 dark:border-night-700 text-sand-800 dark:text-sand-200 hover:bg-sand-300 transition-colors"
-            >
-              Switch to {preferences.theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </button>
+            <div className="flex items-center gap-2 p-1 rounded-2xl bg-sand-200 dark:bg-night-800 border border-sand-300 dark:border-night-700">
+              <button
+                type="button"
+                onClick={() => updatePreferences({ theme: "light" })}
+                className={cn(
+                  "px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all",
+                  preferences.theme === "light"
+                    ? "bg-emerald-800 text-gold-200 shadow-sm"
+                    : "text-sand-700 dark:text-sand-300"
+                )}
+              >
+                <Sun className="w-3.5 h-3.5" />
+                <span>{t.themeLight}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => updatePreferences({ theme: "dark" })}
+                className={cn(
+                  "px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all",
+                  preferences.theme === "dark"
+                    ? "bg-emerald-800 text-gold-200 shadow-sm"
+                    : "text-sand-700 dark:text-sand-300"
+                )}
+              >
+                <Moon className="w-3.5 h-3.5" />
+                <span>{t.themeDark}</span>
+              </button>
+            </div>
           </div>
+        </div>
+
+        {/* Section 5: Local Privacy Guarantee */}
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3">
+          <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
+          <p className="text-xs text-emerald-900 dark:text-emerald-300">
+            {isBangla
+              ? "আপনার সমস্ত অগ্রগতি ও সেটিংস সম্পূর্ণ অফলাইনে আপনার ডিভাইসে স্থানীয়ভাবে সংরক্ষিত থাকে। কোনো ব্যক্তিগত তথ্য ইন্টারনেটে পাঠানো হয় না।"
+              : "Your learning progress, quiz scores, and settings are stored locally on your device. We respect your complete privacy with zero tracking."}
+          </p>
         </div>
       </div>
     </div>
   );
 }
-
