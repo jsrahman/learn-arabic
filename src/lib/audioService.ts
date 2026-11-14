@@ -161,13 +161,29 @@ class AudioService {
     osc.stop(now + 0.04);
   }
 
-  // Play recitation audio stream / local clip
-  public playRecitation(audioUrl: string, onEnded?: () => void, rate = 1.0): HTMLAudioElement {
+  // Play recitation audio stream / local clip with offline speech fallback
+  public playRecitation(
+    audioUrl: string,
+    onEnded?: () => void,
+    rate = 1.0,
+    fallbackText?: string
+  ): HTMLAudioElement {
     this.stopAudio();
 
     const audio = new Audio(audioUrl);
     audio.playbackRate = rate;
     this.currentAudio = audio;
+
+    const triggerFallback = () => {
+      this.currentAudio = null;
+      if (fallbackText) {
+        this.speakArabic(fallbackText, rate).then(() => {
+          if (onEnded) onEnded();
+        });
+      } else if (onEnded) {
+        onEnded();
+      }
+    };
 
     audio.onended = () => {
       this.currentAudio = null;
@@ -175,13 +191,12 @@ class AudioService {
     };
 
     audio.onerror = () => {
-      this.currentAudio = null;
-      if (onEnded) onEnded();
+      triggerFallback();
     };
 
     audio.play().catch((err) => {
       console.warn("Audio play prevented or failed, fallback to SpeechSynthesis:", err);
-      if (onEnded) onEnded();
+      triggerFallback();
     });
 
     return audio;

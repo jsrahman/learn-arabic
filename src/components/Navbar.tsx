@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { usePWA } from "@/components/PWAProvider";
+import { OfflineStatusIndicator } from "@/components/OfflineStatusIndicator";
 import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
@@ -146,6 +147,9 @@ export const Navbar = () => {
             </button>
           )}
 
+          {/* 100% Offline Status Indicator */}
+          <OfflineStatusIndicator />
+
           {/* Language Switcher Button (Instant EN <-> বাং Toggle) */}
           <button
             type="button"
@@ -240,6 +244,12 @@ export const Navbar = () => {
               <span>{t.nav.installAppLong}</span>
             </button>
           )}
+
+          {/* Mobile Offline Status & Download */}
+          <div className="pt-2 flex items-center justify-between px-2 text-xs text-sand-600 dark:text-sand-400">
+            <span>{isBangla ? "অফলাইন স্টোরেজ:" : "Offline Storage:"}</span>
+            <OfflineStatusIndicator />
+          </div>
         </div>
       )}
     </header>

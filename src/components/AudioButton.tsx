@@ -43,7 +43,8 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
           () => {
             setIsPlaying(false);
           },
-          preferences.audioSpeed || 1.0
+          preferences.audioSpeed || 1.0,
+          arabicText
         );
       } else if (arabicText) {
         await audioService.speakArabic(arabicText, preferences.audioSpeed || 0.9);
