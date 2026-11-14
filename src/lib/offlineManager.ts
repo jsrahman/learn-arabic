@@ -144,3 +144,51 @@ export async function downloadAllForOffline(
     return { success: false, cachedCount: 0 };
   }
 }
+
+/**
+ * Automatically schedule offline caching 25 seconds after the website is fully loaded.
+ * Ensures the app and all 30 alphabet audio MP3s are pre-cached in the background without user intervention.
+ */
+export function initAutoOfflineCaching(
+  onComplete?: (cachedCount: number) => void
+): () => void {
+  if (typeof window === "undefined") return () => {};
+
+  let timerId: NodeJS.Timeout | null = null;
+
+  const runAutoCache = async () => {
+    if (typeof navigator !== "undefined" && !navigator.onLine) return;
+
+    try {
+      const status = await checkOfflineStatus();
+      if (!status.isFullyCached) {
+        console.log("[QuranPath Offline] Starting automatic background caching (+25s after load)...");
+        const res = await downloadAllForOffline();
+        if (res.success) {
+          console.log(`[QuranPath Offline] Auto caching complete (${res.cachedCount} items saved).`);
+          window.dispatchEvent(new CustomEvent("quranpath:offline-updated"));
+          if (onComplete) onComplete(res.cachedCount);
+        }
+      } else {
+        console.log("[QuranPath Offline] Device is already 100% cached for offline use.");
+      }
+    } catch (err) {
+      console.warn("[QuranPath Offline] Auto caching error:", err);
+    }
+  };
+
+  const schedule = () => {
+    timerId = setTimeout(runAutoCache, 25000); // exactly 25 seconds after load
+  };
+
+  if (document.readyState === "complete") {
+    schedule();
+  } else {
+    window.addEventListener("load", schedule, { once: true });
+  }
+
+  return () => {
+    if (timerId) clearTimeout(timerId);
+    window.removeEventListener("load", schedule);
+  };
+}

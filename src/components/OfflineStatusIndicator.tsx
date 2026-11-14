@@ -14,6 +14,7 @@ import {
 import {
   checkOfflineStatus,
   downloadAllForOffline,
+  initAutoOfflineCaching,
   OfflineStatus,
 } from "@/lib/offlineManager";
 import { useThemeContext } from "./ThemeWrapper";
@@ -35,6 +36,7 @@ export function OfflineStatusIndicator() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadPercent, setDownloadPercent] = useState(0);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [showAutoToast, setShowAutoToast] = useState(false);
 
   useEffect(() => {
     // Initial check
@@ -46,14 +48,24 @@ export function OfflineStatusIndicator() {
 
     window.addEventListener("online", update);
     window.addEventListener("offline", update);
+    window.addEventListener("quranpath:offline-updated", update);
 
     // Warm-up cache check after 3 seconds
     const timer = setTimeout(update, 3000);
 
+    // Automatically trigger 100% offline caching 25 seconds after the website is fully loaded
+    const cleanupAutoCache = initAutoOfflineCaching(() => {
+      update();
+      setShowAutoToast(true);
+      setTimeout(() => setShowAutoToast(false), 8000);
+    });
+
     return () => {
       window.removeEventListener("online", update);
       window.removeEventListener("offline", update);
+      window.removeEventListener("quranpath:offline-updated", update);
       clearTimeout(timer);
+      cleanupAutoCache();
     };
   }, []);
 
@@ -266,6 +278,32 @@ export function OfflineStatusIndicator() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Automatic Background Cache Toast (Triggered +25s after website load) */}
+      {showAutoToast && (
+        <div className="fixed bottom-5 right-5 z-50 max-w-sm w-[calc(100vw-2.5rem)] rounded-2xl p-4 bg-emerald-950/95 backdrop-blur-md text-gold-100 border border-gold-500/40 shadow-2xl flex items-start gap-3 animate-fade-in">
+          <div className="w-8 h-8 rounded-xl bg-gold-500/20 text-gold-300 flex items-center justify-center shrink-0 mt-0.5">
+            <CheckCircle2 className="w-5 h-5 text-gold-300" />
+          </div>
+          <div className="flex-1 text-xs space-y-0.5 text-left">
+            <strong className="block font-bold text-sand-50">
+              {isBangla ? "স্বয়ংক্রিয় অফলাইন মোড সক্রিয়!" : "Automatic Offline Cache Ready!"}
+            </strong>
+            <p className="text-sand-200 leading-relaxed text-[11px]">
+              {isBangla
+                ? "১৮টি লেভেল, ৭২টি পাঠ ও আরবি হরফের অডিও আপনার ডিভাইসে সংরক্ষিত হয়েছে। ইন্টারনেট ছাড়াও সবকিছু পড়তে ও শুনতে পারবেন।"
+                : "All 18 levels, 72 lessons, and alphabet audio have been automatically cached to your device for offline use."}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowAutoToast(false)}
+            className="text-sand-400 hover:text-sand-100 p-1"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
     </>

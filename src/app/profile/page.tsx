@@ -54,10 +54,12 @@ export default function ProfilePage() {
 
     window.addEventListener("online", update);
     window.addEventListener("offline", update);
+    window.addEventListener("quranpath:offline-updated", update);
 
     return () => {
       window.removeEventListener("online", update);
       window.removeEventListener("offline", update);
+      window.removeEventListener("quranpath:offline-updated", update);
     };
   }, []);
 
