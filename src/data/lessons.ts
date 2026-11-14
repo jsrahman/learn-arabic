@@ -3,6 +3,7 @@ export interface LessonSlide {
   arabic: string;
   transliteration?: string;
   audioPrompt?: string;
+  audioUrl?: string;
   title: string;
   titleBangla: string;
   explanation: string;

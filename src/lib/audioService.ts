@@ -161,11 +161,12 @@ class AudioService {
     osc.stop(now + 0.04);
   }
 
-  // Play Quran recitation audio stream from authentic source
-  public playRecitation(audioUrl: string, onEnded?: () => void): HTMLAudioElement {
+  // Play recitation audio stream / local clip
+  public playRecitation(audioUrl: string, onEnded?: () => void, rate = 1.0): HTMLAudioElement {
     this.stopAudio();
 
     const audio = new Audio(audioUrl);
+    audio.playbackRate = rate;
     this.currentAudio = audio;
 
     audio.onended = () => {

@@ -201,7 +201,7 @@ export default function ProgressPage() {
                 {item.name}
               </span>
               <div className="mt-2">
-                <AudioButton arabicText={item.name} size="sm" variant="subtle" />
+                <AudioButton audioUrl={item.audioUrl} arabicText={item.name} size="sm" variant="subtle" />
               </div>
             </div>
           ))}

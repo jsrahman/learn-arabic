@@ -7,6 +7,7 @@ export interface QuizQuestion {
   questionBangla: string;
   promptText?: string; // Arabic display prompt
   audioPrompt?: string; // Audio to play
+  audioUrl?: string;
   options: string[]; // Answers to pick from
   correctIndex: number;
   explanation: string;
@@ -54,6 +55,7 @@ export const QUIZZES: Record<string, Quiz> = {
         question: "Listen to the pronunciation. Which Arabic letter is being spoken?",
         questionBangla: "উচ্চারণটি শুনুন। কোন আরবি হরফটি বলা হলো?",
         audioPrompt: "ثاء",
+        audioUrl: "/audio/alphabet/thaa.mp3",
         options: ["ث (Thā’)", "س (Sīn)", "ص (Ṣād)", "ت (Tā’)"],
         correctIndex: 0,
         explanation: "Thā’ (ث) is pronounced softly with the tongue tip touching the upper teeth edges.",
@@ -80,6 +82,7 @@ export const QUIZZES: Record<string, Quiz> = {
         question: "Listen carefully. Is this the heavy throat letter or the light one?",
         questionBangla: "মনোযোগ দিয়ে শুনুন। এটি কি গলার গভীরের ভারী ক্বাফ নাকি সাধারণ কাফ?",
         audioPrompt: "قاف",
+        audioUrl: "/audio/alphabet/qaaf.mp3",
         options: ["ق (Qāf - Deep emphatic)", "ك (Kāf - Light)", "ت (Tā’)", "ط (Ṭā’)"],
         correctIndex: 0,
         explanation: "Qāf (ق) is articulated deep at the very back of the tongue against the soft palate.",

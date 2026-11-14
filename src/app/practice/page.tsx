@@ -183,6 +183,7 @@ export default function PracticePage() {
 
                 <div className="mt-3">
                   <AudioButton
+                    audioUrl={letter.audioUrl}
                     arabicText={letter.name}
                     size="sm"
                     variant="primary"

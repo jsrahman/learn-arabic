@@ -4,6 +4,7 @@ export interface ArabicLetter {
   name: string;
   nameBangla: string;
   transliteration: string;
+  audioUrl: string;
   makhraj: string; // Articulation point
   makhrajBangla: string;
   forms: {
@@ -22,6 +23,7 @@ export interface ArabicLetter {
 export const ARABIC_ALPHABET: ArabicLetter[] = [
   {
     id: "alif",
+    audioUrl: "/audio/alphabet/alif.mp3",
     arabic: "ا",
     name: "Alif",
     nameBangla: "আলিফ",
@@ -37,6 +39,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "baa",
+    audioUrl: "/audio/alphabet/baa.mp3",
     arabic: "ب",
     name: "Bā’",
     nameBangla: "বা",
@@ -52,6 +55,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "taa",
+    audioUrl: "/audio/alphabet/taa.mp3",
     arabic: "ت",
     name: "Tā’",
     nameBangla: "তা",
@@ -67,6 +71,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "thaa",
+    audioUrl: "/audio/alphabet/thaa.mp3",
     arabic: "ث",
     name: "Thā’",
     nameBangla: "সা",
@@ -82,6 +87,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "jeem",
+    audioUrl: "/audio/alphabet/jeem.mp3",
     arabic: "ج",
     name: "Jeem",
     nameBangla: "জীম",
@@ -97,6 +103,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "haa_throat",
+    audioUrl: "/audio/alphabet/haa_throat.mp3",
     arabic: "ح",
     name: "Ḥā’",
     nameBangla: "হা (কণ্ঠনালী)",
@@ -112,6 +119,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "khaa",
+    audioUrl: "/audio/alphabet/khaa.mp3",
     arabic: "خ",
     name: "Khā’",
     nameBangla: "খা",
@@ -127,6 +135,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "daal",
+    audioUrl: "/audio/alphabet/daal.mp3",
     arabic: "د",
     name: "Dāl",
     nameBangla: "দাল",
@@ -142,6 +151,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "dhaal",
+    audioUrl: "/audio/alphabet/dhaal.mp3",
     arabic: "ذ",
     name: "Dhāl",
     nameBangla: "যাল",
@@ -157,6 +167,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "raa",
+    audioUrl: "/audio/alphabet/raa.mp3",
     arabic: "ر",
     name: "Rā’",
     nameBangla: "র",
@@ -172,6 +183,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "zay",
+    audioUrl: "/audio/alphabet/zay.mp3",
     arabic: "ز",
     name: "Zāy",
     nameBangla: "যা",
@@ -187,6 +199,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "seen",
+    audioUrl: "/audio/alphabet/seen.mp3",
     arabic: "س",
     name: "Sīn",
     nameBangla: "সীন",
@@ -202,6 +215,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "sheen",
+    audioUrl: "/audio/alphabet/sheen.mp3",
     arabic: "ش",
     name: "Shīn",
     nameBangla: "শীন",
@@ -217,6 +231,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "saad",
+    audioUrl: "/audio/alphabet/saad.mp3",
     arabic: "ص",
     name: "Ṣād",
     nameBangla: "সোয়াদ",
@@ -232,6 +247,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "daad",
+    audioUrl: "/audio/alphabet/daad.mp3",
     arabic: "ض",
     name: "Ḍād",
     nameBangla: "দোয়াদ",
@@ -247,6 +263,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "taa_emphatic",
+    audioUrl: "/audio/alphabet/taa_emphatic.mp3",
     arabic: "ط",
     name: "Ṭā’",
     nameBangla: "তোয়া",
@@ -262,6 +279,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "zaa_emphatic",
+    audioUrl: "/audio/alphabet/zaa_emphatic.mp3",
     arabic: "ظ",
     name: "Ẓā’",
     nameBangla: "যোয়া",
@@ -277,6 +295,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "ayn",
+    audioUrl: "/audio/alphabet/ayn.mp3",
     arabic: "ع",
     name: "‘Ayn",
     nameBangla: "আইন",
@@ -292,6 +311,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "ghayn",
+    audioUrl: "/audio/alphabet/ghayn.mp3",
     arabic: "غ",
     name: "Ghayn",
     nameBangla: "গাইন",
@@ -307,6 +327,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "faa",
+    audioUrl: "/audio/alphabet/faa.mp3",
     arabic: "ف",
     name: "Fā’",
     nameBangla: "ফা",
@@ -322,6 +343,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "qaaf",
+    audioUrl: "/audio/alphabet/qaaf.mp3",
     arabic: "ق",
     name: "Qāf",
     nameBangla: "ক্বাফ",
@@ -337,6 +359,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "kaaf",
+    audioUrl: "/audio/alphabet/kaaf.mp3",
     arabic: "ك",
     name: "Kāf",
     nameBangla: "কাফ",
@@ -352,6 +375,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "laam",
+    audioUrl: "/audio/alphabet/laam.mp3",
     arabic: "ل",
     name: "Lām",
     nameBangla: "লাম",
@@ -367,6 +391,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "meem",
+    audioUrl: "/audio/alphabet/meem.mp3",
     arabic: "م",
     name: "Mīm",
     nameBangla: "মীম",
@@ -382,6 +407,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "noon",
+    audioUrl: "/audio/alphabet/noon.mp3",
     arabic: "ن",
     name: "Nūn",
     nameBangla: "নূন",
@@ -397,6 +423,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "haa_chest",
+    audioUrl: "/audio/alphabet/haa_chest.mp3",
     arabic: "هـ",
     name: "Hā’",
     nameBangla: "হা (বুকের গভীর হতে)",
@@ -412,6 +439,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "waw",
+    audioUrl: "/audio/alphabet/waw.mp3",
     arabic: "و",
     name: "Wāw",
     nameBangla: "ওয়াও",
@@ -427,6 +455,7 @@ export const ARABIC_ALPHABET: ArabicLetter[] = [
   },
   {
     id: "yaa",
+    audioUrl: "/audio/alphabet/yaa.mp3",
     arabic: "ي",
     name: "Yā’",
     nameBangla: "ইয়া",

@@ -218,8 +218,9 @@ export default function QuizArenaPage() {
               </span>
             )}
 
-            {question.audioPrompt && (
+            {(question.audioPrompt || question.audioUrl) && (
               <AudioButton
+                audioUrl={question.audioUrl}
                 arabicText={question.audioPrompt}
                 size="lg"
                 variant="gold"

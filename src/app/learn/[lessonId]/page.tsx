@@ -15,6 +15,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { LESSONS } from "@/data/lessons";
+import { ARABIC_ALPHABET } from "@/data/alphabet";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { markLessonCompleted } from "@/lib/storage";
@@ -38,6 +39,11 @@ export default function LessonViewPage() {
   const slide = lesson.slides[currentSlideIndex];
   const isLastSlide = currentSlideIndex === lesson.slides.length - 1;
   const progressPercent = Math.round(((currentSlideIndex + 1) / lesson.slides.length) * 100);
+
+  const matchedLetter = ARABIC_ALPHABET.find(
+    (l) => l.arabic === slide.arabic || l.name.toLowerCase() === slide.arabic.toLowerCase()
+  );
+  const slideAudioUrl = slide.audioUrl || matchedLetter?.audioUrl;
 
   const handleNextSlide = () => {
     setSelectedAnswer(null);
@@ -148,6 +154,7 @@ export default function LessonViewPage() {
           {/* Audio Replay Button */}
           <div className="mt-5">
             <AudioButton
+              audioUrl={slideAudioUrl}
               arabicText={slide.audioPrompt || slide.arabic}
               size="lg"
               variant="gold"

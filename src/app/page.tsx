@@ -138,6 +138,7 @@ export default function HomePage() {
                 </span>
               </div>
               <AudioButton
+                audioUrl={selectedLetter.audioUrl}
                 arabicText={selectedLetter.name}
                 size="lg"
                 variant="gold"
