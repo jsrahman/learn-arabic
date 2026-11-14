@@ -77,61 +77,61 @@ export default function ProgressPage() {
       </div>
 
       {/* Top 4 Stat Bento Tiles */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         {/* Streak */}
-        <div className="rounded-3xl p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-4">
+        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
           <div
             className={cn(
-              "w-12 h-12 rounded-2xl flex items-center justify-center font-bold",
+              "w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold shrink-0",
               progress.streakDays > 0
                 ? "bg-amber-500/15 text-amber-600 dark:text-amber-400"
                 : "bg-sand-200/50 dark:bg-night-800 text-sand-400 dark:text-sand-500"
             )}
           >
-            <Flame className={cn("w-6 h-6", progress.streakDays > 0 && "fill-current animate-bounce-short")} />
+            <Flame className={cn("w-5 h-5 sm:w-6 sm:h-6", progress.streakDays > 0 && "fill-current animate-bounce-short")} />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">{t.dailyStreak}</span>
-            <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
+            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.dailyStreak}</span>
+            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
               {progress.streakDays} {t.days}
             </span>
           </div>
         </div>
 
         {/* Lessons Completed */}
-        <div className="rounded-3xl p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-            <BookOpen className="w-6 h-6" />
+        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">{t.lessonsDone}</span>
-            <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
+            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.lessonsDone}</span>
+            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
               {completedCount} / {totalLessons}
             </span>
           </div>
         </div>
 
         {/* XP Points */}
-        <div className="rounded-3xl p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-teal-500/15 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
-            <Award className="w-6 h-6" />
+        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-teal-500/15 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold shrink-0">
+            <Award className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">{t.knowledgeXP}</span>
-            <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
+            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.knowledgeXP}</span>
+            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
               {progress.xpPoints} {isBangla ? "এক্সপি" : "XP"}
             </span>
           </div>
         </div>
 
         {/* Practice Time */}
-        <div className="rounded-3xl p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
-            <Clock className="w-6 h-6" />
+        <div className="rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold shrink-0">
+            <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <span className="text-xs font-medium text-sand-500 block">{t.timeInvested}</span>
-            <span className="text-2xl font-extrabold text-sand-950 dark:text-sand-50">
+            <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">{t.timeInvested}</span>
+            <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
               {progress.totalMinutesPracticed} {isBangla ? "মিনিট" : "Mins"}
             </span>
           </div>
@@ -139,12 +139,12 @@ export default function ProgressPage() {
       </div>
 
       {/* Level-by-Level Breakdown */}
-      <div className="rounded-3xl p-6 sm:p-8 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card space-y-6">
-        <h2 className="text-xl font-bold text-sand-950 dark:text-sand-50">
+      <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card space-y-5 sm:space-y-6">
+        <h2 className="text-lg sm:text-xl font-bold text-sand-950 dark:text-sand-50">
           {t.breakdownTitle}
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {LEARNING_LEVELS.map((level) => {
             const completedInLevel = progress.completedLessons.filter((id) =>
               id.startsWith(`l${level.number}-`)
@@ -155,15 +155,15 @@ export default function ProgressPage() {
             return (
               <div
                 key={level.id}
-                className="p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-850 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-850 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-800 text-gold-300 flex items-center justify-center font-bold text-sm shrink-0">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-800 text-gold-300 flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">
                     {String(level.number).padStart(2, "0")}
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-bold text-sand-900 dark:text-sand-100">
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      <h3 className="text-xs sm:text-sm font-bold text-sand-900 dark:text-sand-100">
                         {isBangla ? level.titleBangla || level.title : level.title}
                       </h3>
                       {level.difficulty && (
@@ -172,14 +172,14 @@ export default function ProgressPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-sand-500">
+                    <p className="text-[11px] sm:text-xs text-sand-500 mt-0.5">
                       {completedInLevel} / {level.lessonsCount} {isBangla ? "টি পাঠ সম্পন্ন" : "lessons completed"}
                     </p>
                   </div>
                 </div>
 
                 <div className="w-full sm:w-64 space-y-1">
-                  <div className="flex justify-between text-xs text-sand-500">
+                  <div className="flex justify-between text-[11px] sm:text-xs text-sand-500">
                     <span>{t.mastery}</span>
                     <span>{levelPct}%</span>
                   </div>
@@ -191,16 +191,18 @@ export default function ProgressPage() {
                   </div>
                 </div>
 
-                <div className="text-xs text-sand-500 flex items-center gap-2 shrink-0">
-                  <span>{t.quizScore}</span>
-                  <span className="font-bold text-sand-900 dark:text-sand-100">
-                    {quizScore !== null ? `${quizScore}%` : t.notAttempted}
-                  </span>
+                <div className="w-full sm:w-auto text-xs text-sand-500 flex items-center justify-between sm:justify-start gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-sand-200 dark:border-night-800">
+                  <div className="flex items-center gap-1">
+                    <span>{t.quizScore}:</span>
+                    <span className="font-bold text-sand-900 dark:text-sand-100">
+                      {quizScore !== null ? `${quizScore}%` : t.notAttempted}
+                    </span>
+                  </div>
                   <Link
                     href={`/quiz/q${level.number}`}
-                    className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
+                    className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline px-2 py-1 rounded-lg bg-emerald-500/10 min-h-[32px] flex items-center"
                   >
-                    {isBangla ? "কুইজ" : "Quiz"}
+                    {isBangla ? "কুইজ দিন" : "Quiz"}
                   </Link>
                 </div>
               </div>
@@ -210,7 +212,7 @@ export default function ProgressPage() {
       </div>
 
       {/* Mastered Letters Gallery */}
-      <div className="rounded-3xl p-6 sm:p-8 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card space-y-4">
+      <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-sand-950 dark:text-sand-50">

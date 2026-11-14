@@ -58,7 +58,9 @@ export function PWAInstallModal() {
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg sm:text-xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
-                {isBangla ? "কুরআনপাঠ অ্যাপ ইনস্টল করুন" : "Install QuranPath App"}
+                {isBangla
+                  ? "কুরআনপাঠ অ্যাপ ইনস্টল করুন"
+                  : "Install QuranPath App"}
               </h3>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
                 PWA
@@ -77,7 +79,9 @@ export function PWAInstallModal() {
           <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-800/15 to-teal-800/15 border border-emerald-600/30 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
-                {isBangla ? "এক ক্লিকে সরাসরি ইনস্টল" : "One-Click Quick Install"}
+                {isBangla
+                  ? "এক ক্লিকে সরাসরি ইনস্টল"
+                  : "One-Click Quick Install"}
               </span>
               <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">
                 {isBangla ? "ব্রাউজার সমর্থিত" : "Browser Ready"}
@@ -90,7 +94,9 @@ export function PWAInstallModal() {
             >
               <Download className="w-4 h-4 text-gold-300 animate-bounce-short" />
               <span>
-                {isBangla ? "ডিভাইসে অ্যাপ ইনস্টল করুন" : "Install App to Device"}
+                {isBangla
+                  ? "ডিভাইসে অ্যাপ ইনস্টল করুন"
+                  : "Install App to Device"}
               </span>
             </button>
           </div>
@@ -105,7 +111,7 @@ export function PWAInstallModal() {
               "py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all",
               activeTab === "desktop"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800",
             )}
           >
             <Laptop className="w-3.5 h-3.5" />
@@ -118,7 +124,7 @@ export function PWAInstallModal() {
               "py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all",
               activeTab === "android"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800",
             )}
           >
             <Smartphone className="w-3.5 h-3.5" />
@@ -131,11 +137,11 @@ export function PWAInstallModal() {
               "py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all",
               activeTab === "ios"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-800",
             )}
           >
             <Share className="w-3.5 h-3.5" />
-            <span>{isBangla ? "আইফোন / সাফারি" : "iPhone / iOS"}</span>
+            <span>{isBangla ? "আইফোন" : "iPhone/ iOS"}</span>
           </button>
         </div>
 
@@ -230,7 +236,9 @@ export function PWAInstallModal() {
               </div>
               <div>
                 <strong className="block text-sand-900 dark:text-sand-100 font-semibold mb-0.5">
-                  {isBangla ? "১. সাফারির শেয়ার বাটনে চাপ দিন" : "1. Tap the Share button"}
+                  {isBangla
+                    ? "১. সাফারির শেয়ার বাটনে চাপ দিন"
+                    : "1. Tap the Share button"}
                 </strong>
                 <span>
                   {isBangla
@@ -268,19 +276,29 @@ export function PWAInstallModal() {
           <div className="grid grid-cols-2 gap-2 text-[11px] text-sand-700 dark:text-sand-300">
             <div className="flex items-center gap-1.5">
               <WifiOff className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>{isBangla ? "১০০% অফলাইনে চলবে" : "100% Offline Ready"}</span>
+              <span>
+                {isBangla ? "১০০% অফলাইনে চলবে" : "100% Offline Ready"}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>{isBangla ? "ফুলস্ক্রিন অ্যাপ লুক" : "Fullscreen App Window"}</span>
+              <span>
+                {isBangla ? "ফুলস্ক্রিন অ্যাপ লুক" : "Fullscreen App Window"}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>{isBangla ? "সহজ এক-ক্লিক এক্সেস" : "Instant Home Screen Access"}</span>
+              <span>
+                {isBangla
+                  ? "সহজ এক-ক্লিক এক্সেস"
+                  : "Instant Home Screen Access"}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>{isBangla ? "লোকাল ডাটা সুরক্ষা" : "Private Local Storage"}</span>
+              <span>
+                {isBangla ? "লোকাল ডাটা সুরক্ষা" : "Private Local Storage"}
+              </span>
             </div>
           </div>
         </div>

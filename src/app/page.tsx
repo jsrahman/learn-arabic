@@ -84,17 +84,17 @@ export default function HomePage() {
 
         <div className="relative text-center max-w-3xl mx-auto space-y-6">
           {/* Spiritual Opening Ribbon */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sand-200/80 dark:bg-night-850/80 border border-gold-500/30 text-sand-800 dark:text-gold-300 text-xs font-medium shadow-subtle backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-sand-200/80 dark:bg-night-850/80 border border-gold-500/30 text-sand-800 dark:text-gold-300 text-xs font-medium shadow-subtle backdrop-blur-sm max-w-full">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
             <span className="font-arabic text-sm text-gold-600 dark:text-gold-400" dir="rtl">
               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </span>
-            <span className="text-sand-400 dark:text-sand-600">•</span>
+            <span className="text-sand-400 dark:text-sand-600 hidden sm:inline">•</span>
             <span>{t.spiritualRibbon}</span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight leading-[1.15]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight leading-[1.18]">
             {t.headlineStart}{" "}
             <span className="bg-gradient-to-r from-emerald-800 via-emerald-600 to-teal-700 dark:from-emerald-400 dark:via-teal-300 dark:to-gold-300 bg-clip-text text-transparent">
               {t.headlineHighlight}
@@ -148,23 +148,23 @@ export default function HomePage() {
       {/* INTERACTIVE ALPHABET PLAYGROUND SPOTLIGHT                 */}
       {/* ======================================================== */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl p-6 sm:p-10 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+        <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                 {t.playgroundTag}
               </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
+              <h2 className="text-xl sm:text-3xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
                 {t.playgroundTitle}
               </h2>
-              <p className="text-sm text-sand-600 dark:text-sand-400 mt-1">
+              <p className="text-xs sm:text-sm text-sand-600 dark:text-sand-400 mt-1">
                 {t.playgroundSubtitle}
               </p>
             </div>
 
             <Link
               href="/practice"
-              className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sand-200/60 dark:bg-night-800 border border-sand-300 dark:border-night-700"
+              className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sand-200/60 dark:bg-night-800 border border-sand-300 dark:border-night-700 min-h-[40px]"
             >
               <span>{t.openFullGrid}</span>
               <ArrowRight className="w-4 h-4" />
@@ -172,10 +172,10 @@ export default function HomePage() {
           </div>
 
           {/* Active Letter Feature Card */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-sand-50 dark:bg-night-950 rounded-2xl p-6 sm:p-8 border border-sand-200/80 dark:border-night-850 shadow-inner">
-            <div className="md:col-span-4 flex flex-col items-center justify-center text-center p-4">
-              <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-emerald-800 to-teal-900 border border-gold-500/30 flex items-center justify-center shadow-lg mb-4">
-                <span className="font-arabic text-7xl text-gold-300 select-none">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center bg-sand-50 dark:bg-night-950 rounded-2xl p-4 sm:p-8 border border-sand-200/80 dark:border-night-850 shadow-inner">
+            <div className="md:col-span-4 flex flex-col items-center justify-center text-center p-2 sm:p-4">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-emerald-800 to-teal-900 border border-gold-500/30 flex items-center justify-center shadow-lg mb-3 sm:mb-4">
+                <span className="font-arabic text-6xl sm:text-7xl text-gold-300 select-none">
                   {selectedLetter.arabic}
                 </span>
               </div>
@@ -301,21 +301,21 @@ export default function HomePage() {
         </div>
 
         {/* 2026 Trend: Bento Hero Spotlight — Active Stage Card */}
-        <div className="relative rounded-3xl p-6 sm:p-10 bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-sand-50 border border-gold-500/30 shadow-2xl overflow-hidden group">
+        <div className="relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-sand-50 border border-gold-500/30 shadow-2xl overflow-hidden group">
           {/* Atmospheric background glow */}
           <div className="absolute -top-20 -right-20 w-80 h-80 bg-gold-500/15 rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
           <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Kinetic Calligraphy Watermark */}
           <div
-            className="font-arabic text-8xl sm:text-9xl absolute -right-6 -bottom-6 text-gold-300/[0.06] pointer-events-none select-none group-hover:scale-105 transition-transform duration-700"
+            className="font-arabic text-7xl sm:text-9xl absolute -right-6 -bottom-6 text-gold-300/[0.06] pointer-events-none select-none group-hover:scale-105 transition-transform duration-700"
             dir="rtl"
             aria-hidden="true"
           >
             {activeLevel.titleArabic}
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
             {/* Left Content */}
             <div className="lg:col-span-8 space-y-4">
               <div className="flex flex-wrap items-center gap-2">
@@ -329,13 +329,13 @@ export default function HomePage() {
               </div>
 
               <div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-gold-100 tracking-tight flex flex-wrap items-baseline gap-3">
+                <h3 className="text-xl sm:text-3xl font-extrabold text-gold-100 tracking-tight flex flex-wrap items-baseline gap-2 sm:gap-3">
                   <span>{t.levelOf} {activeLevel.number}: {isBangla ? activeLevel.titleBangla || activeLevel.title : activeLevel.title}</span>
-                  <span className="font-arabic text-xl sm:text-2xl font-normal text-gold-300/80" dir="rtl">
+                  <span className="font-arabic text-lg sm:text-2xl font-normal text-gold-300/80" dir="rtl">
                     {activeLevel.titleArabic}
                   </span>
                 </h3>
-                <p className="text-sm text-sand-200/90 mt-1 font-medium">
+                <p className="text-xs sm:text-sm text-sand-200/90 mt-1 font-medium">
                   {isBangla ? activeLevel.subtitleBangla : activeLevel.subtitle}
                 </p>
                 <p className="text-xs sm:text-sm text-sand-300/80 mt-2 leading-relaxed max-w-2xl">
@@ -345,7 +345,7 @@ export default function HomePage() {
 
               {/* Goal Chip */}
               {(isBangla ? activeLevel.objectivesBangla?.[0] : activeLevel.objectives?.[0]) && (
-                <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-900/60 border border-emerald-700/60 text-xs text-sand-200">
+                <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-emerald-900/60 border border-emerald-700/60 text-xs text-sand-200">
                   <Target className="w-4 h-4 text-gold-400 shrink-0" />
                   <span>
                     <strong className="text-gold-200 mr-1">{t.stageGoal}</strong>
@@ -358,7 +358,7 @@ export default function HomePage() {
               <div className="pt-2">
                 <Link
                   href={`/learn/l${activeLevel.number}-1`}
-                  className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-night-950 font-extrabold text-sm shadow-lg shadow-gold-500/20 transition-all duration-200 active:scale-95 group/btn"
+                  className="w-full sm:w-auto justify-center inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-400 hover:to-amber-400 text-night-950 font-extrabold text-sm shadow-lg shadow-gold-500/20 transition-all duration-200 active:scale-95 group/btn min-h-[44px]"
                 >
                   <Play className="w-4 h-4 fill-current" />
                   <span>

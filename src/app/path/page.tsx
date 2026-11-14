@@ -148,7 +148,7 @@ export default function LearningPathPage() {
               key={level.id}
               id={`level-${level.number}`}
               className={cn(
-                "relative rounded-3xl p-6 sm:p-8 border transition-all duration-300 backdrop-blur-md overflow-hidden",
+                "relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border transition-all duration-300 backdrop-blur-md overflow-hidden",
                 "before:absolute before:inset-x-0 before:top-0 before:h-px before:transition-opacity before:duration-300",
                 isUnlocked
                   ? "bg-sand-50/95 dark:bg-night-900/90 border-sand-300/80 dark:border-night-750/70 shadow-card hover:shadow-card-hover before:bg-gradient-to-r before:from-transparent before:via-emerald-500/40 dark:before:via-gold-400/30 before:to-transparent"
@@ -161,27 +161,27 @@ export default function LearningPathPage() {
               )}
 
               {/* Level Banner */}
-              <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-6 border-b border-sand-200/80 dark:border-night-800/80">
-                <div className="flex items-center gap-4">
+              <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-5 sm:mb-6 pb-5 sm:pb-6 border-b border-sand-200/80 dark:border-night-800/80">
+                <div className="flex items-start sm:items-center gap-3 sm:gap-4">
                   <div
                     className={cn(
-                      "w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-xl border shadow-md shrink-0 transition-transform duration-300",
+                      "w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold text-lg sm:text-xl border shadow-md shrink-0 transition-transform duration-300",
                       isFinished
                         ? "bg-gradient-to-br from-emerald-600 to-teal-700 text-gold-100 border-emerald-400/50"
                         : isUnlocked
-                        ? "bg-gradient-to-br from-emerald-850 via-emerald-800 to-teal-900 text-gold-300 border-gold-500/30"
+                        ? "bg-gradient-to-br from-emerald-855 via-emerald-800 to-teal-900 text-gold-300 border-gold-500/30"
                         : "bg-sand-200/70 dark:bg-night-850/70 text-sand-500 dark:text-sand-600 border-sand-300/60"
                     )}
                   >
                     {isFinished ? (
-                      <CheckCircle2 className="w-8 h-8 text-gold-200" />
+                      <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-gold-200" />
                     ) : (
                       <span className="font-mono">{String(level.number).padStart(2, "0")}</span>
                     )}
                   </div>
 
                   <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
                       <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
                         {isBangla ? `লেভেল ${level.number}` : `Level ${level.number}`}
                       </span>
@@ -219,7 +219,7 @@ export default function LearningPathPage() {
                         </span>
                       )}
                     </div>
-                    <h2 className="text-2xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
                       {isBangla ? level.titleBangla || level.title : level.title}
                     </h2>
                     <p className="text-xs sm:text-sm font-semibold text-emerald-800 dark:text-emerald-300/90">
@@ -228,11 +228,11 @@ export default function LearningPathPage() {
                   </div>
                 </div>
 
-                <div className="text-right flex flex-col md:items-end w-full md:w-auto" dir="rtl">
-                  <span className="font-arabic text-3xl sm:text-4xl text-emerald-900/50 dark:text-gold-300/40 select-none" dir="rtl">
+                <div className="text-left sm:text-right flex flex-row sm:flex-col items-center sm:items-end justify-between w-full md:w-auto" dir="rtl">
+                  <span className="font-arabic text-2xl sm:text-4xl text-emerald-900/50 dark:text-gold-300/40 select-none" dir="rtl">
                     {level.titleArabic}
                   </span>
-                  <div className="flex items-center gap-2 text-xs text-sand-500 mt-1 font-mono">
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-sand-500 mt-1 font-mono">
                     <span>~{level.estimatedMinutes} {t.mins}</span>
                     <span>•</span>
                     <span>{level.lessonsCount} {isBangla ? "টি পাঠ" : "lessons"}</span>

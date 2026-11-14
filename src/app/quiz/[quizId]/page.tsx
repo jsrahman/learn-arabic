@@ -147,26 +147,24 @@ export default function QuizArenaPage() {
           </div>
 
           {/* Score Pill */}
-          <div className="p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800 flex items-center justify-around">
-            <div>
-              <div className="text-xs text-sand-500">{t.yourScore}</div>
-              <div className="text-2xl font-bold text-emerald-950 dark:text-sand-50">
+          <div className="p-3 sm:p-4 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800 grid grid-cols-3 divide-x divide-sand-200 dark:divide-night-800 text-center">
+            <div className="px-1">
+              <div className="text-[11px] sm:text-xs text-sand-500">{t.yourScore}</div>
+              <div className="text-xl sm:text-2xl font-bold text-emerald-950 dark:text-sand-50 mt-0.5">
                 {finalPercent}%
               </div>
             </div>
-            <div className="h-8 w-px bg-sand-300 dark:bg-night-800" />
-            <div>
-              <div className="text-xs text-sand-500">{t.accuracy}</div>
-              <div className="text-2xl font-bold text-emerald-600">
-                {correctCount} / {totalQuestions}
+            <div className="px-1">
+              <div className="text-[11px] sm:text-xs text-sand-500">{t.accuracy}</div>
+              <div className="text-xl sm:text-2xl font-bold text-emerald-600 mt-0.5">
+                {correctCount}/{totalQuestions}
               </div>
             </div>
-            <div className="h-8 w-px bg-sand-300 dark:bg-night-800" />
-            <div>
-              <div className="text-xs text-sand-500">{t.status}</div>
+            <div className="px-1">
+              <div className="text-[11px] sm:text-xs text-sand-500">{t.status}</div>
               <div
                 className={cn(
-                  "text-sm font-bold mt-1",
+                  "text-xs sm:text-sm font-bold mt-1",
                   passed ? "text-emerald-600" : "text-amber-600"
                 )}
               >
@@ -306,7 +304,7 @@ export default function QuizArenaPage() {
       </div>
 
       {/* Main Question Card */}
-      <div className="rounded-3xl p-6 sm:p-10 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-6">
+      <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-5 sm:space-y-6">
         {/* Question Title */}
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-1">
@@ -314,14 +312,14 @@ export default function QuizArenaPage() {
               Q{currentIndex + 1} {t.of} {totalQuestions}
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
+          <h2 className="text-lg sm:text-2xl font-bold text-sand-950 dark:text-sand-50 tracking-tight leading-snug">
             {isBangla ? question.questionBangla || question.question : question.question}
           </h2>
         </div>
 
         {/* Optional Arabic Display Box or Audio Trigger */}
         {(question.promptText || question.audioPrompt) && (
-          <div className="p-8 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200/80 dark:border-night-850 shadow-inner flex flex-col items-center justify-center gap-4 text-center">
+          <div className="p-4 sm:p-8 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200/80 dark:border-night-850 shadow-inner flex flex-col items-center justify-center gap-3 sm:gap-4 text-center">
             {question.promptText && (
               <span
                 className={cn(
@@ -347,7 +345,7 @@ export default function QuizArenaPage() {
         )}
 
         {/* Answer Options */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 pt-1">
           {question.options.map((opt, idx) => {
             const isSelected = currentResult?.selectedIndex === idx;
             const isCorrect = idx === question.correctIndex;
@@ -372,15 +370,15 @@ export default function QuizArenaPage() {
                 onClick={() => handleSelectOption(idx)}
                 disabled={isAnswered}
                 className={cn(
-                  "p-4 rounded-2xl text-sm font-semibold text-left border flex items-center justify-between gap-3 transition-all duration-150 active:scale-[0.98]",
+                  "p-3.5 sm:p-4 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold text-left border flex items-center justify-between gap-2.5 sm:gap-3 transition-all duration-150 active:scale-[0.98] min-h-[48px]",
                   buttonClass
                 )}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 sm:gap-3">
                   <span className="w-6 h-6 rounded-lg bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 text-xs flex items-center justify-center shrink-0 font-bold font-mono">
                     {isBangla ? ["ক", "খ", "গ", "ঘ"][idx] || String(idx + 1) : String.fromCharCode(65 + idx)}
                   </span>
-                  <span dir="auto">{opt}</span>
+                  <span dir="auto" className="leading-snug">{opt}</span>
                 </div>
                 {isAnswered && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />}
                 {isAnswered && isSelected && !isCorrect && (
@@ -393,7 +391,7 @@ export default function QuizArenaPage() {
 
         {/* Feedback / Explanation Box */}
         {isAnswered && (
-          <div className="p-4 rounded-2xl bg-sand-50/90 dark:bg-night-950/90 border border-sand-200 dark:border-night-800 space-y-2 animate-fade-in">
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-sand-50/90 dark:bg-night-950/90 border border-sand-200 dark:border-night-800 space-y-1.5 sm:space-y-2 animate-fade-in">
             <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
               <Sparkles className="w-4 h-4 text-emerald-600" />
               <span>{t.explanationRule}</span>
@@ -406,14 +404,14 @@ export default function QuizArenaPage() {
 
         {/* Footer Next Button */}
         {isAnswered && (
-          <div className="pt-4 flex items-center justify-between">
-            <span className="text-xs text-sand-500">
+          <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-sand-500 order-2 sm:order-1">
               {currentIndex + 1} {t.of} {totalQuestions} {t.answered}
             </span>
             <button
               type="button"
               onClick={handleNextQuestion}
-              className="px-7 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center gap-2 shadow-md transition-all active:scale-95"
+              className="w-full sm:w-auto px-7 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-gold-200 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 order-1 sm:order-2 min-h-[44px]"
             >
               <span>{currentIndex < totalQuestions - 1 ? t.nextQuestion : t.completeViewScore}</span>
               <ArrowRight className="w-4 h-4" />

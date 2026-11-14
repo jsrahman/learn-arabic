@@ -147,27 +147,27 @@ export default function LessonViewerPage() {
       </div>
 
       {/* Slide Card Container */}
-      <div className="rounded-3xl p-6 sm:p-10 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-8">
+      <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-6 sm:space-y-8">
         {/* Slide Title & Badge */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
               {isBangla ? slide.titleBangla || slide.title : slide.title}
             </h1>
-            <p className="text-sm text-emerald-800 dark:text-emerald-300 mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-emerald-800 dark:text-emerald-300 mt-1 font-medium">
               {isBangla ? lesson.titleBangla || lesson.title : lesson.title}
             </p>
           </div>
 
           {slide.ruleBadge && (
-            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-gold-500/15 text-gold-700 dark:text-gold-300 border border-gold-500/25">
+            <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-gold-500/15 text-gold-700 dark:text-gold-300 border border-gold-500/25 shrink-0">
               {getRuleBadgeLabel(slide.ruleBadge)}
             </span>
           )}
         </div>
 
         {/* Hero Arabic Typography Focus Box */}
-        <div className="flex flex-col items-center justify-center p-8 sm:p-12 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200/80 dark:border-night-850 shadow-inner text-center">
+        <div className="flex flex-col items-center justify-center p-5 sm:p-8 md:p-12 rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200/80 dark:border-night-850 shadow-inner text-center">
           <div className="my-2 select-none">
             <span
               className={cn(
@@ -181,13 +181,13 @@ export default function LessonViewerPage() {
           </div>
 
           {preferences.showTransliteration && slide.transliteration && (
-            <p className="text-base font-mono font-semibold text-emerald-700 dark:text-emerald-400 mt-3">
+            <p className="text-sm sm:text-base font-mono font-semibold text-emerald-700 dark:text-emerald-400 mt-2 sm:mt-3">
               {slide.transliteration}
             </p>
           )}
 
           {/* Audio Replay Button */}
-          <div className="mt-5">
+          <div className="mt-4 sm:mt-5">
             <AudioButton
               audioUrl={slideAudioUrl}
               arabicText={slide.audioPrompt || slide.arabic}
@@ -200,8 +200,8 @@ export default function LessonViewerPage() {
 
         {/* Lesson Explanation */}
         <div className="space-y-4">
-          <div className="p-4 rounded-xl bg-sand-50/80 dark:bg-night-950/80 border border-sand-200 dark:border-night-800 space-y-2">
-            <p className="text-sm sm:text-base text-sand-800 dark:text-sand-200 leading-relaxed">
+          <div className="p-3.5 sm:p-4 rounded-xl bg-sand-50/80 dark:bg-night-950/80 border border-sand-200 dark:border-night-800 space-y-2">
+            <p className="text-xs sm:text-base text-sand-800 dark:text-sand-200 leading-relaxed">
               {isBangla ? slide.explanationBangla || slide.explanation : slide.explanation}
             </p>
 
@@ -310,13 +310,13 @@ export default function LessonViewerPage() {
         )}
 
         {/* Navigation Footer */}
-        <div className="flex items-center justify-between pt-6 border-t border-sand-200 dark:border-night-800">
+        <div className="flex items-center justify-between pt-5 sm:pt-6 border-t border-sand-200 dark:border-night-800 gap-2">
           <button
             type="button"
             onClick={handlePrevSlide}
             disabled={currentSlideIndex === 0}
             className={cn(
-              "px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 border transition-all",
+              "px-4 sm:px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 sm:gap-2 border transition-all min-h-[44px]",
               currentSlideIndex === 0
                 ? "opacity-40 cursor-not-allowed border-sand-300"
                 : "bg-sand-50 dark:bg-night-950 text-sand-700 dark:text-sand-200 border-sand-300 dark:border-night-700 hover:bg-sand-200 dark:hover:bg-night-800"
@@ -329,7 +329,7 @@ export default function LessonViewerPage() {
           <button
             type="button"
             onClick={handleNextSlide}
-            className="px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 bg-emerald-800 hover:bg-emerald-700 text-gold-200 shadow-md transition-all active:scale-95"
+            className="px-5 sm:px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 sm:gap-2 bg-emerald-800 hover:bg-emerald-700 text-gold-200 shadow-md transition-all active:scale-95 min-h-[44px]"
           >
             <span>
               {isLastSlide

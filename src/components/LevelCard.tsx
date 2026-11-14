@@ -31,7 +31,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
   return (
     <div
       className={cn(
-        "relative rounded-2xl p-5 sm:p-6 border transition-all duration-200 flex flex-col justify-between overflow-hidden group",
+        "relative rounded-2xl p-4 sm:p-6 border transition-all duration-200 flex flex-col justify-between overflow-hidden group",
         "before:absolute before:inset-x-0 before:top-0 before:h-[1.5px] before:transition-opacity before:duration-300",
         isUnlocked
           ? "bg-sand-50 dark:bg-[#0c1d24] border-sand-300/90 dark:border-white/10 hover:border-emerald-600/60 dark:hover:border-gold-500/50 shadow-sm hover:shadow-xl hover:-translate-y-1 before:bg-gradient-to-r before:from-transparent before:via-emerald-500/50 dark:before:via-gold-400/50 before:to-transparent"
