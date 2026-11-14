@@ -191,7 +191,9 @@ export default function HomePage() {
             <div className="md:col-span-8 space-y-4">
               <div className="flex flex-wrap items-baseline gap-3">
                 <h3 className="text-2xl font-bold text-sand-900 dark:text-sand-100">
-                  {selectedLetter.name} ({selectedLetter.nameBangla})
+                  {isBangla
+                    ? `${selectedLetter.nameBangla} (${selectedLetter.arabic})`
+                    : `${selectedLetter.name} (${selectedLetter.nameBangla})`}
                 </h3>
                 <span className="text-sm font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
                   {t.sound}: {selectedLetter.transliteration}

@@ -378,7 +378,7 @@ export default function QuizArenaPage() {
               >
                 <div className="flex items-center gap-3">
                   <span className="w-6 h-6 rounded-lg bg-sand-200 dark:bg-night-800 text-sand-700 dark:text-sand-300 text-xs flex items-center justify-center shrink-0 font-bold font-mono">
-                    {String.fromCharCode(65 + idx)}
+                    {isBangla ? ["ক", "খ", "গ", "ঘ"][idx] || String(idx + 1) : String.fromCharCode(65 + idx)}
                   </span>
                   <span dir="auto">{opt}</span>
                 </div>

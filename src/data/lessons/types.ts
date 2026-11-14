@@ -13,9 +13,12 @@ export interface LessonSlide {
   formExamples?: { label: string; text: string; translit: string }[];
   checkQuestion?: {
     question: string;
+    questionBangla?: string;
     options: string[];
+    optionsBangla?: string[];
     correctIndex: number;
     explanation: string;
+    explanationBangla?: string;
   };
 }
 

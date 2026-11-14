@@ -26,9 +26,12 @@ export const tier1Lessons: Record<string, Lesson> = {
         makhrajInfo: "Al-Jawf: Open space of mouth and throat.",
         checkQuestion: {
           question: "Does Alif connect to the letter on its left?",
+          questionBangla: "আলিফ কি তার বামের হরফের সাথে জোড়া লাগে?",
           options: ["No, it never connects to the left", "Yes, always", "Only with Baa", "Only with Fathah"],
+          optionsBangla: ["না, এটি বামে কখনো জোড়া লাগে না", "হ্যাঁ, সবসময়", "শুধু বা-এর সাথে", "শুধু যবরের সাথে"],
           correctIndex: 0,
           explanation: "Alif is one of the 6 non-connecting letters.",
+          explanationBangla: "আলিফ বামে সংযোগহীন ৬টি হরফের অন্যতম।",
         },
       },
       {

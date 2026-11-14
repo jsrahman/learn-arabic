@@ -51,6 +51,31 @@ export default function LessonViewerPage() {
   );
   const slideAudioUrl = slide.audioUrl || matchedLetter?.audioUrl;
 
+  const getRuleBadgeLabel = (badge?: string) => {
+    if (!badge) return "";
+    if (!isBangla) return badge;
+    const map: Record<string, string> = {
+      "Imālah Kubrā": "ইমালাহ কুবরা",
+      "Tashīl": "তাসহীল",
+      "Madd al-Farq": "মাদ্দে ফারক্ব",
+      "Ishmām": "ইশমাম",
+      "Ikhtilās": "ইখতিলাস",
+      "Rawm al-Waqf": "রউম আল-ওয়াকফ",
+      "Naql": "নাক্বল",
+      "Sīn Inscription": "সীন অঙ্কন",
+      "Ṣād Inscription": "সোয়াদ অঙ্কন",
+      "Saktah": "সাকতাহ",
+      "7 Alifs": "৭টি আলিফ",
+      "Tafkheem/Tarqeeq": "তাফখীম / তারক্বীক্ব",
+      "Mastery Integration": "মাস্টারি অনুশীলন",
+      "Waqf Science": "ওয়াকফ বিজ্ঞান",
+      "Sajdah Tilāwah": "সিজদায়ে তিলাওয়াত",
+      "Khatm Sunnah": "খতমের সুন্নাহ",
+      "Al-Ḥall wal-Murtaḥal": "আল-হাল্লু ওয়াল মুরতাহাল",
+    };
+    return map[badge] || badge;
+  };
+
   const handleNextSlide = () => {
     setSelectedAnswer(null);
     if (!isLastSlide) {
@@ -136,7 +161,7 @@ export default function LessonViewerPage() {
 
           {slide.ruleBadge && (
             <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-gold-500/15 text-gold-700 dark:text-gold-300 border border-gold-500/25">
-              {slide.ruleBadge}
+              {getRuleBadgeLabel(slide.ruleBadge)}
             </span>
           )}
         </div>
@@ -180,12 +205,12 @@ export default function LessonViewerPage() {
               {isBangla ? slide.explanationBangla || slide.explanation : slide.explanation}
             </p>
 
-            {slide.makhrajInfo && (
+            {(slide.makhrajInfo || (isBangla && matchedLetter?.makhrajBangla)) && (
               <div className="pt-2 border-t border-sand-200 dark:border-night-800 text-xs text-sand-600 dark:text-sand-400">
                 <span className="font-bold text-emerald-700 dark:text-emerald-400">
                   {isBangla ? "মাখরাজ: " : "Makhraj: "}
                 </span>
-                {slide.makhrajInfo}
+                {isBangla ? matchedLetter?.makhrajBangla || slide.makhrajInfo : slide.makhrajInfo}
               </div>
             )}
           </div>
@@ -203,7 +228,17 @@ export default function LessonViewerPage() {
                     className="p-3 rounded-xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-800 text-center space-y-1"
                   >
                     <span className="text-[10px] text-sand-500 font-medium block">
-                      {ex.label}
+                      {isBangla
+                        ? ex.label === "Initial"
+                          ? "শুরুর রূপ"
+                          : ex.label === "Medial"
+                          ? "মাঝের রূপ"
+                          : ex.label === "Final"
+                          ? "শেষের রূপ"
+                          : ex.label === "Isolated"
+                          ? "একক রূপ"
+                          : ex.label
+                        : ex.label}
                     </span>
                     <span className="font-arabic text-2xl font-bold text-emerald-950 dark:text-gold-200 block" dir="rtl">
                       {ex.text}
@@ -226,11 +261,16 @@ export default function LessonViewerPage() {
               <span>{isBangla ? "যাচাইমূলক প্রশ্ন" : "Checkpoint Question"}</span>
             </div>
             <p className="text-sm font-semibold text-sand-900 dark:text-sand-100">
-              {slide.checkQuestion.question}
+              {isBangla && slide.checkQuestion.questionBangla
+                ? slide.checkQuestion.questionBangla
+                : slide.checkQuestion.question}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-              {slide.checkQuestion.options.map((opt, idx) => {
+              {(isBangla && slide.checkQuestion.optionsBangla
+                ? slide.checkQuestion.optionsBangla
+                : slide.checkQuestion.options
+              ).map((opt, idx) => {
                 const isSelected = selectedAnswer === idx;
                 const isCorrect = idx === slide.checkQuestion?.correctIndex;
 
@@ -261,7 +301,9 @@ export default function LessonViewerPage() {
 
             {selectedAnswer !== null && (
               <p className="text-xs text-sand-600 dark:text-sand-400 italic pt-1">
-                {slide.checkQuestion.explanation}
+                {isBangla && slide.checkQuestion.explanationBangla
+                  ? slide.checkQuestion.explanationBangla
+                  : slide.checkQuestion.explanation}
               </p>
             )}
           </div>
