@@ -2,12 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Download, Smartphone } from "lucide-react";
 import { useThemeContext } from "@/components/ThemeWrapper";
+import { usePWA } from "@/components/PWAProvider";
+import { OfflineStatusIndicator } from "@/components/OfflineStatusIndicator";
 import { translations } from "@/lib/translations";
 
 export const Footer = () => {
   const { preferences } = useThemeContext();
+  const { isInstallable, promptInstall } = usePWA();
   const isBangla = preferences.explanationLanguage === "bn";
   const t = translations[isBangla ? "bn" : "en"].footer;
 
@@ -112,6 +115,42 @@ export const Footer = () => {
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* PWA App Install & Offline Storage Control Bar */}
+        <div className="mb-10 p-5 rounded-2xl bg-sand-200/50 dark:bg-night-850/60 border border-sand-300/80 dark:border-night-750 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-teal-900 text-gold-300 flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+              <span className="font-arabic">ق</span>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-sand-900 dark:text-sand-100">
+                {isBangla ? "কুরআনপাঠ অফলাইন ও অ্যাপ সুবিধা" : "QuranPath App & Offline Access"}
+              </h4>
+              <p className="text-xs text-sand-600 dark:text-sand-400">
+                {isBangla
+                  ? "ইন্টারনেট ছাড়াও সম্পূর্ণ অফলাইনে ১৮টি লেভেল পড়ুন অথবা ডিভাইসে অ্যাপ হিসেবে সেভ করুন।"
+                  : "Access all 18 levels completely offline or install as a standalone app on your device."}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 shrink-0 flex-wrap justify-center">
+            {/* Install App Button */}
+            {isInstallable && (
+              <button
+                type="button"
+                onClick={promptInstall}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-750 hover:to-teal-750 text-gold-200 text-xs font-bold border border-gold-500/30 shadow-sm transition-all active:scale-95"
+              >
+                <Download className="w-4 h-4 text-gold-300 animate-bounce-short" />
+                <span>{isBangla ? "অ্যাপ ইনস্টল করুন" : "Install App"}</span>
+              </button>
+            )}
+
+            {/* Offline Cache Indicator & Manager */}
+            <OfflineStatusIndicator />
           </div>
         </div>
 

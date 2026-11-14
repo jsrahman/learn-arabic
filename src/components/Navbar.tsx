@@ -16,19 +16,14 @@ import {
   X,
   Award,
   Languages,
-  Download,
-  Smartphone,
 } from "lucide-react";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { usePWA } from "@/components/PWAProvider";
-import { OfflineStatusIndicator } from "@/components/OfflineStatusIndicator";
 import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 export const Navbar = () => {
   const pathname = usePathname();
   const { preferences, progress, toggleTheme, updatePreferences } = useThemeContext();
-  const { isInstallable, isInstalled, promptInstall } = usePWA();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isBangla = preferences.explanationLanguage === "bn";
@@ -133,23 +128,6 @@ export const Navbar = () => {
             <span>{progress.xpPoints} {t.nav.xpBadge}</span>
           </div>
 
-          {/* PWA Install Button (Chrome desktop & mobile) */}
-          {isInstallable && (
-            <button
-              type="button"
-              onClick={promptInstall}
-              title={t.pwa.installDesc}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-gold-200 text-xs font-bold border border-gold-500/30 shadow-sm transition-all active:scale-95 animate-fade-in"
-            >
-              <Download className="w-3.5 h-3.5 text-gold-300 animate-bounce-short" />
-              <span className="hidden sm:inline">{t.nav.installApp}</span>
-              <span className="sm:hidden">{isBangla ? "অ্যাপ" : "App"}</span>
-            </button>
-          )}
-
-          {/* 100% Offline Status Indicator */}
-          <OfflineStatusIndicator />
-
           {/* Language Switcher Button (Instant EN <-> বাং Toggle) */}
           <button
             type="button"
@@ -230,26 +208,6 @@ export const Navbar = () => {
             );
           })}
 
-          {/* Mobile Install App Button */}
-          {isInstallable && (
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                promptInstall();
-              }}
-              className="w-full flex items-center justify-center gap-2 p-3 mt-2 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 text-gold-200 text-xs font-bold border border-gold-500/30 shadow-sm"
-            >
-              <Download className="w-4 h-4 text-gold-300" />
-              <span>{t.nav.installAppLong}</span>
-            </button>
-          )}
-
-          {/* Mobile Offline Status & Download */}
-          <div className="pt-2 flex items-center justify-between px-2 text-xs text-sand-600 dark:text-sand-400">
-            <span>{isBangla ? "অফলাইন স্টোরেজ:" : "Offline Storage:"}</span>
-            <OfflineStatusIndicator />
-          </div>
         </div>
       )}
     </header>
