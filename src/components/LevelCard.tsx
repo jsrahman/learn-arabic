@@ -61,7 +61,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
 
           {/* Clean Calligraphic Arabic Title */}
           <span
-            className="font-arabic text-xl sm:text-2xl font-normal text-emerald-900/70 dark:text-gold-300/80 shrink-0 select-none"
+            className="font-arabic text-xl sm:text-2xl font-normal text-emerald-950 dark:text-gold-300 shrink-0 select-none"
             dir="rtl"
           >
             {level.titleArabic}
@@ -127,7 +127,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
           <Link
             href={`/learn/l${level.number}-1`}
             className={cn(
-              "w-full min-h-[44px] py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all duration-150 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-emerald-500",
+              "w-full min-h-[44px] py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-emerald-500",
               isCompleted
                 ? "bg-sand-200/70 hover:bg-sand-300/80 dark:bg-white/5 dark:hover:bg-white/10 text-emerald-950 dark:text-sand-100 border border-sand-300/70 dark:border-white/10"
                 : "bg-emerald-800 hover:bg-emerald-750 text-gold-200 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white shadow-sm"
@@ -151,7 +151,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
             )}
           </Link>
         ) : (
-          <div className="w-full min-h-[44px] py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 bg-sand-200/40 dark:bg-white/[0.04] text-sand-400 dark:text-sand-400 border border-sand-200/60 dark:border-white/5 cursor-not-allowed">
+          <div className="w-full min-h-[44px] py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 bg-sand-200/40 dark:bg-white/[0.04] text-sand-400 dark:text-sand-400 border border-sand-200/60 dark:border-white/5 cursor-not-allowed">
             <Lock className="w-3 h-3 text-sand-400 dark:text-sand-400" />
             <span className="font-medium">
               {isBangla ? `লেভেল ${level.number - 1} শেষ হলে খুলবে` : `Unlocks after Level ${level.number - 1}`}

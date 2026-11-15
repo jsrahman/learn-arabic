@@ -55,7 +55,7 @@ export const HomeCurriculumPreview: React.FC<HomeCurriculumPreviewProps> = ({
               type="button"
               onClick={() => onSelectTier(tf.id)}
               className={cn(
-                "px-4 py-2 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2 border active:scale-95 min-h-[44px]",
+                "px-4 py-2.5 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2 border active:scale-95 min-h-[44px]",
                 isActive
                   ? "bg-emerald-800 text-gold-200 border-gold-500/40 shadow-md ring-2 ring-gold-400/30"
                   : "bg-sand-100 dark:bg-night-900 text-sand-700 dark:text-sand-300 border-sand-300/60 dark:border-night-800 hover:bg-sand-200 dark:hover:bg-night-850"
@@ -100,7 +100,7 @@ export const HomeCurriculumPreview: React.FC<HomeCurriculumPreviewProps> = ({
       <div className="text-center pt-4">
         <Link
           href="/path"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-sand-200/80 hover:bg-sand-300 dark:bg-night-850 dark:hover:bg-night-800 border border-sand-300 dark:border-night-700 text-emerald-950 dark:text-gold-200 font-bold text-xs transition-colors min-h-[44px]"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-sand-200/80 hover:bg-sand-300 dark:bg-night-850 dark:hover:bg-night-800 border border-sand-300 dark:border-night-700 text-emerald-950 dark:text-gold-200 font-bold text-xs transition-colors min-h-[44px]"
         >
           <span>{exploreRoadmapText}</span>
           <ArrowRight className="w-4 h-4 text-emerald-700 dark:text-gold-400" />

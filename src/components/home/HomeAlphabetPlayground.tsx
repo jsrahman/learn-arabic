@@ -115,36 +115,36 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
                   بداية ← وسط ← نهاية
                 </span>
               </div>
-              <div className="grid grid-cols-4 gap-2 text-center" dir="rtl">
-                <div className="p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
-                  <span className="text-[10px] text-sand-500 block mb-1">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-2 text-center" dir="rtl">
+                <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
+                  <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
                     {formBeginning}
                   </span>
-                  <span className="font-arabic text-2xl text-emerald-950 dark:text-gold-200" dir="rtl">
+                  <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.initial}
                   </span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
-                  <span className="text-[10px] text-sand-500 block mb-1">
+                <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
+                  <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
                     {formMiddle}
                   </span>
-                  <span className="font-arabic text-2xl text-emerald-950 dark:text-gold-200" dir="rtl">
+                  <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.medial}
                   </span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
-                  <span className="text-[10px] text-sand-500 block mb-1">
+                <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
+                  <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
                     {formEnding}
                   </span>
-                  <span className="font-arabic text-2xl text-emerald-950 dark:text-gold-200" dir="rtl">
+                  <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.final}
                   </span>
                 </div>
-                <div className="p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
-                  <span className="text-[10px] text-sand-500 block mb-1">
+                <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
+                  <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
                     {formIsolated}
                   </span>
-                  <span className="font-arabic text-2xl text-emerald-950 dark:text-gold-200" dir="rtl">
+                  <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.isolated}
                   </span>
                 </div>

@@ -18,7 +18,7 @@ export const DifficultyBadge: React.FC<DifficultyBadgeProps> = ({
   return (
     <span
       className={cn(
-        "text-[10px] font-semibold px-2 py-0.5 rounded-full border flex items-center gap-1 shrink-0",
+        "text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 sm:py-1 rounded-full border inline-flex items-center gap-1.5 shrink-0 select-none",
         (difficulty === "Foundational" || difficulty === "Fundamental") &&
           "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20",
         difficulty === "Intermediate" &&

@@ -35,9 +35,9 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
 
       <div className="relative text-center max-w-3xl mx-auto space-y-6">
         {/* Spiritual Opening Ribbon */}
-        <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-sand-200/80 dark:bg-night-850/80 border border-gold-500/30 text-sand-800 dark:text-gold-300 text-xs font-medium shadow-subtle backdrop-blur-sm max-w-full">
+        <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 py-2 px-3 sm:px-4 rounded-2xl sm:rounded-full bg-sand-200/80 dark:bg-night-850/80 border border-gold-500/30 text-sand-800 dark:text-gold-300 text-xs font-medium shadow-subtle backdrop-blur-sm max-w-full">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-          <span className="font-arabic text-sm text-gold-600 dark:text-gold-400" dir="rtl">
+          <span className="font-arabic text-base sm:text-lg leading-relaxed text-gold-600 dark:text-gold-400" dir="rtl">
             بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </span>
           <span className="text-sand-400 dark:text-sand-600 hidden sm:inline">•</span>
