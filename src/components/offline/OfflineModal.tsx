@@ -28,7 +28,7 @@ export const OfflineModal: React.FC<OfflineModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="max-w-md w-full rounded-3xl p-6 sm:p-8 bg-sand-50 dark:bg-night-900 border border-sand-300 dark:border-night-700 shadow-2xl relative space-y-5">
+      <div className="max-w-md w-full rounded-3xl p-6 sm:p-8 bg-sand-50 dark:bg-night-900 border border-sand-300 dark:border-night-700 shadow-2xl relative space-y-5 max-h-[90vh] overflow-y-auto">
         <button
           type="button"
           onClick={onClose}

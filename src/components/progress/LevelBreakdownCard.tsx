@@ -79,7 +79,7 @@ export const LevelBreakdownCard: React.FC<LevelBreakdownCardProps> = ({
                 </div>
                 <Link
                   href={`/quiz/q${level.number}`}
-                  className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline px-2 py-1 rounded-lg bg-emerald-500/10 min-h-[32px] flex items-center"
+                  className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline px-2.5 py-1.5 rounded-lg bg-emerald-500/10 min-h-[44px] flex items-center"
                 >
                   {isBangla ? "কুইজ দিন" : "Quiz"}
                 </Link>

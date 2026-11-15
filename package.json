@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "tsx scripts/verify-mobile.ts",
+    "test": "node --test tests/*.test.mjs && tsx scripts/verify-mobile.ts",
     "test:mobile": "tsx scripts/verify-mobile.ts"
   },
   "dependencies": {

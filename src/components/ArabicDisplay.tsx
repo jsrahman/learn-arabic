@@ -3,7 +3,7 @@
 import React from "react";
 import { AudioButton } from "@/components/AudioButton";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 
 interface ArabicDisplayProps {
   arabic: string;
@@ -31,6 +31,7 @@ export const ArabicDisplay: React.FC<ArabicDisplayProps> = ({
   interactive = true,
 }) => {
   const { preferences, fontSizeClass } = useThemeContext();
+  const isBangla = preferences.explanationLanguage === "bn";
 
   return (
     <div
@@ -80,7 +81,9 @@ export const ArabicDisplay: React.FC<ArabicDisplayProps> = ({
 
         {makhraj && (
           <p className="text-xs text-sand-600 dark:text-sand-400 max-w-sm mx-auto pt-1 leading-relaxed">
-            <span className="font-semibold text-sand-800 dark:text-sand-300">Makhraj: </span>
+            <span className="font-semibold text-sand-800 dark:text-sand-300">
+              {isBangla ? "মাখরাজ: " : "Makhraj: "}
+            </span>
             {makhraj}
           </p>
         )}
@@ -93,7 +96,7 @@ export const ArabicDisplay: React.FC<ArabicDisplayProps> = ({
           audioUrl={audioUrl}
           size="md"
           variant="primary"
-          label="Listen"
+          label={isBangla ? "উচ্চারণ শুনুন" : "Listen"}
         />
       </div>
     </div>

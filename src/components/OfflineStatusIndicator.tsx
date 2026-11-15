@@ -29,7 +29,7 @@ export function OfflineStatusIndicator() {
         type="button"
         onClick={handleOpen}
         className={cn(
-          "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 active:scale-95 shadow-sm min-h-[36px]",
+          "inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all duration-200 active:scale-95 shadow-sm min-h-[44px]",
           !status.isOnline
             ? "bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300"
             : status.isFullyCached || downloadSuccess

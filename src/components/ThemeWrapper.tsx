@@ -1,9 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import type { UserPreferences, UserProgress } from "@/types";
 import {
-  UserPreferences,
-  UserProgress,
   DEFAULT_PREFERENCES,
   DEFAULT_PROGRESS,
   getStoredPreferences,

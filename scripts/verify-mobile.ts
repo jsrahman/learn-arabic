@@ -2,18 +2,49 @@
  * QuranPath Mobile Verification Test Suite & Runner
  *
  * Verifies mobile responsiveness, accessibility, typography, touch targets,
- * and compilation quality gates across 360px, 390px, and 430px viewports.
+ * domain state machines, and production compilation quality gates across
+ * 360px, 390px, and 430px viewports.
  *
  * Tiers:
- * - Tier 1: Feature Coverage (8 Core Modules & Routing Integrity)
- * - Tier 2: Boundary & Corner Cases (Mobile Viewports, Touch Targets, Scroll Locks)
+ * - Tier 1: Feature Coverage (8 Core Modules, 5-Layer Layout & Routing Integrity)
+ * - Tier 2: Boundary & Corner Cases (Mobile Viewports, Touch Targets, Scroll Locks, Modals)
  * - Tier 3: Arabic Typography, Cursive Ligatures & Theme Contrast
- * - Tier 4: Real-World Scenarios & Production Compilation Gates
+ * - Tier 4: Real-World Scenarios, Genuine Domain State Machines & Production Compilation Gates
  */
 
 import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
+
+// Direct imports of genuine domain models and functions
+import {
+  calculateUpdatedStreak,
+  getYesterdayDateString,
+  getLocalDateString,
+  DEFAULT_PROGRESS,
+  DEFAULT_PREFERENCES,
+  getStoredProgress,
+  saveStoredProgress,
+  resetStoredProgress,
+  markLessonCompleted,
+  saveQuizScore,
+  type UserProgress,
+} from "../src/lib/storage";
+
+import {
+  calculateProgressPercentage,
+  calculateProgress,
+  calculateLevelProgress,
+  countCompletedLessonsInLevel,
+  calculateLevelStatus,
+} from "../src/lib/utils";
+
+import {
+  validateUserProgress,
+  isUserProgress,
+} from "../src/schemas/progressSchema";
+
+import { QUIZZES } from "../src/data/quizzes";
 
 // ANSI colors for clean, legible console reporting
 const colors = {
@@ -71,7 +102,7 @@ async function runTestAsync(tier: number, name: string, fn: () => Promise<void>)
   }
 }
 
-function assert(condition: boolean, message: string) {
+function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
     throw new Error(message);
   }
@@ -87,49 +118,90 @@ function readFile(relPath: string): string {
   return fs.readFileSync(fullPath, "utf-8");
 }
 
-console.log(`\n${colors.bold}${colors.cyan}================================================================================${colors.reset}`);
-console.log(`${colors.bold}${colors.cyan}                    QuranPath Mobile Verification Suite                       ${colors.reset}`);
-console.log(`${colors.bold}${colors.cyan}           Viewports: 360px (Compact) | 390px (Standard) | 430px (Pro Max)       ${colors.reset}`);
-console.log(`${colors.bold}${colors.cyan}================================================================================${colors.reset}\n`);
+/**
+ * Strips CSS block comments to prevent commented-out rules from passing assertions (MUT-06).
+ */
+export function stripCssComments(css: string): string {
+  return css.replace(/\/\*[\s\S]*?\*\//g, "");
+}
+
+/**
+ * Reads CSS file with comments stripped for robust active-rule inspection.
+ */
+export function readCleanCss(relPath: string = "src/app/globals.css"): string {
+  return stripCssComments(readFile(relPath));
+}
+
+/**
+ * Headless in-memory localStorage polyfill for Node.js test execution.
+ */
+export function setupInMemoryStorage(): void {
+  const memoryStore: Record<string, string> = {};
+  (globalThis as any).window = globalThis;
+  (globalThis as any).localStorage = {
+    getItem: (key: string): string | null => memoryStore[key] ?? null,
+    setItem: (key: string, value: string): void => {
+      memoryStore[key] = String(value);
+    },
+    removeItem: (key: string): void => {
+      delete memoryStore[key];
+    },
+    clear: (): void => {
+      for (const k in memoryStore) delete memoryStore[k];
+    },
+  };
+}
 
 async function main() {
+  console.log(`\n${colors.bold}${colors.cyan}================================================================================${colors.reset}`);
+  console.log(`${colors.bold}${colors.cyan}                    QuranPath Mobile Verification Suite                       ${colors.reset}`);
+  console.log(`${colors.bold}${colors.cyan}    Static Layout Audits, Touch Targets & Build Gates (360px-430px Standards)   ${colors.reset}`);
+  console.log(`${colors.bold}${colors.cyan}================================================================================${colors.reset}\n`);
+
   // =========================================================================
-  // TIER 1: Feature Coverage Across All 8 Modules/Pages
+  // TIER 1: Feature Coverage Across All 8 Modules/Pages (5-Layer Layout Aware)
   // =========================================================================
   console.log(`${colors.bold}${colors.blue}▶ TIER 1: Feature Coverage (8 Core Modules & Routing)${colors.reset}`);
 
   runTest(1, "Module 1 - Homepage (src/app/page.tsx): Hero, Letter Explorer, Spotlight, Bento Grid", () => {
-    const content = readFile("src/app/page.tsx");
+    const pageContent = readFile("src/app/page.tsx");
     const hero = readFile("src/components/home/HomeHero.tsx");
     const playground = readFile("src/components/home/HomeAlphabetPlayground.tsx");
     const spotlight = readFile("src/components/home/HomeActiveStageSpotlight.tsx");
     const preview = readFile("src/components/home/HomeCurriculumPreview.tsx");
-    assert(content.includes("export default function HomePage"), "HomePage component export missing");
-    assert(hero.includes("spiritualRibbon"), "Spiritual ribbon missing");
-    assert(playground.includes("playgroundTag") || playground.includes("selectedLetter"), "Interactive letter playground section missing");
-    assert(spotlight.includes("activeLevel"), "Active stage bento card missing");
-    assert(preview.includes("LevelCard"), "LevelCard component import or usage missing in Homepage curriculum preview");
-    assert(preview.includes("filteredLevels"), "18-Level Bento grid mapping missing");
+
+    assert(pageContent.includes("export default function HomePage"), "HomePage component export missing");
+    assert(hero.includes("spiritualRibbon"), "Spiritual ribbon missing in HomeHero");
+    assert(playground.includes("playgroundTag") || playground.includes("selectedLetter"), "Interactive letter playground missing in HomeAlphabetPlayground");
+    assert(spotlight.includes("activeLevel"), "Active stage bento card missing in HomeActiveStageSpotlight");
+    assert(preview.includes("LevelCard"), "LevelCard component import or usage missing in HomeCurriculumPreview");
+    assert(preview.includes("filteredLevels"), "18-Level Bento grid mapping missing in HomeCurriculumPreview");
   });
 
   runTest(1, "Module 2 - Learning Path (src/app/path/page.tsx): 18-Level Visual Roadmap & Lessons", () => {
-    const content = readFile("src/app/path/page.tsx");
+    const pageContent = readFile("src/app/path/page.tsx");
     const hook = readFile("src/hooks/usePathRoadmap.ts");
+    const filterBar = readFile("src/components/path/TierFilterBar.tsx");
     const card = readFile("src/components/path/PathLevelCard.tsx");
-    assert(content.includes("export default function LearningPathPage"), "LearningPathPage component export missing");
-    assert(hook.includes("LEARNING_LEVELS") || hook.includes("levels"), "LEVELS dataset import missing in Learning Path");
-    assert(content.includes("selectedTier"), "Tier filter tabs missing in Learning Path");
-    assert(card.includes("levelLessons.map") || card.includes("quiz/q"), "Level lessons and quiz link mapping missing in Learning Path");
+
+    assert(pageContent.includes("export default function LearningPathPage"), "LearningPathPage component export missing");
+    assert(hook.includes("LEARNING_LEVELS") || hook.includes("levels"), "LEARNING_LEVELS dataset import missing in usePathRoadmap");
+    assert(pageContent.includes("selectedTier") || filterBar.includes("selectedTier"), "Tier filter tabs missing in Learning Path");
+    assert(card.includes("levelLessons.map") || card.includes("quiz/q"), "Level lessons and quiz link mapping missing in PathLevelCard");
   });
 
   runTest(1, "Module 3 - Practice Arena (src/app/practice/page.tsx): 3 Practice Modes & Audio Drills", () => {
-    const content = readFile("src/app/practice/page.tsx");
+    const pageContent = readFile("src/app/practice/page.tsx");
     const hook = readFile("src/hooks/usePracticeDrill.ts");
     const grid = readFile("src/components/practice/AlphabetDrillGrid.tsx");
-    assert(content.includes("export default function PracticePage"), "PracticePage component export missing");
-    assert(hook.includes("alphabet") && hook.includes("harakat") && hook.includes("surahs"), "3 practice tabs missing");
-    assert(hook.includes("selectedCategory"), "Makhraj category filter missing");
-    assert(grid.includes("AudioButton"), "AudioButton integration missing in Practice Arena");
+    const harakat = readFile("src/components/practice/HarakatDrillTable.tsx");
+    const surahs = readFile("src/components/practice/SurahPracticeView.tsx");
+
+    assert(pageContent.includes("export default function PracticePage"), "PracticePage component export missing");
+    assert(hook.includes("alphabet") && hook.includes("harakat") && hook.includes("surahs"), "3 practice tabs missing in usePracticeDrill");
+    assert(hook.includes("selectedCategory"), "Makhraj category filter missing in usePracticeDrill");
+    assert(grid.includes("AudioButton") || harakat.includes("AudioButton"), "AudioButton integration missing in Practice Arena");
+    assert(surahs.includes("SURAHS") || surahs.includes("activeSurah"), "Surah practice view missing dataset wiring");
   });
 
   runTest(1, "Module 4 - Quiz Module: Hub (quiz/page.tsx) and Question Player (quiz/[quizId]/page.tsx)", () => {
@@ -138,44 +210,48 @@ async function main() {
     assert(hubContent.includes("selectedTier") || hubContent.includes("tier"), "Tier filtering missing in Quiz Hub");
 
     const playerContent = readFile("src/app/quiz/[quizId]/page.tsx");
-    const scorePill = readFile("src/components/quiz/QuizCompletedView.tsx");
+    const completedView = readFile("src/components/quiz/QuizCompletedView.tsx");
     assert(playerContent.includes("export default function QuizArenaPage"), "QuizArenaPage dynamic player export missing");
-    assert(playerContent.includes("QuizNavigator"), "QuizNavigator question palette missing");
-    assert(scorePill.includes("QuizScorePill"), "QuizScorePill score breakdown pill missing");
-    assert(playerContent.includes("handleSelectOption"), "Question answering interaction missing");
+    assert(playerContent.includes("QuizNavigator"), "QuizNavigator question palette missing in QuizArenaPage");
+    assert(completedView.includes("QuizScorePill"), "QuizScorePill score breakdown pill missing in QuizCompletedView");
+    assert(playerContent.includes("handleSelectOption") || playerContent.includes("selectedOption"), "Question answering interaction missing");
   });
 
   runTest(1, "Module 5 - Lesson View (src/app/learn/[lessonId]/page.tsx): Deck, Arabic Calligraphy & Completion", () => {
-    const content = readFile("src/app/learn/[lessonId]/page.tsx");
+    const pageContent = readFile("src/app/learn/[lessonId]/page.tsx");
     const slideCard = readFile("src/components/lesson/LessonSlideCard.tsx");
-    assert(content.includes("export default function LessonViewerPage"), "LessonViewerPage component export missing");
-    assert(content.includes("currentSlideIndex"), "Slide presentation state missing");
-    assert(slideCard.includes("font-arabic"), "Arabic calligraphy presentation missing");
-    assert(slideCard.includes("checkQuestion"), "Quick checkpoint check missing");
-    assert(content.includes("LessonCompletedModal"), "Completion modal missing");
+    const modal = readFile("src/components/lesson/LessonCompletedModal.tsx");
+
+    assert(pageContent.includes("export default function LessonViewerPage"), "LessonViewerPage component export missing");
+    assert(pageContent.includes("currentSlideIndex"), "Slide presentation state missing in LessonViewerPage");
+    assert(slideCard.includes("font-arabic"), "Arabic calligraphy presentation missing in LessonSlideCard");
+    assert(slideCard.includes("checkQuestion"), "Quick checkpoint check missing in LessonSlideCard");
+    assert(modal.includes("isOpen") || modal.includes("onRestart"), "LessonCompletedModal contract missing");
   });
 
   runTest(1, "Module 6 - Progress & Analytics (src/app/progress/page.tsx): Streak Bento, Stats & Mastery Grid", () => {
-    const content = readFile("src/app/progress/page.tsx");
-    const stats = readFile("src/components/progress/ProgressStatGrid.tsx");
+    const pageContent = readFile("src/app/progress/page.tsx");
+    const statGrid = readFile("src/components/progress/ProgressStatGrid.tsx");
     const gallery = readFile("src/components/progress/MasteredLettersGallery.tsx");
     const modal = readFile("src/components/progress/ResetProgressModal.tsx");
-    assert(content.includes("export default function ProgressPage"), "ProgressPage component export missing");
-    assert(stats.includes("StatCard"), "StatCard metrics component missing");
-    assert(stats.includes("streakDays"), "Streak bento tile missing");
-    assert(gallery.includes("ARABIC_ALPHABET"), "Mastered letters gallery missing");
-    assert(modal.includes("ResetProgressModal"), "Reset progress modal trigger missing");
+
+    assert(pageContent.includes("export default function ProgressPage"), "ProgressPage component export missing");
+    assert(statGrid.includes("StatCard"), "StatCard metrics component missing in ProgressStatGrid");
+    assert(statGrid.includes("streakDays"), "Streak bento tile missing in ProgressStatGrid");
+    assert(gallery.includes("ARABIC_ALPHABET"), "Mastered letters gallery missing in MasteredLettersGallery");
+    assert(modal.includes("ResetProgressModal") || pageContent.includes("ResetProgressModal"), "Reset progress modal trigger missing");
   });
 
   runTest(1, "Module 7 - Profile & Settings (src/app/profile/page.tsx): Preferences, Font Size & Audio Speed", () => {
-    const content = readFile("src/app/profile/page.tsx");
+    const pageContent = readFile("src/app/profile/page.tsx");
     const typo = readFile("src/components/profile/TypographySettingsCard.tsx");
     const audio = readFile("src/components/profile/AudioSettingsCard.tsx");
-    assert(content.includes("export default function ProfilePage"), "ProfilePage component export missing");
-    assert(typo.includes("arabicFontSize"), "Arabic font size setting missing");
-    assert(audio.includes("audioSpeed"), "Audio playback speed setting missing");
-    assert(content.includes("LanguageSettingsCard"), "Language setting missing");
-    assert(content.includes("ThemeSettingsCard"), "Theme toggle setting missing");
+
+    assert(pageContent.includes("export default function ProfilePage"), "ProfilePage component export missing");
+    assert(typo.includes("arabicFontSize"), "Arabic font size setting missing in TypographySettingsCard");
+    assert(audio.includes("audioSpeed"), "Audio playback speed setting missing in AudioSettingsCard");
+    assert(pageContent.includes("LanguageSettingsCard"), "Language settings card missing in ProfilePage");
+    assert(pageContent.includes("ThemeSettingsCard"), "Theme settings card missing in ProfilePage");
   });
 
   runTest(1, "Module 8 - Navigation & Shell Components (Navbar, Footer, PWA, Offline, ThemeWrapper)", () => {
@@ -243,24 +319,26 @@ async function main() {
     assert(layout.includes("prefers-color-scheme") || layout.includes("themeColor"), "layout.tsx must define adaptive themeColor");
   });
 
-  runTest(2, "Root Body Horizontal Overflow Containment (scrollWidth <= clientWidth)", () => {
+  runTest(2, "Static Audit: Root Body Horizontal Overflow Containment (overflow-x-hidden, w-full, min-w-0)", () => {
     const layout = readFile("src/app/layout.tsx");
     assert(layout.includes("overflow-x-hidden"), "layout.tsx body must include overflow-x-hidden to prevent mobile wobble");
     assert(layout.includes("min-w-0"), "layout.tsx body must include min-w-0");
     assert(layout.includes("w-full"), "layout.tsx body must include w-full");
 
-    const css = readFile("src/app/globals.css");
-    assert(css.includes("overflow-x: hidden;"), "globals.css body rule must enforce overflow-x: hidden;");
+    const cleanCss = readCleanCss("src/app/globals.css");
+    const bodyBlock = cleanCss.match(/body\s*\{([^}]+)\}/)?.[1] || "";
+    assert(bodyBlock.includes("overflow-x: hidden;"), "globals.css body rule must actively enforce overflow-x: hidden; outside comments (MUT-06)");
   });
 
-  runTest(2, "Mobile Tap Highlight Reset & Touch Action Manipulation (globals.css)", () => {
-    const css = readFile("src/app/globals.css");
-    assert(css.includes("-webkit-tap-highlight-color: transparent;"), "globals.css must reset -webkit-tap-highlight-color to transparent");
-    assert(css.includes("touch-action: manipulation;"), "globals.css must specify touch-action: manipulation to eliminate 300ms tap delay");
-    assert(css.includes("-webkit-text-size-adjust: 100%;"), "globals.css must specify -webkit-text-size-adjust: 100% to prevent iOS zoom distortion");
+  runTest(2, "Static Audit: Mobile Tap Highlight Reset & Touch Action Manipulation (globals.css)", () => {
+    const cleanCss = readCleanCss("src/app/globals.css");
+    const bodyBlock = cleanCss.match(/body\s*\{([^}]+)\}/)?.[1] || "";
+    assert(bodyBlock.includes("-webkit-tap-highlight-color: transparent;"), "globals.css must actively reset -webkit-tap-highlight-color outside comments");
+    assert(bodyBlock.includes("touch-action: manipulation;"), "globals.css must actively specify touch-action: manipulation outside comments");
+    assert(bodyBlock.includes("-webkit-text-size-adjust: 100%;"), "globals.css must actively specify -webkit-text-size-adjust: 100% outside comments");
   });
 
-  runTest(2, "Navbar 360px Viewport Squeeze Prevention: Header fits in 328px without overflow", () => {
+  runTest(2, "Static Audit: Navbar 360px Mobile Viewport Squeeze Prevention (Responsive Hiding & Drawer Relocation)", () => {
     const navbar = readFile("src/components/Navbar.tsx");
     // Qaida badge and Arabic subtitle must be hidden on mobile (<sm) to prevent header blowout
     assert(navbar.includes("hidden sm:inline-block") || navbar.includes("hidden sm:"), "Navbar must hide Qaida badge on mobile xs (<sm)");
@@ -270,11 +348,39 @@ async function main() {
     assert(navbar.includes('href="/profile"'), "Navbar mobile drawer must include Profile & Settings link");
   });
 
-  runTest(2, "AudioButton Minimum 44x44px Touch Footprint on All Variants (size='sm', 'md', 'lg', labeled)", () => {
+  runTest(2, "AudioButton Minimum 44x44px Touch Footprint on All Variants (size='sm', 'md', 'lg', labeled) (MUT-02)", () => {
     const audioBtn = readFile("src/components/AudioButton.tsx");
-    assert(audioBtn.includes("min-w-[44px]") && audioBtn.includes("min-h-[44px]"), "AudioButton must enforce min-w-[44px] min-h-[44px] on all variants");
-    assert(audioBtn.includes("w-11 h-11"), "AudioButton sm and md size classes must specify w-11 h-11 (44px)");
-    assert(audioBtn.includes("min-h-[44px]") && (audioBtn.includes("py-2.5") || audioBtn.includes("py-3")), "AudioButton with label must enforce min-h-[44px] and vertical padding py-2.5+");
+
+    // 1. sizeClasses.sm variant check (isolated regex - catches MUT-02)
+    const smMatch = audioBtn.match(/sm:\s*["']([^"']+)["']/);
+    assert(smMatch !== null, "AudioButton sizeClasses must define 'sm' variant");
+    const smClasses = smMatch?.[1] || "";
+    assert(smClasses.includes("min-w-[44px]"), "AudioButton 'sm' size class must enforce min-w-[44px]");
+    assert(smClasses.includes("min-h-[44px]"), "AudioButton 'sm' size class must enforce min-h-[44px]");
+    assert(smClasses.includes("w-11 h-11") || (smClasses.includes("w-11") && smClasses.includes("h-11")), "AudioButton 'sm' size class must specify w-11 h-11 (44px footprint)");
+
+    // 2. sizeClasses.md variant check
+    const mdMatch = audioBtn.match(/md:\s*["']([^"']+)["']/);
+    assert(mdMatch !== null, "AudioButton sizeClasses must define 'md' variant");
+    const mdClasses = mdMatch?.[1] || "";
+    assert(mdClasses.includes("min-w-[44px]"), "AudioButton 'md' size class must enforce min-w-[44px]");
+    assert(mdClasses.includes("min-h-[44px]"), "AudioButton 'md' size class must enforce min-h-[44px]");
+    assert(mdClasses.includes("w-11 h-11") || (mdClasses.includes("w-11") && mdClasses.includes("h-11")), "AudioButton 'md' size class must specify w-11 h-11 (44px footprint)");
+
+    // 3. sizeClasses.lg variant check
+    const lgMatch = audioBtn.match(/lg:\s*["']([^"']+)["']/);
+    assert(lgMatch !== null, "AudioButton sizeClasses must define 'lg' variant");
+    const lgClasses = lgMatch?.[1] || "";
+    assert(lgClasses.includes("min-w-[44px]"), "AudioButton 'lg' size class must enforce min-w-[44px]");
+    assert(lgClasses.includes("min-h-[44px]"), "AudioButton 'lg' size class must enforce min-h-[44px]");
+    assert(lgClasses.includes("w-14 h-14") || (lgClasses.includes("w-14") && lgClasses.includes("h-14")), "AudioButton 'lg' size class must specify w-14 h-14 (56px footprint)");
+
+    // 4. Labeled variant check
+    const labelMatch = audioBtn.match(/label\s*\?\s*["']([^"']+)["']/);
+    assert(labelMatch !== null, "AudioButton must define classes for labeled mode");
+    const labelClasses = labelMatch?.[1] || "";
+    assert(labelClasses.includes("min-h-[44px]"), "AudioButton with label must enforce min-h-[44px]");
+    assert(labelClasses.includes("py-2.5") || labelClasses.includes("py-3"), "AudioButton with label must specify vertical padding py-2.5+");
   });
 
   runTest(2, "Navbar Touch Targets: Streak, Language, Theme, Mobile Hamburger & Drawer Links (>= 44x44px)", () => {
@@ -297,19 +403,57 @@ async function main() {
     assert(modal.includes("max-h-[90vh]") && modal.includes("overflow-y-auto"), "PWAInstallModal dialog container must specify max-h-[90vh] overflow-y-auto");
   });
 
-  runTest(2, "OfflineStatusIndicator: Body Scroll Lock, 44x44px Close Button & Action Controls", () => {
+  runTest(2, "OfflineStatusIndicator & OfflineModal: Body Scroll Lock, 44x44px Close Button & max-h-[90vh]", () => {
     const offline = readFile("src/components/OfflineStatusIndicator.tsx");
     const hook = readFile("src/hooks/useOfflineStatus.ts");
     const modal = readFile("src/components/offline/OfflineModal.tsx");
-    assert(hook.includes('document.body.style.overflow = "hidden"'), "OfflineStatusIndicator must lock document.body.style.overflow on open");
-    assert(hook.includes('document.body.style.overflow = ""'), "OfflineStatusIndicator must restore document.body.style.overflow on cleanup");
-    assert(modal.includes("min-w-[44px]") && modal.includes("min-h-[44px]"), "OfflineStatusIndicator close button must measure >= 44x44px");
-    assert(offline.includes("min-h-[36px]") && modal.includes("min-h-[44px]"), "OfflineStatusIndicator triggers and modal buttons must specify min-h-[44px]");
+
+    assert(hook.includes('document.body.style.overflow = "hidden"'), "useOfflineStatus hook must lock document.body.style.overflow on open");
+    assert(hook.includes('document.body.style.overflow = ""'), "useOfflineStatus hook must restore document.body.style.overflow on cleanup");
+    assert(modal.includes("min-w-[44px]") && modal.includes("min-h-[44px]"), "OfflineModal close button must measure >= 44x44px");
+    assert(modal.includes("max-h-[90vh]") && modal.includes("overflow-y-auto"), "OfflineModal must specify max-h-[90vh] overflow-y-auto to prevent viewport trapping");
+    assert(offline.includes("min-h-[44px]"), "OfflineStatusIndicator trigger pill must specify min-h-[44px]");
   });
 
   runTest(2, "Homepage Active Stage CTA: Action Button enforces min-h-[44px]", () => {
     const spotlight = readFile("src/components/home/HomeActiveStageSpotlight.tsx");
     assert(spotlight.includes("min-h-[44px]"), "Homepage active stage CTA must enforce min-h-[44px]");
+  });
+
+  runTest(2, "Modules 2–7 Interactive Touch Targets & Action Hit Areas (>= 44px)", () => {
+    const levelCard = readFile("src/components/LevelCard.tsx");
+    assert(levelCard.includes("min-h-[44px]"), "LevelCard action button must enforce min-h-[44px]");
+
+    const tierFilter = readFile("src/components/path/TierFilterBar.tsx");
+    assert(tierFilter.includes("min-h-[44px]"), "TierFilterBar tabs must enforce min-h-[44px]");
+
+    const pathCard = readFile("src/components/path/PathLevelCard.tsx");
+    assert(pathCard.includes("min-h-[44px]"), "PathLevelCard lesson and quiz links must enforce min-h-[44px]");
+
+    const practiceHeader = readFile("src/components/practice/PracticeHeader.tsx");
+    assert(practiceHeader.includes("min-h-[44px]"), "PracticeHeader mode tabs must enforce min-h-[44px]");
+
+    const quizCard = readFile("src/components/quiz/QuizQuestionCard.tsx");
+    assert(quizCard.includes("min-h-[48px]") || quizCard.includes("min-h-[44px]"), "QuizQuestionCard options must enforce min-h-[44px]+");
+    assert(quizCard.includes("min-h-[44px]"), "QuizQuestionCard next button must enforce min-h-[44px]");
+
+    const quizCompleted = readFile("src/components/quiz/QuizCompletedView.tsx");
+    assert(quizCompleted.includes("min-h-[44px]"), "QuizCompletedView action buttons must enforce min-h-[44px]");
+
+    const lessonCard = readFile("src/components/lesson/LessonSlideCard.tsx");
+    assert(lessonCard.includes("min-h-[44px]"), "LessonSlideCard checkpoint options and slide navigation must enforce min-h-[44px]");
+
+    const lessonModal = readFile("src/components/lesson/LessonCompletedModal.tsx");
+    assert(lessonModal.includes("min-h-[44px]"), "LessonCompletedModal action links must enforce min-h-[44px]");
+
+    const progressHeader = readFile("src/components/progress/ProgressHeader.tsx");
+    assert(progressHeader.includes("min-h-[44px]"), "ProgressHeader reset progress button must enforce min-h-[44px]");
+
+    const resetModal = readFile("src/components/progress/ResetProgressModal.tsx");
+    assert(resetModal.includes("min-h-[44px]"), "ResetProgressModal confirm buttons must enforce min-h-[44px]");
+
+    const typoSettings = readFile("src/components/profile/TypographySettingsCard.tsx");
+    assert(typoSettings.includes("min-h-[44px]"), "TypographySettingsCard font size buttons must enforce min-h-[44px]");
   });
 
   // =========================================================================
@@ -318,17 +462,18 @@ async function main() {
   console.log(`\n${colors.bold}${colors.blue}▶ TIER 3: Arabic Typography, Cursive Ligatures & Theme Contrast${colors.reset}`);
 
   runTest(3, ".font-arabic Cursive Ligature Integrity: letter-spacing: normal !important (globals.css)", () => {
-    const css = readFile("src/app/globals.css");
-    assert(css.includes(".font-arabic"), ".font-arabic class rule missing in globals.css");
-    assert(css.includes("letter-spacing: normal !important;"), ".font-arabic must enforce letter-spacing: normal !important to prevent glyph detachment");
-    assert(css.includes('"calt"') && css.includes('"liga"'), ".font-arabic must enable OpenType calt and liga font feature settings");
+    const cleanCss = readCleanCss("src/app/globals.css");
+    const fontArabicBlock = cleanCss.match(/\.font-arabic\s*\{([^}]+)\}/)?.[1] || "";
+    assert(fontArabicBlock.includes("letter-spacing: normal !important;"), ".font-arabic must actively enforce letter-spacing: normal !important; outside comments");
+    assert(fontArabicBlock.includes('"calt"') && fontArabicBlock.includes('"liga"'), ".font-arabic must enable OpenType calt and liga font feature settings");
   });
 
   runTest(3, "Diacritics & Tashkeel Vertical Breathing Room: padding: 0.1em 0 & line-height: 1.8", () => {
-    const css = readFile("src/app/globals.css");
-    assert(css.includes("line-height: 1.8;"), ".font-arabic must specify line-height: 1.8 for tashkeel clearance");
-    assert(css.includes("padding: 0.1em 0;"), ".font-arabic must specify vertical clearance padding: 0.1em 0");
-    assert(css.includes("overflow-wrap: break-word;"), ".font-arabic must specify overflow-wrap: break-word");
+    const cleanCss = readCleanCss("src/app/globals.css");
+    const fontArabicBlock = cleanCss.match(/\.font-arabic\s*\{([^}]+)\}/)?.[1] || "";
+    assert(fontArabicBlock.includes("line-height: 1.8;"), ".font-arabic must actively specify line-height: 1.8 outside comments");
+    assert(fontArabicBlock.includes("padding: 0.1em 0;"), ".font-arabic must actively specify vertical clearance padding: 0.1em 0 outside comments");
+    assert(fontArabicBlock.includes("overflow-wrap: break-word;"), ".font-arabic must actively specify overflow-wrap: break-word outside comments");
   });
 
   runTest(3, "ArabicDisplay Ligature Integrity: Arabic text span uses tracking-normal (no tracking-wide)", () => {
@@ -366,7 +511,7 @@ async function main() {
   // =========================================================================
   // TIER 4: Real-World Scenarios & Production Compilation Gates
   // =========================================================================
-  console.log(`\n${colors.bold}${colors.blue}▶ TIER 4: Real-World Scenarios & Production Compilation Gates${colors.reset}`);
+  console.log(`\n${colors.bold}${colors.blue}▶ TIER 4: Real-World Scenarios, Genuine Domain State Machines & Production Compilation Gates${colors.reset}`);
 
   runTest(4, "End-to-End User State Transitions: Preferences & Progress Serialization", () => {
     const storageFile = readFile("src/lib/storage.ts");
@@ -376,14 +521,13 @@ async function main() {
     assert(storageFile.includes("saveStoredPreferences"), "storage.ts must export saveStoredPreferences");
     assert(storageFile.includes("saveStoredProgress"), "storage.ts must export saveStoredProgress");
 
-    // Dynamic state transition simulation
+    // Dynamic state transition simulation with typed schema
     const mockPrefs = {
+      ...DEFAULT_PREFERENCES,
       theme: "dark" as const,
       language: "en" as const,
       arabicFontSize: "xlarge" as const,
       audioSpeed: 0.8,
-      autoPlayAudio: true,
-      showTransliteration: false,
     };
     const serialized = JSON.stringify(mockPrefs);
     const parsed = JSON.parse(serialized);
@@ -393,43 +537,121 @@ async function main() {
     assert(parsed.audioSpeed === 0.8, "Audio speed state persistence failed");
   });
 
-  runTest(4, "End-to-End Learning Progress State Machine: XP increment, completed lessons & streak calculation", () => {
-    const mockProgress = {
-      xp: 150,
-      streakDays: 3,
-      lastActiveDate: new Date().toISOString().split("T")[0],
-      completedLessons: ["l1-1", "l1-2"],
-      masteredLevels: [1],
-      quizScores: { "1": 100 },
-      streakFreezeCount: 1,
-    };
+  runTest(4, "End-to-End Learning Progress State Machine: Domain streak logic, lesson completion & level unlocks", () => {
+    setupInMemoryStorage();
 
-    // Transition: Complete lesson "l1-3" (+25 XP)
-    const updatedProgress = {
-      ...mockProgress,
-      xp: mockProgress.xp + 25,
-      completedLessons: [...mockProgress.completedLessons, "l1-3"],
-    };
-    assert(updatedProgress.xp === 175, "XP increment calculation error");
-    assert(updatedProgress.completedLessons.includes("l1-3"), "Completed lesson registry error");
-    assert(updatedProgress.completedLessons.length === 3, "Lesson count error");
+    // 1. Domain Streak Calculation Logic (calculateUpdatedStreak)
+    const today = getLocalDateString();
+    const yesterday = getYesterdayDateString();
+
+    // Case A: First activity ever (empty lastActiveDate, 0 streak) -> streak 1
+    const s0 = calculateUpdatedStreak("", 0);
+    assert(s0.streak === 1 && s0.lastActiveDate === today, "First activity must initialize streak to 1");
+
+    // Case B: Same-day activity (lastActiveDate === today, streak 3) -> maintains streak 3 without incrementing
+    const sSameDay = calculateUpdatedStreak(today, 3);
+    assert(sSameDay.streak === 3 && sSameDay.lastActiveDate === today, "Same-day activity must preserve streak without double-incrementing");
+
+    // Case C: Consecutive day activity (lastActiveDate === yesterday, streak 3) -> increments streak to 4
+    const sConsec = calculateUpdatedStreak(yesterday, 3);
+    assert(sConsec.streak === 4 && sConsec.lastActiveDate === today, "Consecutive-day activity must increment streak from 3 to 4");
+
+    // Case D: Broken streak lapse (lastActiveDate expired, e.g. 2+ days ago) -> resets to 1
+    const sBroken = calculateUpdatedStreak("2020-01-01", 10);
+    assert(sBroken.streak === 1 && sBroken.lastActiveDate === today, "Lapsed streak must reset to 1 on return");
+
+    // 2. State Machine Transitions with markLessonCompleted & Level Unlocks
+    resetStoredProgress();
+    const initialProgress = getStoredProgress();
+    assert(initialProgress.completedLessons.length === 0, "Initial progress must have 0 completed lessons");
+    assert(initialProgress.xpPoints === 0, "Initial progress must have 0 XP");
+    assert(initialProgress.unlockedLevels.length === 1 && initialProgress.unlockedLevels[0] === 1, "Only level 1 must be unlocked initially");
+
+    // Complete lesson 1 in Level 1
+    const p1 = markLessonCompleted("l1-1", 1, 50);
+    assert(p1.completedLessons.includes("l1-1"), "Lesson l1-1 must be recorded in completedLessons");
+    assert(p1.xpPoints === 50, "New lesson must award 50 XP");
+    assert(p1.streakDays === 1, "Active streak must be 1");
+    assert(!p1.unlockedLevels.includes(2), "Level 2 must remain locked after 1 lesson");
+
+    // Complete lesson 2 in Level 1
+    const p2 = markLessonCompleted("l1-2", 1, 50);
+    assert(p2.completedLessons.length === 2 && p2.xpPoints === 100, "Progress must have 2 lessons and 100 XP");
+
+    // Complete lesson 3 in Level 1 (triggers level 2 unlock threshold >= 3 completed lessons)
+    const p3 = markLessonCompleted("l1-3", 1, 50);
+    assert(p3.completedLessons.length === 3 && p3.xpPoints === 150, "Progress must have 3 lessons and 150 XP");
+    assert(p3.unlockedLevels.includes(2), "Level 2 must unlock after completing 3 lessons in Level 1");
+
+    // Repeat already completed lesson (l1-1)
+    const pRepeat = markLessonCompleted("l1-1", 1, 50);
+    assert(pRepeat.completedLessons.length === 3, "Re-completing lesson must not create duplicate entries");
+    assert(pRepeat.xpPoints === 160, "Re-completing lesson must award only repeat XP (10 XP), total 160");
+
+    // 3. Schema Type Guard & Progress Utilities Validation
+    const validated = validateUserProgress(pRepeat);
+    assert(isUserProgress(validated), "Updated progress state must satisfy UserProgress type guard schema");
+
+    const level1Count = countCompletedLessonsInLevel(pRepeat.completedLessons, 1);
+    assert(level1Count === 3, "countCompletedLessonsInLevel must return 3 completed lessons for Level 1");
+
+    const level1Progress = calculateLevelProgress(pRepeat.completedLessons, 1, 3);
+    assert(level1Progress === 100, "Level 1 progress percentage must calculate to 100%");
+
+    const l1Status = calculateLevelStatus(1, [1], pRepeat.unlockedLevels);
+    assert(l1Status === "completed", "Level 1 status must be 'completed'");
+
+    const l2Status = calculateLevelStatus(2, [1], pRepeat.unlockedLevels);
+    assert(l2Status === "current", "Level 2 status must be 'current' (unlocked)");
+
+    const l3Status = calculateLevelStatus(3, [1], pRepeat.unlockedLevels);
+    assert(l3Status === "locked", "Level 3 status must be 'locked'");
   });
 
-  runTest(4, "End-to-End Quiz Scoring State Machine: Accuracy percentage and grade assignment", () => {
-    function computeQuizScore(correct: number, total: number) {
-      const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-      const passed = accuracy >= 70;
-      return { correct, total, accuracy, passed };
-    }
+  runTest(4, "End-to-End Quiz Scoring State Machine: Accuracy percentage, passing threshold & level unlocking", () => {
+    setupInMemoryStorage();
 
-    const perfect = computeQuizScore(10, 10);
-    assert(perfect.accuracy === 100 && perfect.passed === true, "100% score calculation error");
+    // 1. Real Quiz Registry Contract Verification
+    const quiz1 = QUIZZES["q1"];
+    assert(quiz1 !== undefined, "Quiz dataset q1 must exist in QUIZZES registry");
+    assert(quiz1.passingScore === 70, "Quiz q1 passing score threshold must be 70%");
+    assert(Array.isArray(quiz1.questions) && quiz1.questions.length >= 5, "Quiz q1 must have at least 5 questions");
 
-    const passing = computeQuizScore(7, 10);
-    assert(passing.accuracy === 70 && passing.passed === true, "70% passing threshold error");
+    // 2. Real Accuracy Percentage Calculations via calculateProgressPercentage
+    const totalQ = quiz1.questions.length;
+    const perfectScore = calculateProgressPercentage(totalQ, totalQ);
+    assert(perfectScore === 100, "Perfect score calculation must yield 100%");
+    assert(perfectScore >= quiz1.passingScore, "100% must satisfy passingScore threshold");
 
-    const failing = computeQuizScore(6, 10);
-    assert(failing.accuracy === 60 && failing.passed === false, "Failing grade threshold error");
+    const passingScore = calculateProgressPercentage(7, 10);
+    assert(passingScore === 70, "7/10 score must yield exactly 70%");
+    assert(passingScore >= quiz1.passingScore, "70% must meet passingScore threshold");
+
+    const failingScore = calculateProgressPercentage(6, 10);
+    assert(failingScore === 60, "6/10 score must yield 60%");
+    assert(failingScore < quiz1.passingScore, "60% must fail passingScore threshold");
+
+    const zeroScore = calculateProgressPercentage(0, 0);
+    assert(zeroScore === 0, "0/0 edge case must safely yield 0%");
+
+    // 3. Quiz Score Persistence & Level Unlock State Transitions via saveQuizScore
+    resetStoredProgress();
+    const initialXP = getStoredProgress().xpPoints;
+
+    // Failing attempt: 60% on q1 (< 70%)
+    const failedProgress = saveQuizScore("q1", 60, 100);
+    assert(failedProgress.quizScores["q1"] === 60, "Quiz q1 failing score (60%) must be saved");
+    assert(failedProgress.xpPoints === initialXP + 25, "Failing quiz score must award 25 XP partial reward");
+
+    // Passing attempt: 80% on q1 (>= 70%)
+    const passedProgress = saveQuizScore("q1", 80, 100);
+    assert(passedProgress.quizScores["q1"] === 80, "Quiz q1 passing score (80%) must be updated");
+    assert(passedProgress.xpPoints === initialXP + 25 + 100, "Passing quiz score must award full 100 XP");
+    assert(passedProgress.unlockedLevels.includes(2), "Passing quiz q1 (>= 70%) must unlock Level 2");
+
+    // Retake attempt with lower score: 70%
+    const retakeProgress = saveQuizScore("q1", 70, 100);
+    assert(retakeProgress.quizScores["q1"] === 80, "Retaking quiz with lower score must retain historical best score (80%)");
   });
 
   runTest(4, "Offline Storage and Audio Service API Contracts", () => {
@@ -453,33 +675,42 @@ async function main() {
     }
   });
 
-  await runTestAsync(4, "Next.js Production Build Gate: All 10 Next.js App Router routes generated", async () => {
+  await runTestAsync(4, "Next.js Production Build Gate: Clean compilation of all 10 App Router routes", async () => {
+    const skipBuild = process.env.SKIP_BUILD_GATE === "1" || process.env.FAST === "1";
     const appManifestPath = path.join(PROJECT_ROOT, ".next/app-build-manifest.json");
-    if (!fs.existsSync(appManifestPath)) {
+
+    if (!skipBuild) {
       try {
-        execSync("npm run build", { stdio: "pipe", cwd: PROJECT_ROOT });
+        execSync("npm run build", {
+          stdio: "pipe",
+          cwd: PROJECT_ROOT,
+          env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", NODE_ENV: "production" },
+        });
       } catch (err: any) {
-        const output = err?.stdout?.toString() || err?.stderr?.toString() || err?.message;
-        throw new Error(`Next.js production build failed:\n${output}`);
+        const stdout = err?.stdout?.toString() || "";
+        const stderr = err?.stderr?.toString() || "";
+        const msg = err?.message || "";
+        throw new Error(`Next.js production build failed (status: ${err?.status}, signal: ${err?.signal}):\nSTDOUT:\n${stdout}\nSTDERR:\n${stderr}\nMSG:\n${msg}`);
       }
     }
-    assert(fs.existsSync(appManifestPath), ".next/app-build-manifest.json must exist after build");
+
+    assert(fs.existsSync(appManifestPath), ".next/app-build-manifest.json must exist after production build");
 
     const manifest = JSON.parse(fs.readFileSync(appManifestPath, "utf-8"));
     const pages = Object.keys(manifest.pages || {});
 
-    // Verify all 8 core modules and error pages
-    assert(pages.includes("/page"), "Route '/page' (Homepage) missing in build");
-    assert(pages.includes("/path/page"), "Route '/path/page' missing in build");
-    assert(pages.includes("/practice/page"), "Route '/practice/page' missing in build");
-    assert(pages.includes("/quiz/page"), "Route '/quiz/page' missing in build");
-    assert(pages.includes("/quiz/[quizId]/page"), "Dynamic route '/quiz/[quizId]/page' missing in build");
-    assert(pages.includes("/learn/[lessonId]/page"), "Dynamic route '/learn/[lessonId]/page' missing in build");
-    assert(pages.includes("/progress/page"), "Route '/progress/page' missing in build");
-    assert(pages.includes("/profile/page"), "Route '/profile/page' missing in build");
-    assert(pages.includes("/not-found") || pages.includes("/_not-found/page"), "NotFound route missing in build");
-    assert(pages.includes("/error"), "Error boundary route missing in build");
-    assert(pages.includes("/global-error"), "GlobalError route missing in build");
+    // Verify all 8 core modules, dynamic routes, and error boundaries
+    assert(pages.includes("/page"), "Route '/page' (Homepage) missing in build manifest");
+    assert(pages.includes("/path/page"), "Route '/path/page' missing in build manifest");
+    assert(pages.includes("/practice/page"), "Route '/practice/page' missing in build manifest");
+    assert(pages.includes("/quiz/page"), "Route '/quiz/page' missing in build manifest");
+    assert(pages.includes("/quiz/[quizId]/page"), "Dynamic route '/quiz/[quizId]/page' missing in build manifest");
+    assert(pages.includes("/learn/[lessonId]/page"), "Dynamic route '/learn/[lessonId]/page' missing in build manifest");
+    assert(pages.includes("/progress/page"), "Route '/progress/page' missing in build manifest");
+    assert(pages.includes("/profile/page"), "Route '/profile/page' missing in build manifest");
+    assert(pages.includes("/not-found") || pages.includes("/_not-found/page"), "NotFound route missing in build manifest");
+    assert(pages.includes("/error"), "Error boundary route missing in build manifest");
+    assert(pages.includes("/global-error"), "GlobalError route missing in build manifest");
   });
 
   // =========================================================================
@@ -518,7 +749,14 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(`\n${colors.red}Fatal runner error:${colors.reset}`, err);
-  process.exit(1);
-});
+if (
+  process.argv[1] &&
+  (process.argv[1].endsWith("verify-mobile.ts") ||
+    process.argv[1].endsWith("verify-mobile") ||
+    process.argv[1].includes("verify-mobile"))
+) {
+  main().catch((err) => {
+    console.error(`\n${colors.red}Fatal runner error:${colors.reset}`, err);
+    process.exit(1);
+  });
+}

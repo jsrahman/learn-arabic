@@ -53,7 +53,7 @@ export const QuizNavigator: React.FC<QuizNavigatorProps> = ({
               type="button"
               onClick={() => onSelectQuestion(i)}
               className={cn(
-                "w-7 h-7 rounded-lg text-[10px] font-bold border transition-all flex items-center justify-center shrink-0",
+                "w-8 h-8 sm:w-9 sm:h-9 min-w-[32px] min-h-[32px] sm:min-w-[36px] sm:min-h-[36px] rounded-lg text-[11px] font-bold border transition-all flex items-center justify-center shrink-0",
                 isCurrent && "ring-2 ring-gold-400 font-extrabold scale-110 z-10",
                 res === undefined
                   ? isCurrent
