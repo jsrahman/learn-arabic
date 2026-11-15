@@ -1,35 +1,20 @@
 import type { UserProgress, UserPreferences } from "@/types";
+import { getLocalDateString } from "./utils";
+import {
+  DEFAULT_PROGRESS,
+  validateUserProgress,
+  validateDailyActivity,
+} from "@/schemas/progressSchema";
+import {
+  DEFAULT_PREFERENCES,
+  validateUserPreferences,
+} from "@/schemas/preferencesSchema";
+
 export type { UserProgress, UserPreferences };
+export { DEFAULT_PROGRESS, DEFAULT_PREFERENCES, getLocalDateString };
 
 const STORAGE_PROGRESS_KEY = "quranpath_user_progress_v1";
 const STORAGE_PREFS_KEY = "quranpath_user_prefs_v1";
-
-export const DEFAULT_PROGRESS: UserProgress = {
-  completedLessons: [],
-  unlockedLevels: [1],
-  quizScores: {},
-  masteredLetters: [],
-  streakDays: 0,
-  lastActiveDate: "",
-  totalMinutesPracticed: 0,
-  xpPoints: 0,
-};
-
-export const DEFAULT_PREFERENCES: UserPreferences = {
-  theme: "light",
-  audioSpeed: 1.0,
-  autoPlayAudio: true,
-  showTransliteration: true,
-  arabicFontSize: "large",
-  explanationLanguage: "bn",
-};
-
-export function getLocalDateString(date = new Date()): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
 
 export function getYesterdayDateString(): string {
   const d = new Date();
@@ -60,15 +45,15 @@ export function calculateUpdatedStreak(
 }
 
 export function getStoredProgress(): UserProgress {
-  if (typeof window === "undefined") return DEFAULT_PROGRESS;
+  if (typeof window === "undefined") return { ...DEFAULT_PROGRESS };
   try {
     const raw = localStorage.getItem(STORAGE_PROGRESS_KEY);
     if (!raw) {
       saveStoredProgress(DEFAULT_PROGRESS);
-      return DEFAULT_PROGRESS;
+      return { ...DEFAULT_PROGRESS };
     }
     const parsed = JSON.parse(raw);
-    const progress: UserProgress = { ...DEFAULT_PROGRESS, ...parsed };
+    const progress = validateUserProgress(parsed);
 
     // Validate streak continuity: if streak > 0 but lastActiveDate is expired (older than yesterday),
     // the streak has lapsed and resets to 0 until the user practices again today.
@@ -85,7 +70,7 @@ export function getStoredProgress(): UserProgress {
     return progress;
   } catch (e) {
     console.error("Failed to read progress from localStorage", e);
-    return DEFAULT_PROGRESS;
+    return { ...DEFAULT_PROGRESS };
   }
 }
 
@@ -104,6 +89,7 @@ export function resetStoredProgress(): UserProgress {
 }
 
 export function recordDailyActivity(minutesToAdd = 2, xpToAdd = 5): UserProgress {
+  const activity = validateDailyActivity({ minutesToAdd, xpToAdd });
   const current = getStoredProgress();
   const { streak, lastActiveDate } = calculateUpdatedStreak(current.lastActiveDate, current.streakDays);
 
@@ -111,8 +97,8 @@ export function recordDailyActivity(minutesToAdd = 2, xpToAdd = 5): UserProgress
     ...current,
     streakDays: streak,
     lastActiveDate,
-    totalMinutesPracticed: current.totalMinutesPracticed + minutesToAdd,
-    xpPoints: current.xpPoints + xpToAdd,
+    totalMinutesPracticed: current.totalMinutesPracticed + activity.minutesToAdd,
+    xpPoints: current.xpPoints + activity.xpToAdd,
   };
 
   saveStoredProgress(updated);
@@ -185,13 +171,14 @@ export function saveQuizScore(quizId: string, scorePercent: number, earnedXp = 1
 }
 
 export function getStoredPreferences(): UserPreferences {
-  if (typeof window === "undefined") return DEFAULT_PREFERENCES;
+  if (typeof window === "undefined") return { ...DEFAULT_PREFERENCES };
   try {
     const raw = localStorage.getItem(STORAGE_PREFS_KEY);
-    if (!raw) return DEFAULT_PREFERENCES;
-    return { ...DEFAULT_PREFERENCES, ...JSON.parse(raw) };
+    if (!raw) return { ...DEFAULT_PREFERENCES };
+    const parsed = JSON.parse(raw);
+    return validateUserPreferences(parsed);
   } catch (e) {
-    return DEFAULT_PREFERENCES;
+    return { ...DEFAULT_PREFERENCES };
   }
 }
 

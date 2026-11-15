@@ -42,8 +42,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  themeColor: "#064E3B",
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#064E3B" },
+    { media: "(prefers-color-scheme: dark)", color: "#030a0d" },
+  ],
 };
 
 export default function RootLayout({
@@ -53,7 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="bn" suppressHydrationWarning>
-      <body className="bg-sand-50 dark:bg-night-950 text-sand-900 dark:text-sand-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+      <body className="bg-sand-50 dark:bg-night-950 text-sand-900 dark:text-sand-100 min-h-screen flex flex-col font-sans transition-colors duration-200 overflow-x-hidden min-w-0 w-full">
         <ThemeWrapper>
           <PWAProvider>
             <Navbar />

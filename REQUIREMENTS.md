@@ -1,103 +1,122 @@
 # 📋 REQUIREMENTS.md — System Requirements & Specifications
 
-> **Project**: QuranPath (পবিত্র কুরআন পাঠ ও তাজবীদ শিক্ষা)  
-> **Version**: 2.0.0  
-> **Target Status**: Production Ready & Fully Offline Capable  
+> **Project**: QuranPath (learn-arabic)  
+> **Status**: Production Ready & Fully Offline Capable  
+> **Target Audience**: Quranic Arabic Learners (Bangla-first UI with English bilingual support)  
+> **Architecture**: Next.js 14 App Router, TypeScript (Strict), Tailwind CSS, PWA  
 
 ---
 
-## ১. ভূমিকা ও উদ্দেশ্য (Overview & Objective)
+## 1. Executive Summary & Product Vision
 
-QuranPath হলো একটি আধুনিক ডিজিটাল শিক্ষামূলক সমাধান, যা কুরআন শিক্ষানবিসদের নুরানী কায়দা থেকে শুরু করে তাজবীদের সূক্ষ্ম নিয়মাবলি আয়ত্ত করতে সাহায্য করে। এই নথিতে সিস্টেমের কার্যকরী (Functional) এবং অ-কার্যকরী (Non-Functional) প্রয়োজনীয়তাসমূহ সংজ্ঞায়িত করা হলো।
+QuranPath is an open-source, offline-first Progressive Web Application (PWA) designed to guide learners from absolute zero to authentic, fluent Quranic recitation with rigorous Tajweed. Combining the pedagogical progression of traditional Noorani Qaida with modern cognitive retention techniques, QuranPath delivers an interactive 18-level curriculum, 630+ assessment questions, an anatomical articulation (Makhraj) visualizer, a triple-engine audio pronunciation system, and zero-latency offline operation.
 
----
-
-## ২. কার্যকরী প্রয়োজনীয়তাসমূহ (Functional Requirements)
-
-### FR-1: ১৮-স্তরের প্রগ্রেসিভ পাঠ্যক্রম (18-Level Progressive Curriculum)
-- **টিয়ার ১: বুনিয়াদ ও হরফ পরিচিতি (লেভেল ১ - ৪)**:
-  - লেভেল ১: আরবি বর্ণমালার ২৮টি হরফ ও নুকতার অবস্থান।
-  - লেভেল ২: সমরূপ হরফের ভিজ্যুয়াল পার্থক্য ও কাঠামো।
-  - লেভেল ৩: হরফের ৪টি রূপ (শুরুর, মাঝের, শেষের ও একক রূপ)।
-  - লেভেল ৪: মাখরাজ ও ১৭টি উচ্চারণ স্থান (কণ্ঠনালী, জিহ্বা, ঠোঁট, জওফ)।
-- **টিয়ার ২: হরকত ও প্রাথমিক ধ্বনিতত্ত্ব (লেভেল ৫ - ৮)**:
-  - লেভেল ৫: মৌলিক ৩টি হরকত (যবর, যের, পেশ)।
-  - লেভেল ৬: তানভীন (দুই যবর, দুই যের, দুই পেশ)।
-  - লেভেল ৭: সুকূন ও জযম (হরফের শান্ত রূপ)।
-  - লেভেল ৮: তাশদীদ ও দ্বৈত ব্যঞ্জনধ্বনি।
-- **টিয়ার ৩: কোর তাজবীদ নিয়মাবলি (লেভেল ৯ - ১৪)**:
-  - লেভেল ৯: মাদ্দের মৌলিক ৩ হরফ ও ১ আলিফ মাদ্দ।
-  - লেভেল ১০: নূন সাকিন ও তানভীনের ইযহার (স্পষ্ট উচ্চারণ)।
-  - লেভেল ১১: নূন সাকিন ও তানভীনের ইদগাম (মিলিয়ে পড়া ও গুন্নাহ)।
-  - লেভেল ১২: নূন সাকিন ও তানভীনের ইকলাব (মীম দ্বারা পরিবর্তন)।
-  - লেভেল ১৩: নূন সাকিন ও তানভীনের ইখফা (নাক দিয়ে গোপন গুন্নাহ)।
-  - লেভেল ১৪: মীম সাকিনের ৩ নিয়ম, কলকলাহর ৫ হরফ ও ওয়াক্‌ফ (থামা)।
-- **টিয়ার ৪: উচ্চতর তাজবীদ ও তিলাওয়াত দক্ষতা (লেভেল ১৫ - ১৮)**:
-  - লেভেল ১৫: তাফখীম ও তারক্বীক্ব (র ও লাম হরফের ভারী ও পাতলা উচ্চারণ)।
-  - লেভেল ১৬: দীর্ঘ মাদ্দ (৪ আলিফ মাদ্দে লাযিম ও মুত্তাসিল)।
-  - লেভেল ১৭: হাফস ‘আন ‘আসিমের বিশেষ তিলাওয়াত রীতি (ইমালাহ, তাশহীল, ইশমাম, সাকতাহ)।
-  - লেভেল ১৮: কুরআনিক ওয়াকফ, সিজদায়ে তিলাওয়াত ও পূর্ণ খতমে কুরআনের আদব।
+The application adheres to a strict 5-layer architectural separation of concerns where presentation components remain pure view/rendering layers, while state, schemas, and services are decoupled into dedicated modules.
 
 ---
 
-### FR-2: ইন্টারেক্টিভ লেসন স্লাইড ভিউয়ার (Lesson Viewer)
-- প্রতিটি লেসনে আরবি টেক্সটের বৃহৎ টাইপোগ্রাফিক ফোকাস বক্স থাকবে।
-- লিপ্যন্তর (Transliteration), বাংলায় মাখরাজের স্পষ্ট ব্যাখ্যা এবং শব্দে হরফের বিভিন্ন রূপের উদাহরণ থাকবে।
-- প্রতিটি স্লাইডে যাচাইমূলক প্রশ্ন (Checkpoint Question) থাকবে, যা সঠিক উত্তরের তাৎক্ষণিক প্রতিক্রিয়া দেখাবে।
-- মিনিমাম ৪৪px উচ্চতাবিশিষ্ট পূর্ববর্তী ও পরবর্তী ধাপের বাটন থাকবে।
+## 2. Functional Requirements (FR)
+
+### FR-1: 18-Level Progressive Curriculum & Learning Path
+The system shall deliver a structured 18-level curriculum partitioned into 4 mastery tiers:
+
+- **Tier 1: Foundations of Arabic Orthography & Phonetics (Levels 1–4)**
+  - *Level 1 (Alphabet & Orthography)*: 28 Arabic letters in isolated forms, dot taxonomy (13 dotless vs. 15 dotted letters), and the 6 non-connecting letters (`ا د ذ ر ز و`).
+  - *Level 2 (Makhārij al-Ḥurūf)*: 17 specific vocal exit points across 5 anatomical regions (Al-Jawf, Al-Halq, Al-Lisan, Ash-Shafatan, Al-Khaishoom).
+  - *Level 3 (Connected Script & Ligatures)*: Initial, medial, and final positional forms, cursive letter transformations, and classical Uthmani ligatures (e.g., `لا`, `لم`, `مح`).
+  - *Level 4 (Short Vowels & Sukūn Precision)*: Fatḥah, Kasrah, Ḍammah, Sukūn/Jazm consonant stillness, and phonemic vowel purity.
+- **Tier 2: Vowels & Orthography (Levels 5–8)**
+  - *Level 5 (Tanwīn & Nunation)*: Double vowels (Fatḥatān, Kasratān, Ḍammatān), orthographic stopping Alif, and Tanwīn phonetics.
+  - *Level 6 (Shaddah / Tashdīd)*: Consonant doubling, structural syllable timing, Ghunnah Mushaddadah (`نّ` and `مّ`), and Nabrah accentuation.
+  - *Level 7 (Madd Aṣlī & Līn)*: Natural 2-count prolongation letters (`ا`, `و`, `ي`), Madd Badal, Ṣilah Ṣughrā, and Līn diphthong consonants.
+  - *Level 8 (Tafkhīm & Tarqīq Science)*: Permanently heavy letters (`خ ص ض غ ط ق ظ`), situational heavy/light rules for Raa (`ر`), and the Lam of the Divine Name (Allah).
+- **Tier 3: Core Tajweed Rules (Levels 9–12)**
+  - *Level 9 (Nūn Sākinah & Tanwīn — Iẓhār & Iqlāb)*: Throat letter clarity (ء, هـ, ع, ح, غ, خ), 4 single-word exceptions, and transformation to hidden Meem before Bā’ (`ب`).
+  - *Level 10 (Nūn Sākinah & Tanwīn — Idghām & Ikhfā’)*: Yarmalūn (`يرملون`) consonant assimilation (with/without Ghunnah), and 15 nasalized concealment consonants.
+  - *Level 11 (Mīm Sākinah & Ghunnah Scales)*: Idghām Shafawī, Ikhfā’ Shafawī, and Iẓhār Shafawī (with explicit warning at `و` and `ف`).
+  - *Level 12 (Qalqalah Mechanics & Ranks)*: Echoing consonant mechanics (`قُطْبُ جَدٍّ`), distinct intensity ranks (Kubrā, Wusṭā, Ṣughrā), and vowel-bias prevention.
+- **Tier 4: Quranic Mastery & Advanced Tilāwah (Levels 13–18)**
+  - *Level 13 (Secondary Madd / Madd Far‘ī)*: Extended prolongation caused by Hamzah or Sukūn (Muttaṣil, Munfaṣil, Lāzim Kalimī/Ḥarfī, and ‘Āriḍ li-Sukūn).
+  - *Level 14 (Hamzatul Waṣl & Hamzatul Qaṭ‘)*: Connecting vs. cutting Hamzahs, third-letter vowel determination rule, and irregular noun forms.
+  - *Level 15 (Solar/Lunar Lām & Silent Letters)*: 14 Solar (Idghām) vs. 14 Lunar (Iẓhār) letters, Alif al-Wiqāyah, and zero-vowel calligraphic markers.
+  - *Level 16 (Waqf, Ibtidā’ & Punctuation)*: Quranic stopping marks (`م`, `لا`, `ج`, `صلى`, `قلى`), Rawm and Ishmām acoustics, the 4 obligatory Saktahs, and Tilāwah prostrations.
+  - *Level 17 (Special Recitation Rules & Gharā’ib al-Qur’ān)*: Hafs ‘an ‘Asim transmission anomalies: Imālah Kubrā (`مَجْرٜىٰهَا`), Tashīl (`ءَ۬اعْجَمِيٌّ`), Ishmām (`تَأْمَ۫نَّا`), Naql, and Sīn/Ṣād inscriptions.
+  - *Level 18 (Grand Recitation & Complete Khatm)*: Synthesis of Makhārij and Ṣifāt, Waqf Tāmm, 14 Tilāwah Sajdahs, and authentic Khatm al-Quran protocols.
+
+### FR-2: Interactive Lesson Viewer & Checkpoint System
+- Each level shall contain 4 guided lesson modules with progressive slides (`LessonSlide`).
+- Slides shall display high-contrast Arabic typography with full Tashkeel, phonetic transliterations, contextual Bengali linguistic explanations, and real-world script examples.
+- Every lesson slide shall feature a validation Checkpoint Question (`checkQuestion`) providing instant affirmative or constructive remedial feedback upon selection.
+- Touch-accessible navigation controls (`min-h-[44px]`) shall support previous/next step traversal and progress synchronization.
+
+### FR-3: 630+ Question Assessment Engine & Scoring System
+- The evaluation engine shall feature an inventory of 648 questions (36 questions per level across 18 levels).
+- The engine shall support four distinct interactive question formats:
+  1. Multiple Choice (`multiple_choice`): Visual phonetics and rule selection.
+  2. Audio Match (`audio_match`): Aural phoneme identification.
+  3. Form Match (`form_match`): Positional cursive stroke recognition.
+  4. Word Builder (`word_builder`): Letter assembly drills.
+- **Progression Gate**: Unlocking subsequent curriculum levels requires attaining a minimum score of **70%** on the active level's assessment.
+- The interface shall supply an interactive 36-question palette (`QuizNavigator`) and a dynamic 3-column scoreboard (`QuizScorePill`) highlighting correct, incorrect, and remaining counts.
+- Upon completion, the engine shall render an itemized rule-by-rule review breakdown citing exact Tajweed rule tags (`ruleTag`).
+
+### FR-4: Interactive Practice Ground & Quranic Recitation Hub
+- **Makhraj Directory**: Interactive categorization of letters across the 5 anatomical exit points with audio triggers and physiological diagrams.
+- **Harakat Drill Matrix**: Interactive grid evaluating consonant-vowel combinations across 8 sample letters with Fatḥah, Kasrah, Ḍammah, and Sukūn.
+- **Short Surah Recitation**: Recitation drill containing the final essential Surahs (Al-Fātiḥah, Al-Ikhlāṣ, Al-Falaq, An-Nās) with verse-by-verse audio streams, phonetic transliterations, translations, and verse-level Tajweed notes.
+- **Sensory Reinforcement**: Particle confetti animations (`canvas-confetti`) paired with harmonic audio feedback upon milestone achievements.
+
+### FR-5: Progress Tracking, Gamification & Client-Side Sync
+- User state shall persist locally in `localStorage` without requiring user accounts or third-party server synchronization.
+- Tracked metrics:
+  - Completed lesson IDs (`completedLessons`)
+  - Unlocked curriculum levels (`unlockedLevels`)
+  - Quiz score records mapped by quiz ID (`quizScores`)
+  - Mastered alphabet letters (`masteredLetters`)
+  - Active learning streak count (`streakDays`) and calendar tracking (`lastActiveDate`)
+  - Cumulative practice minutes (`totalMinutesPracticed`) and XP points (`xpPoints`)
+- Streak tracking algorithm shall reward daily engagement, maintain streaks across same-day logins, and handle reset gracefully upon a missed day.
+- Visual progress displays: Header streak pill, XP badge, level completion bars (`calculateProgress`), and a centralized analytics dashboard (`/progress`).
+
+### FR-6: Bilingual Interface & Multi-Engine Audio Playback
+- **Bangla-First Experience**: Default UI language is Bangla (`bn`), with complete bilingual toggle to English (`en`) via `translations.ts`.
+- **Eastern Arabic/Bangla Numerals**: All numerical stats (streaks, minutes, levels, quiz counts) shall format as Eastern Bangla numerals (`০-৯`) in Bangla mode via `toBanglaNumber()`.
+- **Triple-Engine Audio Architecture**:
+  1. Primary: Browser SpeechSynthesis using native `ar-SA` voice engines.
+  2. Fallback: Web Audio API oscillator synthesizing harmonic pentatonic chimes tuned to letter resonance frequencies.
+  3. Studio Stream: Direct HTML5 audio streaming of authentic alphabet MP3s and EveryAyah recitations.
+- **User Customization**: Preferences allow user tuning of audio speed (0.75x, 1.0x, 1.25x), audio auto-play, Arabic font size scaling (Normal, Large, X-Large), and theme mode (Light Sand vs. Dark Night).
 
 ---
 
-### FR-3: মূল্যায়ন ও কুইজ ইঞ্জিন (630-Question Assessment Engine)
-- প্রতিটি লেভেলের জন্য ৩৫টি করে মোট ৬৩০টি প্রশ্ন সংরক্ষিত থাকবে।
-- প্রশ্ন প্রকারভেদ: বহুনির্বাচনী, অডিও ম্যাচিং, হরফের রূপ নির্ণয় ও তাজবীদ নিয়ম শনাক্তকরণ।
-- **উত্তীর্ণের শর্ত**: পরবর্তী লেভেল আনলক করার জন্য শিক্ষার্থীকে ন্যূনতম **৭০% স্কোর** অর্জন করতে হবে।
-- কুইজ শেষ হওয়ার পর বিস্তারিত ৩-কলামের স্কোরবোর্ড এবং প্রতিটি প্রশ্নের সঠিক উত্তর ও নিয়মভিত্তিক ব্যাখ্যা প্রদর্শিত হবে।
+## 3. Non-Functional Requirements (NFR)
 
----
+### NFR-1: Performance & Lightweight Footprint
+- **Static Pre-rendering**: All core application routes (`/`, `/path`, `/practice`, `/quiz`, `/progress`, `/profile`) shall pre-render statically at build time using Next.js 14 App Router.
+- **Bundle Budget**: Initial client JavaScript bundle shall remain under 150 KB First Load JS.
+- **Low Overhead**: Dependency tree strictly limited to essential packages (`lucide-react`, `canvas-confetti`, `clsx`, `tailwind-merge`). Zero bulky UI component frameworks.
+- **Instant Latency**: Cached page transitions and audio playback shall trigger with under 50ms interaction latency.
 
-### FR-4: অফলাইন ড্রিল গ্রাউন্ড ও সূরা তিলাওয়াত (Practice Ground)
-- মাখরাজের ৫টি ক্যাটাগরি (কণ্ঠনালী, জিহ্বা, ঠোঁট, জওফ, নাসিকা) অনুযায়ী ফিল্টারিং ব্যবস্থা।
-- হরকত ড্রিল ম্যাট্রিক্স টেবিল (আটটি হরফের ওপর যবর, যের, পেশ ও সুকূনের রূপ)।
-- পবিত্র কুরআনের শেষ ১০টি ছোট সূরা (সূরা ফাতেহা থেকে সূরা নাস) আয়াতভিত্তিক অডিও ও তাজবীদ গাইডসহ অনুশীলনযোগ্য।
+### NFR-2: Accessibility, Mobile-First Layout & Touch Targets
+- **Zero Horizontal Overflow**: Interface must remain 100% responsive down to 320px viewport width without horizontal scrollbars (`overflow-x: hidden`).
+- **Touch Target Standard**: All interactive buttons, tabs, audio triggers, and quiz choices shall uphold a minimum touch area of 44×44px (`min-h-[44px]`).
+- **Contrast & Legibility**: Visual palettes (Sand `#FAF8F5` light theme and Night `#0E1713` dark theme) shall maintain WCAG 2.1 AA compliant contrast ratios against emerald (`#064E3B`, `#10B981`) and gold accent tones.
+- **ARIA & Assistive Tech**: Buttons, dialogs, progress bars, and audio controls shall supply accessible labels and semantic roles.
 
----
+### NFR-3: Separation of Concerns & Type Safety
+- **Strict 5-Layer Architectural Model**:
+  1. *Presentation Layer* (`src/app/`, `src/components/`): Components strictly handle view rendering ("only for printing/rendering"). Zero inline business logic, math calculations, or schema definitions. Decomposed into focused units under 300 lines.
+  2. *Custom Hooks Layer* (`src/hooks/`): Encapsulates React state, timers, side-effects, and UI event handlers.
+  3. *Runtime Schemas Layer* (`src/schemas/`): Enforces defensive validation schemas and type guards (`validateUserProgress`, `validateUserPreferences`, `validateCurriculumLevel`).
+  4. *Domain Services & Utilities Layer* (`src/lib/`, `src/services/`): Decoupled business logic including `audioService`, `storage`, `offlineManager`, `translations`, and `utils.ts`.
+  5. *Centralized Types Layer* (`src/types/index.ts`): Single source of truth for all domain entities, interfaces, and prop contracts.
+- **Strict TypeScript**: Compilation under TypeScript 5 strict mode with zero implicit `any` types. `npx tsc --noEmit` must pass with 0 errors.
 
-### FR-5: পূর্ণাঙ্গ অফলাইন PWA কার্যকারিতা (Offline PWA & Storage)
-- সার্ভিস ওয়ার্কার এবং `CacheStorage` এর মাধ্যমে সাইটের সমস্ত স্ট্যাটিক অ্যাসেট, পেজ ও ডেটাসেট ক্যাশ করা হবে।
-- ওয়েবসাইট সম্পূর্ণ লোড হওয়ার **২৫ সেকেন্ড পর স্বয়ংক্রিয় ব্যাকগ্রাউন্ড ক্যাশ** চালু হবে।
-- ব্যবহারকারীর প্রগ্রেস (সম্পন্ন লেসন, আনলক লেভেল, কুইজ স্কোর, স্ট্রিক দিন) ডিভাইসের `localStorage`-এ সুরক্ষিত থাকবে।
-- ব্রাউজারে বা ডিভাইসের হোম স্ক্রিনে PWA ইনস্টল করার গাইড মডাল থাকবে।
-
----
-
-### FR-6: দ্বিভাষিক ও কাস্টমাইজেবল অভিজ্ঞতা (Bilingual & Preferences)
-- ডিফল্ট ভাষা বাংলা (`bn`); ব্যবহারকারী চাইলে প্রোফাইল থেকে ইংরেজিতে পরিবর্তন করতে পারবেন।
-- ৩টি অডিও স্পিড মোড: ০.৭৫x (ধীর), ১.০x (স্বাভাবিক), ১.২৫x (দ্রুত)।
-- আরবি ফন্ট সাইজ নিয়ন্ত্রণ: Normal, Large, X-Large।
-- ডার্ক ও লাইট থিম সমর্থন।
-
----
-
-## ৩. অ-কার্যকরী ও কারিগরি প্রয়োজনীয়তাসমূহ (Non-Functional Requirements)
-
-### NFR-1: মডিউলার আর্কিটেকচার ও DRY মানদণ্ড
-- সমস্ত ডাটা টাইপ এককভাবে `src/types/index.ts` বা `@/types`-এ সংরক্ষিত থাকবে।
-- সমস্ত গণনামূলক ও টেক্সট রূপান্তর লজিক `src/lib/utils.ts` বা `@/utils`-এ কেন্দ্রীভূত থাকবে।
-- কোনো পেজে ডুপ্লিকেট হেল্পার ফাংশন লেখা যাবে না।
-- বড় স্ক্রিন বা সেকশনগুলোকে ছোট ও নির্দিষ্ট কম্পোনেন্টে রূপান্তর করতে হবে (`QuizNavigator`, `QuizScorePill`, `StatCard`, `DifficultyBadge`, `RuleBadge`)।
-
-### NFR-2: মোবাইল রেসপন্সিভনেস (Mobile First 320px+)
-- সর্বনিম্ন ৩২০ পিক্সেল স্ক্রিন থেকে শুরু করে যেকোনো স্ক্রিনে কোনো অনুভূমিক ওভারফ্লো (`overflow-x`) থাকা চলবে না।
-- টাচ টার্গেট বোতামের উচ্চতা ন্যূনতম ৪৪×৪৪ পিক্সেল হতে হবে।
-- দীর্ঘ বাংলা শব্দ ও টেবিল রেসপন্সিভভাবে স্ক্রলিং বা র‍্যাপিং করবে।
-
-### NFR-3: পারফরম্যান্স ও লোড টাইম
-- Next.js 14 App Router এর সাহায্যে ১০টি রুট স্ট্যাটিকালি প্রি-রেন্ডার হবে।
-- ইনিশিয়াল লোড সাইজ < ১৫০ কিলোবাইট ফার্স্ট লোড জাভাস্ক্রিপ্ট।
-- অডিও লোডিং লাইটওয়েট ও Web Audio API নির্ভর।
-
-### NFR-4: এরর বাউন্ডারি ও সহনশীলতা
-- ক্লায়েন্ট সাইড আনহ্যান্ডেলড এররের জন্য `src/app/error.tsx` কার্যকর থাকবে।
-- রুট লেআউট ক্র্যাশের জন্য `src/app/global-error.tsx` কার্যকর থাকবে।
-- ভুল ইউআরএলের জন্য কাস্টম ইসলামিক নান্দনিক 404 পেজ `src/app/not-found.tsx` কার্যকর থাকবে।
+### NFR-4: Offline-First Reliability & Error Resilience
+- **Offline Reliability**: Once cached, 100% of curriculum lessons, quizzes, practice tables, and alphabet audio must function flawlessly without an active internet connection.
+- **Automated Service Worker**: Pre-caching manages cache versions `quranpath-core-v1.1.0` and `quranpath-audio-v1.0.0`, initiating automated background caching 25 seconds after page load.
+- **Resilient Error Boundaries**:
+  - Unhandled client-side runtime errors isolated via `src/app/error.tsx`.
+  - Root layout failures handled by `src/app/global-error.tsx`.
+  - Missing routes handled by custom aesthetic 404 page `src/app/not-found.tsx`.
+- **Defensive Storage Parsing**: Malformed local storage payloads must fall back gracefully to `DEFAULT_PROGRESS` or `DEFAULT_PREFERENCES` without terminating the runtime session.

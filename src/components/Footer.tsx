@@ -54,34 +54,35 @@ export const Footer = () => {
             <h4 className="text-xs font-bold uppercase tracking-wider text-sand-900 dark:text-sand-200 mb-3">
               {t.curriculumTitle}
             </h4>
-            <ul className="space-y-2 text-xs text-sand-600 dark:text-sand-400">
+            {/* Link touch target standard: min-h-[44px] flex items-center (supercedes legacy block py-2 for full >= 44px compliance) */}
+            <ul className="space-y-1 text-xs text-sand-600 dark:text-sand-400">
               <li>
-                <Link href="/path#level-1" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path#level-1" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "লেভেল ১: আরবি বর্ণমালা" : "Level 1: Arabic Alphabet"}
                 </Link>
               </li>
               <li>
-                <Link href="/path#level-2" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path#level-2" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "লেভেল ২: মাখারিজুল হুরুফ" : "Level 2: Makharij al-Huruf"}
                 </Link>
               </li>
               <li>
-                <Link href="/path#level-3" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path#level-3" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "লেভেল ৩: অক্ষরের রূপান্তর" : "Level 3: Letter Forms"}
                 </Link>
               </li>
               <li>
-                <Link href="/path#level-4" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path#level-4" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "লেভেল ৪: হরকত ও সুকূন" : "Level 4: Harakat & Sukoon"}
                 </Link>
               </li>
               <li>
-                <Link href="/path#level-5" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path#level-5" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "লেভেল ৫: তানবীন ও ওয়াকফ" : "Level 5: Tanween & Waqf"}
                 </Link>
               </li>
               <li>
-                <Link href="/path#level-6" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path#level-6" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "লেভেল ৬: তাশদীদ ও গুন্নাহ" : "Level 6: Shaddah & Ghunnah"}
                 </Link>
               </li>
@@ -93,24 +94,24 @@ export const Footer = () => {
             <h4 className="text-xs font-bold uppercase tracking-wider text-sand-900 dark:text-sand-200 mb-3">
               {t.toolsTitle}
             </h4>
-            <ul className="space-y-2 text-xs text-sand-600 dark:text-sand-400">
+            <ul className="space-y-1 text-xs text-sand-600 dark:text-sand-400">
               <li>
-                <Link href="/practice" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/practice" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {t.letterDrill}
                 </Link>
               </li>
               <li>
-                <Link href="/quiz" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/quiz" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {t.quizzes}
                 </Link>
               </li>
               <li>
-                <Link href="/progress" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/progress" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {t.progressStats}
                 </Link>
               </li>
               <li>
-                <Link href="/path" className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                <Link href="/path" className="min-h-[44px] flex items-center hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                   {isBangla ? "১৮টি লেভেলের পূর্ণাঙ্গ রোডম্যাপ" : "Full 18-Level Roadmap"}
                 </Link>
               </li>
@@ -142,7 +143,7 @@ export const Footer = () => {
               <button
                 type="button"
                 onClick={promptInstall}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-750 hover:to-teal-750 text-gold-200 text-xs font-bold border border-gold-500/30 shadow-sm transition-all active:scale-95"
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-750 hover:to-teal-750 text-gold-200 text-xs font-bold border border-gold-500/30 shadow-sm transition-all active:scale-95"
               >
                 <Download className="w-4 h-4 text-gold-300 animate-bounce-short" />
                 <span>{isBangla ? "অ্যাপ ইনস্টল করুন" : "Install App"}</span>

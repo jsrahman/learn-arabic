@@ -4,105 +4,148 @@
 > **Framework**: Next.js 14 App Router, TypeScript (Strict), Tailwind CSS  
 > **Target Audience**: AI Agents (Antigravity, Claude Code, Cursor, Copilot) & Human Contributors  
 
-এই নথিতে QuranPath প্ল্যাটফর্মে কোড লেখা, রিফ্যাক্টরিং এবং নতুন ফিচার যুক্ত করার জন্য বাধ্যতামূলক নির্দেশনাসমূহ লিপিবদ্ধ করা হলো। যেকোনো এজেন্টকে কাজ শুরুর আগে এই নিয়মগুলো অনুসরণ করতে হবে।
+This document defines the mandatory operating guidelines, architectural constraints, and verification protocols for creating code, refactoring modules, and adding features to the QuranPath platform. Any AI agent or developer working in this repository must strictly adhere to these instructions.
 
 ---
 
-## 🏛️ ১. মূল নীতিসমূহ (Core Principles)
+## 🏛️ 1. Core Principles
 
-### ক. মডিউলার আর্কিটেকচার (Module-Based Architecture)
-- প্রতিটি মডিউল বা ডোমেইন (`learn`, `quiz`, `practice`, `progress`, `profile`) নিজস্ব ফোল্ডারে সুবিন্যস্ত থাকবে।
-- পেজ কম্পোনেন্টগুলো (`page.tsx`) শুধুমাত্র অর্কেস্ট্রেশন (Orchestration) এবং স্টেট হ্যান্ডলিং করবে। বড় ভিজ্যুয়াল ব্লকগুলোকে অবশ্যই ছোট সাব-কম্পোনেন্টে ভাগ করতে হবে।
-- নতুন কোনো পুনঃব্যবহারযোগ্য ফিচার যুক্ত করার সময় তা সরাসরি পেজে না লিখে `src/components/` অথবা প্রাসঙ্গিক সাব-ফোল্ডারে কম্পোনেন্ট তৈরি করে ইমপোর্ট করতে হবে।
+### 1.1 Strict 5-Layer Separation of Concerns
+QuranPath enforces a strict 5-layer separation of concerns. Every file in the repository belongs to exactly one layer with clearly bounded responsibilities:
 
-### খ. DRY প্রিন্সিপাল (Don't Repeat Yourself)
-- **জিরো ডুপ্লিকেশন**: একাধিক ফাইলে একই লজিক, ফাংশন বা স্টাইল ব্লক হুবহু কপি করা সম্পূর্ণ নিষিদ্ধ।
-- কোনো ফাংশন বা স্ট্রিং ম্যাপিং দুই বা ততোধিক জায়গায় প্রয়োজন হলে তা অবশ্যই `src/lib/utils.ts`-এ যুক্ত করতে হবে।
-- কোনো ব্যাজ, কার্ড বা UI ব্লক দুই জায়গায় লাগলে তা অবিলম্বে কম্পোনেন্টে রূপান্তর করতে হবে (যেমন: `DifficultyBadge`, `RuleBadge`, `StatCard`)।
+1. **Presentation / View Layer (`src/app/`, `src/components/`)**:
+   - **Strictly for rendering and display only ("only for printing/rendering")**.
+   - **Zero** inline business logic, mathematical calculations, timers, audio synthesis calls, or schema definitions.
+   - Page components (`page.tsx`) must be thin orchestrators (<80 lines) that invoke custom hooks and render presentation components.
+   - UI blocks are decomposed into small, single-responsibility subcomponents (<300 lines).
+   - Preserves 100% UI Bangla localization via `translations` dictionary and dynamic props.
+2. **Custom Hooks Layer (`src/hooks/`)**:
+   - Encapsulates all React state (`useState`, `useEffect`, `useCallback`, `useMemo`), timer lifecycles, and user action handlers.
+   - Acts as the pure interface contract between presentation components and domain services.
+   - Returns clean, consumable data structures and callback functions to views.
+3. **Schemas & Validation Layer (`src/schemas/`)**:
+   - Defensive runtime validation schemas and type guards (`progressSchema.ts`, `preferencesSchema.ts`, `curriculumSchema.ts`).
+   - Validates all external, storage, or untrusted inputs before consumption by domain logic.
+4. **Domain Services & Utilities Layer (`src/lib/`, `src/services/`)**:
+   - Headless audio playback engine (`audioService.ts`), persistence storage sync (`storage.ts`), offline cache manager (`offlineManager.ts`), bilingual dictionaries (`translations.ts`), and pure math/string utilities (`utils.ts`, `confetti.ts`, `progressUtils.ts`).
+   - Completely decoupled from React and JSX; 100% unit-testable.
+5. **Types Layer (`src/types/index.ts` / `@/types`)**:
+   - Single source of truth for all domain models, curriculum entities, user progress states, and UI prop contracts.
+
+### 1.2 DRY Principle (Don't Repeat Yourself) & Zero Duplication
+- **Zero Duplication**: Duplicating business logic, calculations, or repeated visual structures across multiple files is strictly forbidden.
+- Any function, calculation, or mapping used in two or more places must be centralized in `src/lib/utils.ts` and exported via `@/utils`.
+- Any recurring visual pattern (badges, stat cards, metric pills) must be encapsulated into a reusable component (e.g., `DifficultyBadge`, `RuleBadge`, `StatCard`).
 
 ---
 
-## 📦 ২. টাইপ সিস্টেমের নিয়মাবলী (`src/types/index.ts` বা `@/types`)
+## 📦 2. Type System Rules (`src/types/index.ts` or `@/types`)
 
-1. **একক সত্যের উৎস (Single Source of Truth)**:
-   - সমস্ত ডাটা মডেল, ইন্টারফেস ও টাইপ সংজ্ঞা `src/types/index.ts`-এ থাকতে হবে।
-   - যেকোনো ফাইল থেকে টাইপ ইমপোর্টের জন্য `@/types` ব্যবহার করতে হবে:
+1. **Single Source of Truth**:
+   - All data models, interfaces, prop contracts, and context types must reside in `src/types/index.ts`.
+   - Always import types using the centralized path alias:
      ```typescript
      import type { LearningLevel, QuizQuestion, LessonSlide, UserProgress } from "@/types";
      ```
-2. **ইনলাইন টাইপ নিষিদ্ধ**:
-   - পেজ বা ডেটা ফাইলে সরাসরি `interface QuizQuestion { ... }` জাতীয় বড় ইন্টারফেস ডিক্লেয়ার করা যাবে না।
-   - লোকাল প্রপস ছাড়া সব ডোমেইন মডেল `@/types` থেকে আসতে হবে।
+2. **Strict Prohibition Against Inline Types**:
+   - Do **not** declare domain interfaces or types (e.g., `interface QuizQuestion { ... }`) directly in page or data files.
+   - Only localized component prop interfaces (e.g., `interface HomeHeroProps { ... }`) may be declared inside presentation component files if they are strictly private to that single component.
 
 ---
 
-## 🛠️ ৩. ইউটিলিটি ফাংশনের নিয়মাবলী (`src/lib/utils.ts` বা `@/utils`)
+## 🛠️ 3. Utility & Services Rules (`src/lib/utils.ts` or `@/utils`)
 
-1. **সেন্ট্রালাইজড ইউটিলিটি**:
-   - সব ক্যালকুলেশন, টেক্সট ফরম্যাটিং ও রূপান্তর ফাংশন `src/lib/utils.ts`-এ সংরক্ষিত থাকবে।
-   - ব্যবহারের জন্য সরাসরি `@/utils` থেকে ইমপোর্ট করতে হবে:
+1. **Centralized Utilities**:
+   - All math calculations, date formatting, progress algorithms, and text transformations belong in `src/lib/utils.ts`.
+   - Access utilities directly via the `@/utils` alias:
      ```typescript
      import { cn, toBanglaNumber, formatMinutes, getDifficultyLabel, getOptionLabel } from "@/utils";
      ```
-2. **নতুন ইউটিলিটি তৈরির নিয়ম**:
-   - কোনো নতুন ম্যাথমেটিক্যাল ক্যালকুলেশন বা ফরম্যাটিং লজিক তৈরি হলে তা পেজে লোকাল ফাংশন না বানিয়ে `src/lib/utils.ts`-এ যুক্ত করতে হবে।
+2. **Headless Domain Services**:
+   - Non-trivial workflows (audio synthesis, storage read/write with versioning, service worker cache control) must be encapsulated in dedicated service modules under `src/lib/`.
+3. **Rule for New Helpers**:
+   - Never write inline math or ad-hoc calculation functions inside `.tsx` files. Extract the calculation into a pure, testable helper in `src/lib/utils.ts`.
 
 ---
 
-## 🧩 ৪. কম্পোনেন্ট বিভাজন (Component Division)
+## 🧩 4. Component Division & UI Rules
 
-1. **ফাইলের আকার ও দায়িত্ব**:
-   - কোনো কম্পোনেন্ট ফাইল ৩০০ লাইনের বেশি হলে তা বিভাজনের নির্দেশ দেয়।
-   - কুইজ, স্লাইড ভিউয়ার বা ডেটাসেট ভিত্তিক জটিল সেকশনগুলোর জন্য উপযুক্ত সাব-কম্পোনেন্ট ফোল্ডার ব্যবহার করুন:
-     - `src/components/quiz/QuizNavigator.tsx`
-     - `src/components/quiz/QuizScorePill.tsx`
-     - `src/components/StatCard.tsx`
-     - `src/components/DifficultyBadge.tsx`
-     - `src/components/RuleBadge.tsx`
-2. **টাচ ফ্রেন্ডলি ও রেসপন্সিভ**:
-   - প্রতিটি বোতাম এবং ইন্টারঅ্যাক্টিভ এলিমেন্টে মিনিমাম `min-h-[44px]` টাচ টার্গেট নিশ্চিত করতে হবে।
-   - ৩২০ পিক্সেল ভিউপোর্টে কোনো অনুভূমিক স্ক্রলবার (`overflow-x`) সৃষ্টি হওয়া চলবে না।
-
----
-
-## 🇧🇩 ৫. ভাষা ও লোকালাইজেশন (Bangla-First Rules)
-
-1. **ডিফল্ট বাংলা**:
-   - অ্যাপ্লিকেশনের ডিফল্ট ভাষা বাংলা (`bn`)।
-   - সমস্ত ইউজার-ফেসিং টেক্সট, শিরোনাম, কুইজ অপশন ও মাখরাজের ব্যাখ্যা বাংলায় উপস্থিত থাকতে হবে।
-2. **দ্বিভাষিক সমর্থন**:
-   - টেক্সট রেন্ডারিংয়ে `isBangla ? banglaText : englishText` প্যাটার্ন অনুসরণ করতে হবে।
-   - সংখ্যা প্রদর্শনের ক্ষেত্রে বাংলায় `toBanglaNumber(num)` ইউটিলিটি ব্যবহার করতে হবে।
+1. **Presentation-Only Responsibility & Sizing**:
+   - Components must strictly receive data and callbacks via props and output JSX.
+   - Any presentation component approaching or exceeding **300 lines** must be decomposed into focused subcomponents.
+   - Use domain-specific subcomponent directories:
+     - `src/components/home/*`
+     - `src/components/path/*`
+     - `src/components/lesson/*`
+     - `src/components/quiz/*`
+     - `src/components/practice/*`
+     - `src/components/progress/*`
+     - `src/components/profile/*`
+     - `src/components/offline/*`
+     - `src/components/pwa/*`
+     - `src/components/navbar/*`
+     - `src/components/footer/*`
+     - `src/components/level/*`
+2. **Touch Targets & Responsive Layout**:
+   - Every button, tab, and interactive touchpoint must have a minimum touch target height of `min-h-[44px]`.
+   - The user interface must support mobile viewports down to **320px** with **zero horizontal overflow** (`overflow-x`).
+   - All touch targets must provide clear visual active/focus states.
 
 ---
 
-## 🔄 ৬. ভেরিফিকেশন ও কমিট প্রটোকল (Mandatory Verification Protocol)
+## 🌐 5. Language & Localization Boundaries
 
-যেকোনো পরিবর্তন সম্পন্নের পর এজেন্টকে অবশ্যই নিচের ধাপগুলো ক্রমানুসারে সম্পন্ন করতে হবে:
+1. **Developer-Facing Language (English Only)**:
+   - All developer documentation (`README.md`, `AGENTS.md`, `REQUIREMENTS.md`, `CONTRIBUTING.md`) must be in English.
+   - All code-level documentation, docstrings, internal comments, and variable/function identifiers must be written strictly in **English**.
+2. **Bangla-First User Interface**:
+   - The default user-facing application language is Bangla (`bn`).
+   - All lesson text, Tajweed rules, Makhraj explanations, and quiz questions must be natively available in authentic Bangla.
+3. **Bilingual Support Standard**:
+   - When rendering text in components, adhere to the bilingual pattern:
+     ```typescript
+     {isBangla ? banglaText : englishText}
+     ```
+   - For static UI strings, use the centralized `translations` dictionary from `src/lib/translations.ts`.
+4. **Eastern Arabic / Bangla Numerals**:
+   - Whenever numbers (scores, level numbers, questions counts, streaks, percentages) are displayed in Bangla UI mode, format them with `toBanglaNumber`:
+     ```typescript
+     <span>{isBangla ? toBanglaNumber(value) : value}</span>
+     ```
+
+---
+
+## 🔄 6. Mandatory Verification Protocol
+
+After completing any change, the agent must execute the following verification sequence in order:
 
 ```bash
-# ১. টাইপস্ক্রিপ্ট কম্পাইলেশন যাচাই
+# 1. Verify TypeScript compilation
 npx tsc --noEmit
 
-# ২. প্রোডাকশন বিল্ড যাচাই
+# 2. Verify Next.js production build
 npm run build
 
-# ৩. গিট স্ট্যাটাস চেক
+# 3. Inspect Git status
 git status
 
-# ৪. কমিট ও গিটহাবে পুশ
+# 4. Commit and push with Conventional Commits
 git add .
-git commit -m "<type>(<scope>): <clear descriptive message>"
+git commit -m "<type>(<scope>): <clear descriptive message in present tense>"
 git push origin main
 ```
 
-> ⚠️ **সতর্কতা**: `npx tsc --noEmit` বা `npm run build`-এ কোনো একটিও এরর বা ওয়ার্নিং থাকলে কোনো অবস্থাতেই কোড কমিট বা পুশ করা যাবে না। প্রথমে সমস্যার সঠিক সমাধান করতে হবে।
+> ⚠️ **Strict Zero-Tolerance Policy**: If `npx tsc --noEmit` or `npm run build` produces any error or warning, you are strictly prohibited from committing or pushing code. You must diagnose and resolve the issue immediately before proceeding.
 
 ---
 
-## 🚫 ৭. নিষিদ্ধ কার্যকলাপ (Strict DONTs)
-- ❌ কোডবেসের টাইপ সংজ্ঞা বিভিন্ন ফাইলে ছড়িয়ে রাখা বা ডুপ্লিকেট করা নিষিদ্ধ।
-- ❌ পেজ ফাইলে ইনলাইন ফাংশন লিখে কোড বড় করা নিষিদ্ধ।
-- ❌ ইংরেজি হার্ডকোড করে বাংলা ইন্টারফেস ভঙ্গ করা নিষিদ্ধ।
-- ❌ এরর হ্যান্ডলিং পেজ (`not-found.tsx`, `error.tsx`, `global-error.tsx`) মুছে ফেলা বা বাইপাস করা নিষিদ্ধ।
-- ❌ অফলাইন ফাংশনালিটি ক্ষতিগ্রস্ত করে এমন কোনো থার্ড-পার্টি সিডিএন বা আনক্যাশড এক্সটার্নাল এপিআই যোগ করা নিষিদ্ধ।
+## 🚫 7. Strict DONTs
+
+- ❌ **DONT put business logic in views**: Never place state machines, math calculations, timers, or audio APIs inside page or `.tsx` component files.
+- ❌ **DONT declare inline types**: Never scatter ad-hoc type or interface declarations across component or data files; always centralize them in `@/types`.
+- ❌ **DONT duplicate logic**: Never copy-paste functions, mappings, or repetitive UI blocks; extract to `@/utils` or shared components.
+- ❌ **DONT write non-English comments**: Never write Bengali or non-English code comments, docstrings, variable names, or git commit messages.
+- ❌ **DONT break Bangla UI**: Never hardcode English strings into user-facing views without bilingual fallback support, and never omit `toBanglaNumber` for numbers in Bangla mode.
+- ❌ **DONT delete error boundaries**: Never delete or bypass Next.js error handling pages (`not-found.tsx`, `error.tsx`, `global-error.tsx`).
+- ❌ **DONT break 100% offline capability**: Never introduce un-cached external CDNs, un-cached fonts, or synchronous third-party APIs that fail when offline.
+- ❌ **DONT commit without verification**: Never commit or push changes without confirming that `npx tsc --noEmit` and `npm run build` pass with 0 errors.

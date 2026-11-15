@@ -2,8 +2,10 @@
  * QuranPath — Centralized Type Definitions
  * 
  * All core domain entities, curriculum structures, quiz models,
- * user progress states, and UI prop contracts are defined here.
+ * user progress states, contexts, and UI prop contracts are defined here.
  */
+
+import type React from "react";
 
 // ============================================================================
 // 1. ALPHABET & PHONETICS (MAKHRAJ)
@@ -28,7 +30,7 @@ export interface ArabicLetter {
   makhraj: string; // Articulation point description
   makhrajBangla: string;
   forms: LetterForms;
-  connectsAfter: boolean; // false for the 6 non-connecting letters (ا د ذ ر ز ও)
+  connectsAfter: boolean; // false for the 6 non-connecting letters (ا د ذ ر ز و)
   category: MakhrajCategory;
   exampleWord: string;
   exampleTranslit: string;
@@ -207,4 +209,189 @@ export interface UserPreferences {
   showTransliteration: boolean;
   arabicFontSize: FontSizeScale;
   explanationLanguage: LanguageCode;
+}
+
+// ============================================================================
+// 7. CONTEXTS, PWA & OFFLINE INFRASTRUCTURE
+// ============================================================================
+
+export interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: "accepted" | "dismissed";
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
+export type PlatformType = "desktop" | "android" | "ios" | "unknown";
+
+export interface PWAContextType {
+  isInstallable: boolean;
+  isInstalled: boolean;
+  hasNativePrompt: boolean;
+  platform: PlatformType;
+  promptInstall: () => Promise<boolean | void>;
+  isIOS: boolean;
+  isAndroid: boolean;
+  isDesktop: boolean;
+  showInstallModal: boolean;
+  setShowInstallModal: (val: boolean) => void;
+  showIOSPrompt: boolean;
+  setShowIOSPrompt: (val: boolean) => void;
+}
+
+export interface ThemeContextType {
+  preferences: UserPreferences;
+  progress: UserProgress;
+  mounted?: boolean;
+  updatePreferences: (partial: Partial<UserPreferences>) => void;
+  updateProgress: (newProgress: UserProgress) => void;
+  refreshProgress: () => void;
+  toggleTheme: () => void;
+  fontSizeClass: string;
+}
+
+export interface OfflineStatus {
+  isOnline: boolean;
+  isFullyCached: boolean;
+  cachedCount: number;
+  totalCount: number;
+  percent: number;
+}
+
+export type OfflineDownloadState = "cached" | "downloading" | "not-cached" | "error";
+
+// ============================================================================
+// 8. PRACTICE, PROGRESS & NAVIGATION DOMAIN TYPES
+// ============================================================================
+
+export type PracticeTab =
+  | "alphabet"
+  | "harakat"
+  | "surahs"
+  | "all"
+  | "tanween"
+  | "sukoon"
+  | "shaddah"
+  | "madd"
+  | "special";
+
+export type LevelStatus = "completed" | "current" | "locked";
+
+export type ArabicFontSize = FontSizeScale;
+
+export interface DailyActivity {
+  minutesToAdd: number;
+  xpToAdd: number;
+  date?: string;
+}
+
+export interface StreakUpdateResult {
+  streak: number;
+  lastActiveDate: string;
+}
+
+export interface ConfettiOptions {
+  count?: number;
+  playAudio?: boolean;
+  originY?: number;
+  colors?: string[];
+  particleCount?: number;
+  angle?: number;
+  spread?: number;
+  startVelocity?: number;
+  decay?: number;
+  gravity?: number;
+  drift?: number;
+  ticks?: number;
+  origin?: { x?: number; y?: number };
+  shapes?: string[];
+  scalar?: number;
+  zIndex?: number;
+  disableForReducedMotion?: boolean;
+}
+
+export interface ChildrenProps {
+  children: React.ReactNode;
+}
+
+// ============================================================================
+// 9. UI COMPONENT PROPS
+// ============================================================================
+
+export interface ArabicDisplayProps {
+  arabic: string;
+  transliteration?: string;
+  name?: string;
+  nameBangla?: string;
+  makhraj?: string;
+  audioPrompt?: string;
+  audioUrl?: string;
+  className?: string;
+  badge?: string;
+  interactive?: boolean;
+}
+
+export interface AudioButtonProps {
+  arabicText?: string;
+  audioUrl?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+  label?: string;
+  variant?: "primary" | "secondary" | "subtle" | "gold";
+}
+
+export interface DifficultyBadgeProps {
+  difficulty?: DifficultyType | string;
+  isBangla?: boolean;
+  className?: string;
+}
+
+export interface LevelCardProps {
+  level: LearningLevel;
+  isUnlocked: boolean;
+  completedLessonsInLevel: number;
+}
+
+export interface RuleBadgeProps {
+  badge?: string;
+  isBangla?: boolean;
+  className?: string;
+}
+
+export interface StatCardProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  iconBgColor?: string;
+  className?: string;
+}
+
+export interface QuizNavigatorProps {
+  totalQuestions: number;
+  currentIndex: number;
+  results: Record<number, QuestionResult>;
+  onSelectQuestion: (index: number) => void;
+  paletteTitle?: string;
+  correctLabel?: string;
+  answeredLabel?: string;
+}
+
+export interface TierFilter {
+  id: string;
+  tier?: string;
+  label: string;
+}
+
+export interface QuizScorePillProps {
+  scorePercent: number;
+  correctCount: number;
+  totalQuestions: number;
+  passed: boolean;
+  yourScoreLabel?: string;
+  accuracyLabel?: string;
+  statusLabel?: string;
+  passedText?: string;
+  failedText?: string;
 }

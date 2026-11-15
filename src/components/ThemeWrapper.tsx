@@ -29,7 +29,7 @@ const ThemeContext = createContext<ThemeContextType>({
   updateProgress: () => {},
   refreshProgress: () => {},
   toggleTheme: () => {},
-  fontSizeClass: "text-4xl md:text-5xl",
+  fontSizeClass: "text-2xl sm:text-3xl md:text-4xl leading-[1.9]",
 });
 
 export function ThemeWrapper({ children }: { children: React.ReactNode }) {
@@ -78,10 +78,10 @@ export function ThemeWrapper({ children }: { children: React.ReactNode }) {
 
   const fontSizeClass =
     preferences.arabicFontSize === "xlarge"
-      ? "text-6xl md:text-7xl leading-loose"
+      ? "text-4xl sm:text-5xl md:text-6xl leading-[2.1]"
       : preferences.arabicFontSize === "large"
-      ? "text-5xl md:text-6xl leading-relaxed"
-      : "text-3xl md:text-4xl leading-normal";
+      ? "text-3xl sm:text-4xl md:text-5xl leading-[2]"
+      : "text-2xl sm:text-3xl md:text-4xl leading-[1.9]";
 
   // Prevent hydration mismatch while mounting
   return (

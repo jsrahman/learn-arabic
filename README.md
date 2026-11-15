@@ -1,145 +1,198 @@
 # 📖 QuranPath (কুরআনপাঠ)
-> **পবিত্র কুরআন পাঠ ও সহীহ তাজবীদ শিক্ষা — Progressive Web Application (PWA)**
+> **Master Quranic Arabic Reading & Tajweed from Scratch — Progressive Web Application (PWA)**
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
-[![PWA Ready](https://img.shields.io/badge/PWA-Offline%20Ready-emerald)](https://web.dev/progressive-web-apps/)
-[![License](https://img.shields.io/badge/License-MIT-amber)](#)
+[![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20Ready-emerald)](https://web.dev/progressive-web-apps/)
+[![License](https://img.shields.io/badge/License-MIT-amber)](#-license)
 
-QuranPath হলো একটি আধুনিক, স্বজ্ঞাত ও ইন্টার‍্যাক্টিভ শিক্ষামূলক প্ল্যাটফর্ম, যা একজন শিক্ষার্থীকে সম্পূর্ণ শূন্য থেকে শুরু করে সহীহ মাখরাজ ও তাজবীদ সহকারে পবিত্র কুরআন তিলাওয়াতে দক্ষ করে তোলে। প্ল্যাটফর্মটি ১০০% অফলাইন সমর্থন, বাংলা-প্রথম ইন্টারফেস এবং ১৮টি স্তরবিশিষ্ট সুশৃঙ্খল পাঠ্যক্রমের ওপর ভিত্তি করে নির্মিত।
-
----
-
-## 🌟 মূল বৈশিষ্ট্যসমূহ (Key Features)
-
-- **📚 ১৮টি প্রগ্রেসিভ লেভেল (18 Levels Curriculum)**:
-  - **Tier 1: Foundations (স্তর ১ - ৪)**: আরবি বর্ণমালা, নুকতার অবস্থান ও ৪টি রূপ।
-  - **Tier 2: Vowels & Orthography (স্তর ৫ - ৮)**: হরকত (যবর, যের, পেশ), তানভীন, সুকূন/জযম ও তাশদীদ।
-  - **Tier 3: Core Tajweed Rules (স্তর ৯ - ১৪)**: মাদ্দ, নূন সাকিন ও তানভীন (ইযহার, ইদগাম, ইকলাব, ইখফা), মীম সাকিন, কলকলাহ ও ওয়াক্‌ফ।
-  - **Tier 4: Quranic Mastery (স্তর ১৫ - ১৮)**: বিশেষ রিওয়ায়েত নিয়ম (ইমালাহ, তাশহীল, ইশমাম), তিলাওয়াত সিজদাহ ও পূর্ণ সূরা তিলাওয়াত।
-- **🎯 ৬৩০টি ইন্টার‍্যাক্টিভ মূল্যায়ন প্রশ্ন (630 Rigorous Quiz Questions)**:
-  - প্রতিটি লেভেলে ৩৫টি করে বহুনির্বাচনী, অডিও ম্যাচিং ও রূপ নির্ণয়ের প্রশ্ন।
-  - লেভেল আনলক করার জন্য ন্যূনতম ৭০% স্কোর অর্জনের নিয়ম।
-  - তাৎক্ষণিক ব্যাখ্যা ও সঠিক নিয়ম পর্যালোচনা।
-- **⚡ সম্পূর্ণ অফলাইন সুবিধা (100% Offline Capability)**:
-  - ওয়েবসাইট লোড হওয়ার ২৫ সেকেন্ড পর স্বয়ংক্রিয় ব্যাকগ্রাউন্ড ক্যাশিং (`CacheStorage` ও `ServiceWorker`)।
-  - ইন্টারনেট সংযোগ বন্ধ থাকলেও পাঠ্যক্রম, অনুশীলন ও কুইজ নিরবচ্ছিন্নভাবে ব্যবহারযোগ্য।
-- **📱 PWA ইন্সটলেশন (Mobile & Desktop App)**:
-  - অ্যান্ড্রয়েড, আইওএস (সাফারি), ক্রোম ও উইন্ডোজে সরাসরি স্ট্যান্ডঅ্যালোন অ্যাপ হিসেবে ইন্সটলযোগ্য।
-- **🇧🇩 বাংলা-প্রথম ইউজার ইন্টারফেস (Bangla-First Experience)**:
-  - ডিফল্ট ভাষা বাংলা; সকল শিরোনাম, বাটন, মাখরাজের নিয়ম ও নির্দেশনা বাংলায় উপস্থাপিত। প্রয়োজনানুযায়ী ইংরেজিতে পরিবর্তনের সুযোগ।
-- **🌙 ডার্ক ও লাইট থিম (Sand & Night Themes)**:
-  - ইসলামিক এমারেল্ড গ্রিন (`#064E3B`) ও গোল্ড অ্যাকসেন্ট সহ চোখের জন্য আরামদায়ক নকশা।
+QuranPath is an open-source, interactive digital learning platform designed to take learners from the absolute basics of the Arabic alphabet (Noorani Qaida) to complete, authentic recitation of the Holy Quran with precise Tajweed rules. Engineered as a high-performance Progressive Web Application (PWA), QuranPath delivers a **Bangla-first learning experience** with seamless English bilingual toggling, authentic audio pronunciation, 18 structured curriculum levels, 630+ evaluation quizzes, and full offline functionality.
 
 ---
 
-## 🏗️ আর্কিটেকচারাল স্ট্যান্ডার্ডস (Architecture & Standards)
+## 🌟 Key Features
 
-প্ল্যাটফর্মটি **মডিউলার আর্কিটেকচার (Module-based Architecture)** এবং **DRY (Don't Repeat Yourself)** নীতি কঠোরভাবে অনুসরণ করে নির্মিত।
-
-```
-learn-arabic/
-├── src/
-│   ├── app/                      # Next.js 14 App Router
-│   │   ├── error.tsx             # ক্লায়েন্ট রানটাইম এরর বাউন্ডারি
-│   │   ├── global-error.tsx      # রুট লেআউট ক্র্যাশ বাউন্ডারি
-│   │   ├── not-found.tsx         # কাস্টম 404 পেজ
-│   │   ├── layout.tsx            # রুট লেআউট ও PWA মেটাডাটা
-│   │   ├── page.tsx              # হোমপেজ ও হিরো স্পটলাইট
-│   │   ├── path/                 # ১৮টি লেভেলের ভিজ্যুয়াল রোডম্যাপ
-│   │   ├── learn/[lessonId]/     # ইন্টার‍্যাক্টিভ স্লাইড ভিউয়ার
-│   │   ├── quiz/                 # কুইজ হাব ও অ্যারেনা ([quizId])
-│   │   ├── practice/             # মাখরাজ, হরকত ও সূরা অনুশীলন
-│   │   ├── progress/             # স্ট্রিক, এক্সপি ও অ্যানালিটিক্স
-│   │   └── profile/              # অডিও, ফন্ট, থিম ও ভাষা সেটিংস
-│   ├── components/               # বিভক্ত ও পুনঃব্যবহারযোগ্য কম্পোনেন্ট
-│   │   ├── DifficultyBadge.tsx   # লেভেল কাঠিন্য ব্যাজ
-│   │   ├── RuleBadge.tsx         # তাজবীদ ও লেসন রুল ব্যাজ
-│   │   ├── StatCard.tsx          # অ্যানালিটিক্স ও মেট্রিক্স কার্ড
-│   │   ├── LevelCard.tsx         # লেভেল প্রিভিউ কার্ড
-│   │   ├── AudioButton.tsx       # সাউন্ড ট্রিগার কন্ট্রোল
-│   │   ├── quiz/                 # কুইজের সাব-কম্পোনেন্টস
-│   │   │   ├── QuizNavigator.tsx # ৩৫-প্রশ্নের প্যালেট
-│   │   │   └── QuizScorePill.tsx # ৩-অংশের স্কোরবোর্ড
-│   │   ├── Navbar.tsx            # গ্লোবাল নেভিগেশন
-│   │   ├── Footer.tsx            # ফুটার ও PWA কন্ট্রোল
-│   │   └── PWAInstallModal.tsx   # ডিভাইস ইন্সটলেশন গাইড
-│   ├── types/                    # সেন্ট্রালাইজড টাইপ সিস্টেম
-│   │   └── index.ts              # সকল ডোমেইন ও ডেটা টাইপ
-│   ├── types.ts                  # রুট রি-এক্সপোর্ট (`@/types`)
-│   ├── lib/
-│   │   ├── utils.ts              # সেন্ট্রালাইজড ইউটিলিটি ফাংশন
-│   │   ├── storage.ts            # লোকাল স্টোরেজ ও স্ট্রিক সিঙ্ক
-│   │   ├── offlineManager.ts     # অফলাইন ক্যাশিং সার্ভিস
-│   │   ├── audioService.ts       # অডিও সিন্থেসিস ও প্লেব্যাক
-│   │   └── translations.ts       # দ্বিভাষিক টেক্সট ডিকশনারি
-│   ├── utils.ts                  # রুট রি-এক্সপোর্ট (`@/utils`)
-│   └── data/                     # পাঠ্যক্রম ও ডেটাসেট
-│       ├── alphabet.ts           # ২৮টি আরবি হরফ ও মাখরাজ
-│       ├── levels.ts             # ১৮টি লেভেলের অবজেক্টিভ
-│       ├── surahs.ts             # শেষ ১০টি ছোট সূরা ও তাজবীদ
-│       ├── lessons/              # ৫টি টিয়ারের সকল লেসন স্লাইড
-│       └── quizzes/              # ১৮টি লেভেলের ৬৩০টি প্রশ্ন
-```
-
-### ১. কেন্দ্রীভূত টাইপ সিস্টেম (`src/types/index.ts` বা `@/types`)
-অ্যাপ্লিকেশনের কোনো ফাইলে ইনলাইন ডুপ্লিকেট ইন্টারফেস তৈরি করা সম্পূর্ণ নিষিদ্ধ। সমস্ত ডেটা ও প্রপ টাইপ `src/types/index.ts`-এ সংজ্ঞায়িত এবং রুট `@/types` থেকে সরাসরি ব্যবহারযোগ্য:
-```typescript
-import type { LearningLevel, LessonSlide, QuizQuestion, UserProgress } from "@/types";
-```
-
-### ২. কেন্দ্রীভূত ইউটিলিটি স্যুট (`src/lib/utils.ts` বা `@/utils`)
-ফাংশনাল ক্যালকুলেশন, স্ট্রিং ফরম্যাটিং এবং লোকাল রূপান্তর একক স্থানে সংরক্ষিত:
-- `cn(...inputs)`: Tailwind ক্লাস মার্জার।
-- `toBanglaNumber(value)`: ইংরেজি থেকে বাংলা সংখ্যা রূপান্তর (123 -> ১২৩)।
-- `getDifficultyLabel(diff, isBangla)`: লেভেল কাঠিন্য অনুবাদ।
-- `getRuleBadgeLabel(badge, isBangla)`: তাজবীদ রুল অনুবাদ।
-- `getOptionLabel(index, isBangla)`: কুইজ অপশন লেবেল (ক, খ, গ, ঘ বা A, B, C, D)।
-- `calculateProgress(completed, total)`: ক্ল্যাম্পড পার্সেন্টেজ ক্যালকুলেটর।
-
-### ৩. কম্পোনেন্ট বিভাজন (Component Division)
-কোনো পেজ ফাইল যেন মোনোলিথিক বা বিশাল না হয়, সেজন্য সেকশন ও ফাংশনাল ব্লকগুলোকে একক দায়িত্বে নির্দিষ্ট কম্পোনেন্টে রূপান্তর করা হয়েছে (`StatCard`, `DifficultyBadge`, `RuleBadge`, `QuizNavigator`, `QuizScorePill`)।
+- **📚 18-Level Structured Curriculum**:
+  - **Tier 1: Foundations (Levels 1–4)**: 28 Arabic letters, dot classification, 17 vocal articulation points (Makharij), connected cursive script forms, and short vowels (Fatḥah, Kasrah, Ḍammah, Sukūn).
+  - **Tier 2: Vowels & Orthography (Levels 5–8)**: Tanwīn (double vowels), Shaddah (consonant doubling), Madd Aṣlī (2-count natural prolongation & Līn), and Tafkhīm/Tarqīq (heavy and light letters).
+  - **Tier 3: Core Tajweed Rules (Levels 9–12)**: Nūn Sākinah & Tanwīn rules (Iẓhār, Idghām, Iqlāb, Ikhfā’), Mīm Sākinah rules, and Qalqalah echoing mechanics.
+  - **Tier 4: Quranic Mastery (Levels 13–18)**: Secondary Madd (4–6 counts), Hamzatul Waṣl vs. Qaṭ‘, Solar/Lunar letters, Waqf (stopping rules), Gharā’ib al-Qur’ān (Imālah, Tashīl, Ishmām, Saktah), and complete Khatm recitation etiquette.
+- **🎯 630+ Interactive Quiz Challenges**:
+  - 36 verification questions per level across all 18 levels (648 total questions).
+  - Multiple choice, audio matching, script form identification, and word building.
+  - 70% passing threshold to unlock subsequent levels, supported by an interactive 36-question navigation palette (`QuizNavigator`) and 3-column scoreboard (`QuizScorePill`).
+  - Instant rule citations and itemized post-quiz answer reviews.
+- **🔊 Triple-Engine Audio Architecture**:
+  - Web Speech API integration with native Arabic phoneme synthesis (`ar-SA`).
+  - Web Audio API harmonic frequency chime fallback tuned to letter resonant frequencies.
+  - Studio-recorded pronunciation streams for alphabet phonemes and EveryAyah Quranic recitations.
+- **⚡ 100% Offline-First PWA**:
+  - Automated background asset caching after 25 seconds of page interaction.
+  - Service worker caching (`quranpath-core-v1.1.0` and `quranpath-audio-v1.0.0`).
+  - Installable as a standalone app on iOS (Safari Add to Home Screen), Android (Chrome/Edge), and Desktop.
+- **🇧🇩 Bangla-First User Experience**:
+  - Native Bengali explanations, linguistic breakdowns, and Eastern Bangla numeral formatting (`toBanglaNumber`) across all stats.
+  - Instant one-tap bilingual toggle between Bangla (`bn`) and English (`en`).
+- **🎨 Islamic Sand & Night Visual Themes**:
+  - Emerald green (`#064E3B`, `#10B981`) and warm gold tones optimized for comfortable reading and contemplation.
+  - User-configurable Arabic font sizes (Normal, Large, X-Large) and audio playback speeds (0.75x, 1.0x, 1.25x).
 
 ---
 
-## 🚀 লোকাল সেটআপ ও রান করার নিয়ম (Getting Started)
+## 🏛️ 5-Layer Architectural Design
 
-### প্রয়োজনীয় টুলস:
-- Node.js 18.17+ বা 20+
-- npm, pnpm বা yarn
+QuranPath enforces a strict **separation of concerns** where presentation components are strictly view/rendering layers ("only for printing/rendering"), with all business logic, schemas, and state actions decoupled into dedicated modules:
 
-### ১. ক্লোন ও ডিপেন্ডেন্সি ইন্সটল:
+```
+src/
+├── app/                      # Layer 1: App Router View Orchestrators (Thin shells <80 lines)
+│   ├── page.tsx              # Home dashboard & letter playground
+│   ├── path/page.tsx         # 18-level visual roadmap
+│   ├── learn/[lessonId]/     # Interactive slide viewer
+│   ├── quiz/                 # Quiz hub & arena ([quizId])
+│   ├── practice/page.tsx     # Makhraj, Harakat & Surah drills
+│   ├── progress/page.tsx     # Streak, XP & analytics dashboard
+│   ├── profile/page.tsx      # Preferences, theme & offline controls
+│   ├── layout.tsx            # Root layout & PWA metadata
+│   ├── error.tsx             # Client runtime error boundary
+│   ├── global-error.tsx      # Root crash boundary
+│   └── not-found.tsx         # Aesthetic 404 boundary
+├── components/               # Layer 1: Pure Presentation Components (<300 lines)
+│   ├── home/                 # Home page view subcomponents
+│   ├── path/                 # Learning path subcomponents
+│   ├── lesson/               # Lesson viewer subcomponents
+│   ├── quiz/                 # Quiz arena, navigator & score pills
+│   ├── practice/             # Practice ground subcomponents
+│   ├── progress/             # Analytics charts & gauges
+│   ├── profile/              # Settings & storage subcomponents
+│   ├── offline/              # Offline indicator & cache modal
+│   ├── pwa/                  # PWA install guidance subcomponents
+│   ├── navbar/               # Global navigation & language toggle
+│   ├── footer/               # Global footer & quick links
+│   └── level/                # Level card subcomponents
+├── hooks/                    # Layer 2: Custom React Hooks (State, timers, side-effects)
+│   ├── useAudioPlayback.ts   # Audio engine state & controls
+│   ├── useOfflineManager.ts  # Cache sync & status hook
+│   ├── usePWAState.ts        # BeforeInstallPrompt & platform detection
+│   ├── useThemeState.ts      # Preferences, progress & hydration
+│   ├── useNavbar.ts          # Navigation state & bilingual toggle
+│   └── [domainHooks].ts      # useHomeDashboard, useLessonViewer, etc.
+├── schemas/                  # Layer 3: Defensive Validation Schemas & Type Guards
+│   ├── progressSchema.ts     # UserProgress validator
+│   ├── preferencesSchema.ts  # UserPreferences validator
+│   └── curriculumSchema.ts   # CurriculumLevel validator
+├── lib/                      # Layer 4: Domain Services & Pure Utilities
+│   ├── audioService.ts       # SpeechSynthesis & Web Audio API synthesizer
+│   ├── storage.ts            # LocalStorage persistence & streak logic
+│   ├── offlineManager.ts     # Service worker cache download controller
+│   ├── translations.ts       # English & Bangla localization dictionary
+│   ├── confetti.ts           # Canvas confetti animation effects
+│   └── utils.ts              # cn, toBanglaNumber, formatMinutes, formatters
+├── types/                    # Layer 5: Centralized TypeScript System
+│   └── index.ts              # Single source of truth for all domain types
+└── data/                     # Static Curriculum Datasets
+    ├── alphabet.ts           # 28 Arabic letters & articulation points
+    ├── levels.ts             # 18 level definitions & objectives
+    ├── surahs.ts             # Short Surahs & verse Tajweed rules
+    ├── lessons/              # Lesson slides for Tiers 1 through 5
+    └── quizzes/              # 18 quiz files (36 questions each = 648 total)
+```
+
+---
+
+## 🗺️ Curriculum Overview (18 Levels across 4 Tiers)
+
+| Tier | Level | Title | Arabic Title | Lessons | Minutes | Key Concepts |
+|:---:|:---:|:---|:---|:---:|:---:|:---|
+| **Tier 1: Foundations** | 1 | Alphabet & Orthography | حُرُوفُ الْهِجَاءِ | 4 | 50m | 28 isolated letters, dot taxonomy, non-connecting letters |
+| | 2 | Makhārij al-Ḥurūf | مَخَارِجُ الْحُرُوفِ | 4 | 60m | 17 articulation points, 5 vocal areas (Al-Jawf, Al-Halq, etc.) |
+| | 3 | Connected Script | أَشْكَالُ الْحُرُوفِ | 4 | 55m | Initial, medial, final forms & Uthmani ligatures |
+| | 4 | Short Vowels & Sukūn | الْحَرَكَاتُ وَالسُّكُونُ | 4 | 55m | Fatḥah, Kasrah, Ḍammah, Sukūn/Jazm stillness |
+| **Tier 2: Vowels & Orthography** | 5 | Tanwīn & Nunation | التَّنْوِينُ | 4 | 50m | Double vowels, orthographic Alif, stopping rules |
+| | 6 | Shaddah (Tashdīd) | التَّشْدِيدُ | 4 | 55m | Consonant doubling, Ghunnah Mushaddadah, Nabrah |
+| | 7 | Madd Aṣlī & Līn | الْمَدُّ الأَصْلِيُّ وَاللِّينُ | 4 | 60m | 2-count natural elongation, Madd Badal, Līn letters |
+| | 8 | Tafkhīm & Tarqīq | التَّفْخِيمُ وَالتَّرْقِيقُ | 4 | 65m | Permanently heavy consonants, Raa rules, Lam of Allah |
+| **Tier 3: Core Tajweed** | 9 | Nūn Sākinah: Iẓhār & Iqlāb | الإِظْهَارُ وَالإِقْلابُ | 4 | 60m | Throat clarity, 4 exceptions, conversion to Meem |
+| | 10 | Nūn Sākinah: Idghām & Ikhfā’ | الإِدْغَامُ وَالإِخْفَاءُ | 4 | 65m | Yarmalūn assimilation, 15 nasalized Ikhfā’ consonants |
+| | 11 | Mīm Sākinah Rules | أَحْكَامُ الْمِيمِ السَّاكِنَةِ | 4 | 55m | Idghām, Ikhfā’, and Iẓhār Shafawī precautions |
+| | 12 | Qalqalah Mechanics | الْقَلْقَلَةُ | 4 | 50m | Echoing consonants (`قُطْبُ جَدٍّ`), 3 intensity ranks |
+| **Tier 4: Quranic Mastery** | 13 | Secondary Madd (Far‘ī) | الْمَدُّ الْفَرْعِيُّ | 4 | 70m | Muttaṣil, Munfaṣil, Lāzim (4–6 counts), ‘Āriḍ li-Sukūn |
+| | 14 | Hamzatul Waṣl & Qaṭ‘ | هَمْزَةُ الْوَصْلِ وَالْقَطْعِ | 4 | 55m | Connecting vs. cutting Hamzahs, 3rd-letter verb rule |
+| | 15 | Solar/Lunar Lām | اللَّامَاتُ وَالْحُرُوفُ الزَّائِدَةُ | 4 | 50m | 14 Solar vs. 14 Lunar letters, silent calligraphic signs |
+| | 16 | Waqf & Recitation Mastery | أَحْكَامُ الْوَقْفِ وَالِابْتِدَاءِ | 4 | 70m | Stopping symbols, Rawm, Ishmām, 4 Saktahs, Tilāwah Sajdahs |
+| | 17 | Special Recitation Rules | غَرَائِبُ الْقُرْآنِ | 4 | 75m | Imālah, Tashīl, Ishmām, Naql, Sīn/Ṣād inscriptions |
+| | 18 | Grand Khatm Mastery | خَتْمُ الْقُرْآنِ الْكَرِيمِ | 4 | 90m | Makhārij & Ṣifāt synthesis, Waqf Tāmm, Khatm etiquette |
+
+---
+
+## 🚀 Getting Started & Local Development
+
+### Prerequisites
+- **Node.js**: `18.17.0` or higher (Node 20+ recommended)
+- **Package Manager**: `npm`, `pnpm`, or `yarn`
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/jsrahman/learn-arabic.git
 cd learn-arabic
+```
+
+### 2. Install Dependencies
+```bash
 npm install
 ```
 
-### ২. ডেভেলপমেন্ট সার্ভার চালু:
+### 3. Start Development Server
 ```bash
 npm run dev
 ```
-ব্রাউজারে দেখুন: [http://localhost:3000](http://localhost:3000)
+Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-### ৩. টাইপচেক ও প্রোডাকশন বিল্ড:
+### 4. Code Quality & Verification
+Before submitting contributions, verify that type checks, production builds, and linting succeed:
+
 ```bash
+# 1. TypeScript compilation check
 npx tsc --noEmit
+
+# 2. Production build verification
 npm run build
-npm start
+
+# 3. Next.js ESLint audit
+npm run lint
 ```
 
 ---
 
-## 📱 অফলাইন ও PWA ব্যবহারের নিয়ম
+## 📱 Offline PWA & Deployment
 
-1. ক্রোম, এজ বা সাফারিতে সাইটটি ওপেন করুন।
-2. ২৫ সেকেন্ড স্বাভাবিক ব্যবহারের পর অফলাইন ক্যাশিং সম্পন্ন হবে এবং ফুটারে সবুজ টিকচিহ্ন **"অফলাইনে ব্যবহারের জন্য প্রস্তুত"** প্রদর্শিত হবে।
-3. ব্রাউজার অ্যাড্রেস বারের বা ফুটারে থাকা **"অ্যাপ ইনস্টল করুন"** বাটনে ট্যাপ করে যেকোনো ডিভাইসে অ্যাপ আকারে সেভ করতে পারবেন।
-4. ইন্টারনেট সংযোগ বন্ধ করে দিলেও ১৮টি লেভেল, কুইজ ও অনুশীলন স্বাভাবিকভাবে কার্যকর থাকবে।
+QuranPath is built to function reliably without internet access.
+
+1. **Automatic Caching**: Upon opening the application, core assets, routes, and audio phonemes automatically cache in the background after 25 seconds.
+2. **Manual Caching**: Users can open the storage modal from the footer or profile settings to trigger an instant download of all offline targets.
+3. **PWA Installation**:
+   - **Chrome / Android / Edge**: Click the "Install App" button in the navigation bar or address bar.
+   - **iOS Safari**: Tap the **Share** button (`↑`) in Safari, scroll down, and select **"Add to Home Screen"** (`+`).
+4. **Vercel / Production Deployment**: Deploy effortlessly to Vercel or any containerized Node.js platform:
+   ```bash
+   npm run build
+   npm run start
+   ```
 
 ---
 
-## 📄 লাইসেন্স
-MIT License © 2026 QuranPath Team.
-পবিত্র কুরআন শিক্ষার প্রসারে এই সফটওয়্যারটি উন্মুক্ত ও যেকারও জন্য উন্মুক্ত শিক্ষামূলক ব্যবহারের উপযোগী।
+## 🤝 Contributing
+
+We welcome contributions from educators, developers, and Quranic Arabic scholars. Please review our guidelines before submitting pull requests:
+
+- Read [CONTRIBUTING.md](./CONTRIBUTING.md) for architectural standards and git workflow.
+- Consult [AGENTS.md](./AGENTS.md) for AI agent conventions and view-only component rules.
+- Review [REQUIREMENTS.md](./REQUIREMENTS.md) for full functional and non-functional specifications.
+
+---
+
+## 📄 License
+
+QuranPath is distributed under the **MIT License**. See `LICENSE` for details.  
+Dedicated to the dissemination of authentic Quranic literacy worldwide.

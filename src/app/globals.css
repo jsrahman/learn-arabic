@@ -12,6 +12,10 @@
 @layer base {
   body {
     @apply antialiased selection:bg-gold-500/30 selection:text-emerald-950 dark:selection:text-gold-200;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
   }
 }
 
@@ -36,6 +40,9 @@
 .font-arabic {
   font-family: var(--font-amiri);
   line-height: 1.8;
+  letter-spacing: normal !important;
+  padding: 0.1em 0;
+  overflow-wrap: break-word;
   font-feature-settings: "cv01", "cv02", "calt", "liga";
   direction: rtl;
   unicode-bidi: isolate;

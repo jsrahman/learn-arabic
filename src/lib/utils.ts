@@ -1,5 +1,23 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { FontSizeScale, LevelStatus } from "@/types";
+import {
+  calculateProgressPercentage,
+  calculateCircularProgressOffset,
+  calculateCircumference,
+  countCompletedLessonsInLevel,
+  calculateLevelProgress,
+} from "./progressUtils";
+
+// Re-export progress utilities for backward compatibility
+export {
+  calculateProgressPercentage,
+  calculateCircularProgressOffset,
+  calculateCircumference,
+  countCompletedLessonsInLevel,
+  calculateLevelProgress,
+};
+export const calculateProgress = calculateProgressPercentage;
 
 /**
  * Merges Tailwind classes cleanly with clsx and tailwind-merge.
@@ -9,7 +27,7 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 /**
- * Converts Western digits (0-9) to Eastern Bangla digits (০-৯).
+ * Converts Western digits (0-9) to Eastern Bangla numerals.
  */
 export function toBanglaNumber(value: number | string): string {
   const banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
@@ -30,14 +48,6 @@ export function formatTime(seconds: number): string {
  */
 export function formatMinutes(minutes: number, isBangla = true): string {
   return isBangla ? `${toBanglaNumber(minutes)} মিনিট` : `${minutes} mins`;
-}
-
-/**
- * Calculates clamped integer percentage between 0 and 100.
- */
-export function calculateProgress(completed: number, total: number): number {
-  if (!total || total <= 0) return 0;
-  return Math.min(100, Math.max(0, Math.round((completed / total) * 100)));
 }
 
 /**
@@ -123,7 +133,7 @@ export function getTierLabel(tier?: string, isBangla = true): string {
 }
 
 /**
- * Localized multiple choice question option labels (ক, খ, গ, ঘ or A, B, C, D).
+ * Localized multiple choice question option labels (Bangla lettering or A, B, C, D).
  */
 export function getOptionLabel(index: number, isBangla = true): string {
   if (isBangla) {
@@ -141,4 +151,44 @@ export function getLocalDateString(date = new Date()): string {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+/**
+ * Maps Arabic font size preference setting to responsive Tailwind CSS utility classes.
+ */
+export function getArabicFontSizeClass(size?: FontSizeScale | string): string {
+  switch (size) {
+    case "xlarge":
+      return "text-4xl sm:text-5xl md:text-6xl leading-[2.1]";
+    case "large":
+      return "text-3xl sm:text-4xl md:text-5xl leading-[2]";
+    case "normal":
+    default:
+      return "text-2xl sm:text-3xl md:text-4xl leading-[1.9]";
+  }
+}
+
+/**
+ * Determines whether a learning level is completed, currently active/available, or locked.
+ *
+ * @param levelId The level number/ID to check
+ * @param completedLevels Array of completed level IDs
+ * @param unlockedLevels Optional array of explicitly unlocked level IDs
+ * @returns Status string: 'completed' | 'current' | 'locked'
+ */
+export function calculateLevelStatus(
+  levelId: number,
+  completedLevels: number[],
+  unlockedLevels?: number[]
+): LevelStatus {
+  if (completedLevels.includes(levelId)) {
+    return "completed";
+  }
+  if (unlockedLevels) {
+    return unlockedLevels.includes(levelId) ? "current" : "locked";
+  }
+  if (levelId === 1 || completedLevels.includes(levelId - 1)) {
+    return "current";
+  }
+  return "locked";
 }

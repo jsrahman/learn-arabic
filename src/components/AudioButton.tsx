@@ -57,9 +57,9 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
   };
 
   const sizeClasses = {
-    sm: "w-8 h-8 text-xs gap-1.5 p-1.5",
-    md: "w-11 h-11 text-sm gap-2 p-2.5",
-    lg: "w-14 h-14 text-base gap-2.5 p-3.5",
+    sm: "w-11 h-11 text-xs gap-1.5 p-2.5 min-w-[44px] min-h-[44px]",
+    md: "w-11 h-11 text-sm gap-2 p-2.5 min-w-[44px] min-h-[44px]",
+    lg: "w-14 h-14 text-base gap-2.5 p-3.5 min-w-[44px] min-h-[44px]",
   };
 
   const iconSizes = {
@@ -87,7 +87,9 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
       title={label || (isPlaying ? "Stop audio" : "Listen to pronunciation")}
       className={cn(
         "relative inline-flex items-center justify-center rounded-full transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2",
-        label ? "px-4 rounded-xl w-auto" : sizeClasses[size],
+        label
+          ? "px-4 py-2.5 sm:py-3 min-h-[44px] rounded-xl w-auto text-xs sm:text-sm font-semibold"
+          : sizeClasses[size],
         variantClasses[variant],
         isPlaying && "ring-2 ring-gold-400 ring-offset-1 scale-105",
         className

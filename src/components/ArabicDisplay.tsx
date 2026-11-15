@@ -41,7 +41,7 @@ export const ArabicDisplay: React.FC<ArabicDisplayProps> = ({
       )}
     >
       {badge && (
-        <span className="absolute top-4 right-4 text-[11px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+        <span className="absolute top-4 right-4 text-[11px] font-semibold tracking-normal uppercase px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
           {badge}
         </span>
       )}
@@ -50,7 +50,7 @@ export const ArabicDisplay: React.FC<ArabicDisplayProps> = ({
       <div className="my-4 py-2 flex items-center justify-center select-none">
         <span
           className={cn(
-            "font-arabic font-normal tracking-wide text-emerald-950 dark:text-gold-100",
+            "font-arabic font-normal tracking-normal text-emerald-950 dark:text-gold-100",
             fontSizeClass
           )}
           dir="rtl"
