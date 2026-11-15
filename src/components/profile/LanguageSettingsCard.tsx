@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Languages, Check } from "lucide-react";
 import { cn } from "@/utils";

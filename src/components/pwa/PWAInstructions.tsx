@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Share, PlusSquare, Laptop, Smartphone } from "lucide-react";
 import { cn } from "@/utils";

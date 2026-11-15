@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { Award, Sparkles, ArrowRight, X } from "lucide-react";

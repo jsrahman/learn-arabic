@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ArrowLeft, ArrowRight, HelpCircle } from "lucide-react";
 import { AudioButton } from "@/components/AudioButton";

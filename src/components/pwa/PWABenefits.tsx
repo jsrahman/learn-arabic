@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { CheckCircle2, WifiOff, Sparkles, Laptop } from "lucide-react";
 

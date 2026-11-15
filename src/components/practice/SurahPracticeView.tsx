@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { AudioButton } from "@/components/AudioButton";
 import { SHORT_SURAHS, Surah } from "@/data/surahs";

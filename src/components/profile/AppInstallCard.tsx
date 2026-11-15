@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Smartphone, CheckCircle2, Download } from "lucide-react";
 

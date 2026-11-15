@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { DownloadCloud, CheckCircle2, X, Loader2, ShieldCheck } from "lucide-react";
 import { cn } from "@/utils";

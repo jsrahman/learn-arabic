@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { DownloadCloud, CheckCircle2, Wifi, WifiOff, Loader2 } from "lucide-react";
 import { cn, toBanglaNumber } from "@/utils";

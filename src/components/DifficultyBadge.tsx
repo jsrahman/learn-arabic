@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { cn, getDifficultyLabel } from "@/utils";
 import type { DifficultyType } from "@/types";

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { CheckCircle2, XCircle, Sparkles, ArrowRight } from "lucide-react";
 import { cn, getOptionLabel, toBanglaNumber } from "@/utils";
