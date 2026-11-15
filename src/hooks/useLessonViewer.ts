@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { LESSONS } from "@/data/lessons";
 import { ARABIC_ALPHABET } from "@/data/alphabet";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { markLessonCompleted, recordDailyActivity } from "@/lib/storage";
+import { markLessonCompleted } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
 import type { Lesson, LessonSlide } from "@/types";
@@ -19,9 +19,10 @@ export function useLessonViewer(lessonId: string) {
   const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
 
   useEffect(() => {
-    recordDailyActivity(1, 5);
-    refreshProgress();
-  }, [lessonId, refreshProgress]);
+    setCurrentSlideIndex(0);
+    setSelectedAnswer(null);
+    setIsCompletedModalOpen(false);
+  }, [lessonId]);
 
   const slide: LessonSlide = lesson.slides[currentSlideIndex];
   const isLastSlide = currentSlideIndex === lesson.slides.length - 1;

@@ -4,7 +4,6 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { ARABIC_ALPHABET, ArabicLetter } from "@/data/alphabet";
 import { SHORT_SURAHS, Surah } from "@/data/surahs";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { recordDailyActivity } from "@/lib/storage";
 import { translations } from "@/lib/translations";
 
 export type PracticeTab = "alphabet" | "harakat" | "surahs";
@@ -57,11 +56,6 @@ export function usePracticeDrill() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedSurah, setSelectedSurah] = useState<Surah>(SHORT_SURAHS[0]);
   const [activeVerseNum, setActiveVerseNum] = useState<number | null>(null);
-
-  useEffect(() => {
-    recordDailyActivity(1, 5);
-    refreshProgress();
-  }, [refreshProgress]);
 
   const filteredLetters = useMemo(() => {
     return selectedCategory === "all"

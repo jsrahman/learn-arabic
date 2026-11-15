@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { QUIZZES, QuizQuestion } from "@/data/quizzes";
 import { LEARNING_LEVELS } from "@/data/levels";
 import { useThemeContext } from "@/components/ThemeWrapper";
-import { saveQuizScore, recordDailyActivity } from "@/lib/storage";
+import { saveQuizScore } from "@/lib/storage";
 import { triggerConfetti } from "@/components/ConfettiTrigger";
 import { audioService } from "@/lib/audioService";
 import type { QuestionResult, Quiz } from "@/types";
@@ -20,9 +20,10 @@ export function useQuizArena(quizId: string) {
   const [quizFinished, setQuizFinished] = useState(false);
 
   useEffect(() => {
-    recordDailyActivity(1, 5);
-    refreshProgress();
-  }, [quizId, refreshProgress]);
+    setCurrentIndex(0);
+    setResults({});
+    setQuizFinished(false);
+  }, [quizId]);
 
   const totalQuestions = quiz.questions.length;
   const question: QuizQuestion = quiz.questions[currentIndex];

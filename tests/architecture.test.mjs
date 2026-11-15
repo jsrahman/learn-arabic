@@ -104,3 +104,33 @@ test("Data: All 28 Arabic letters and 18 curriculum levels exist", () => {
   const lessonsContent = fs.readFileSync(path.join(projectRoot, "src/data/lessons/index.ts"), "utf-8");
   assert.ok(lessonsContent.includes("LESSONS"), "LESSONS export found");
 });
+
+test("Regression: Hooks must not auto-increment XP on mount or in effect loops", () => {
+  const quizArenaContent = fs.readFileSync(path.join(projectRoot, "src/hooks/useQuizArena.ts"), "utf-8");
+  assert.ok(
+    !quizArenaContent.includes("recordDailyActivity"),
+    "useQuizArena must not call recordDailyActivity on mount or in effects"
+  );
+
+  const lessonViewerContent = fs.readFileSync(path.join(projectRoot, "src/hooks/useLessonViewer.ts"), "utf-8");
+  assert.ok(
+    !lessonViewerContent.includes("recordDailyActivity(1, 5)"),
+    "useLessonViewer must not call recordDailyActivity(1, 5) on mount"
+  );
+
+  const practiceDrillContent = fs.readFileSync(path.join(projectRoot, "src/hooks/usePracticeDrill.ts"), "utf-8");
+  assert.ok(
+    !practiceDrillContent.includes("recordDailyActivity"),
+    "usePracticeDrill must not call recordDailyActivity in mount loop"
+  );
+
+  const themeWrapperContent = fs.readFileSync(path.join(projectRoot, "src/components/ThemeWrapper.tsx"), "utf-8");
+  assert.ok(
+    themeWrapperContent.includes("refreshProgress = useCallback"),
+    "ThemeWrapper must memoize refreshProgress with useCallback"
+  );
+  assert.ok(
+    themeWrapperContent.includes("updateProgress = useCallback"),
+    "ThemeWrapper must memoize updateProgress with useCallback"
+  );
+});

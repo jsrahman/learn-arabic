@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react";
 import type { UserPreferences, UserProgress } from "@/types";
 import {
   DEFAULT_PREFERENCES,
@@ -50,51 +50,67 @@ export function ThemeWrapper({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const updatePreferences = (partial: Partial<UserPreferences>) => {
-    const updated = { ...preferences, ...partial };
-    setPreferences(updated);
-    saveStoredPreferences(updated);
+  const updatePreferences = useCallback((partial: Partial<UserPreferences>) => {
+    setPreferences((prev) => {
+      const updated = { ...prev, ...partial };
+      saveStoredPreferences(updated);
 
-    if (updated.theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+      if (updated.theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      return updated;
+    });
+  }, []);
 
-  const toggleTheme = () => {
-    updatePreferences({ theme: preferences.theme === "dark" ? "light" : "dark" });
-  };
+  const toggleTheme = useCallback(() => {
+    setPreferences((prev) => {
+      const nextTheme: "light" | "dark" = prev.theme === "dark" ? "light" : "dark";
+      const updated: UserPreferences = { ...prev, theme: nextTheme };
+      saveStoredPreferences(updated);
 
-  const updateProgress = (newProgress: UserProgress) => {
+      if (nextTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      return updated;
+    });
+  }, []);
+
+  const updateProgress = useCallback((newProgress: UserProgress) => {
     setProgress(newProgress);
     saveStoredProgress(newProgress);
-  };
+  }, []);
 
-  const refreshProgress = () => {
+  const refreshProgress = useCallback(() => {
     setProgress(getStoredProgress());
-  };
+  }, []);
 
-  const fontSizeClass =
-    preferences.arabicFontSize === "xlarge"
+  const fontSizeClass = useMemo(() => {
+    return preferences.arabicFontSize === "xlarge"
       ? "text-4xl sm:text-5xl md:text-6xl leading-[2.1]"
       : preferences.arabicFontSize === "large"
       ? "text-3xl sm:text-4xl md:text-5xl leading-[2]"
       : "text-2xl sm:text-3xl md:text-4xl leading-[1.9]";
+  }, [preferences.arabicFontSize]);
 
-  // Prevent hydration mismatch while mounting
+  const contextValue = useMemo(
+    () => ({
+      preferences,
+      progress,
+      updatePreferences,
+      updateProgress,
+      refreshProgress,
+      toggleTheme,
+      fontSizeClass,
+    }),
+    [preferences, progress, updatePreferences, updateProgress, refreshProgress, toggleTheme, fontSizeClass]
+  );
+
   return (
-    <ThemeContext.Provider
-      value={{
-        preferences,
-        progress,
-        updatePreferences,
-        updateProgress,
-        refreshProgress,
-        toggleTheme,
-        fontSizeClass,
-      }}
-    >
+    <ThemeContext.Provider value={contextValue}>
       <div className={preferences.theme === "dark" ? "dark" : ""}>
         <div className="min-h-screen bg-sand-50 dark:bg-night-950 text-sand-900 dark:text-sand-100 font-sans transition-colors duration-300">
           {children}
