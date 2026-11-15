@@ -9,7 +9,6 @@ import { HomePillars } from "@/components/home/HomePillars";
 import { HomeAlphabetPlayground } from "@/components/home/HomeAlphabetPlayground";
 import { HomeActiveStageSpotlight } from "@/components/home/HomeActiveStageSpotlight";
 import { HomeCurriculumPreview } from "@/components/home/HomeCurriculumPreview";
-import { HomeTestimonials } from "@/components/home/HomeTestimonials";
 import { HomeFaq } from "@/components/home/HomeFaq";
 import { HomePwaShowcase } from "@/components/home/HomePwaShowcase";
 import { HomeFinalCta } from "@/components/home/HomeFinalCta";
@@ -56,13 +55,6 @@ export default function HomePage() {
         onSelectTier={hp.handleSelectTier}
         filteredLevels={hp.filteredLevels}
         progress={hp.progress}
-      />
-
-      <HomeTestimonials
-        socialProofTag={t.socialProofTag}
-        socialProofTitle={t.socialProofTitle}
-        socialProofSubtitle={t.socialProofSubtitle}
-        testimonials={hp.testimonials}
       />
 
       <HomeFaq
