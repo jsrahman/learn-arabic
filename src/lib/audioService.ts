@@ -161,7 +161,7 @@ class AudioService {
     osc.stop(now + 0.04);
   }
 
-  // Play recitation audio stream / local clip with speech fallback or error callback
+  // Play recitation audio stream / local clip directly without speech fallback
   public playRecitation(
     audioUrl: string,
     onEnded?: () => void,
@@ -171,34 +171,84 @@ class AudioService {
     this.stopAudio();
 
     const audio = new Audio(audioUrl);
+    audio.preload = "auto";
     audio.playbackRate = rate;
     this.currentAudio = audio;
 
+    let hasStartedPlaying = false;
+
+    audio.onplaying = () => {
+      hasStartedPlaying = true;
+    };
+
+    audio.onended = () => {
+      if (this.currentAudio === audio) {
+        this.currentAudio = null;
+      }
+      if (onEnded) onEnded();
+    };
+
+    const isAbort = (err: unknown): boolean => {
+      if (!err) return false;
+      if (typeof err === "object") {
+        const anyErr = err as Record<string, unknown>;
+        if (anyErr.name === "AbortError" || anyErr.code === 20) return true;
+        if (
+          typeof anyErr.message === "string" &&
+          (anyErr.message.includes("interrupted") || anyErr.message.includes("pause"))
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     const handleError = (err: unknown) => {
-      this.currentAudio = null;
+      // Never trigger error if audio already started playing, if this audio was replaced, or if aborted
+      if (hasStartedPlaying || this.currentAudio !== audio || isAbort(err)) {
+        return;
+      }
+
+      if (audio.error && audio.error.code === 1) {
+        // MEDIA_ERR_ABORTED
+        return;
+      }
+
+      if (this.currentAudio === audio) {
+        this.currentAudio = null;
+      }
+
       if (typeof fallbackOrOnError === "function") {
         fallbackOrOnError(err);
-      } else if (typeof fallbackOrOnError === "string" && fallbackOrOnError.trim().length > 0) {
-        this.speakArabic(fallbackOrOnError, rate).then(() => {
-          if (onEnded) onEnded();
-        });
       } else if (onEnded) {
         onEnded();
       }
     };
 
-    audio.onended = () => {
-      this.currentAudio = null;
-      if (onEnded) onEnded();
-    };
-
     audio.onerror = (e) => {
+      // If audio already started or was aborted, ignore
+      if (hasStartedPlaying || this.currentAudio !== audio) {
+        return;
+      }
+      if (audio.error && audio.error.code === 1) {
+        return;
+      }
       handleError(e);
     };
 
-    audio.play().catch((err) => {
-      handleError(err);
-    });
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          hasStartedPlaying = true;
+        })
+        .catch((err) => {
+          if (isAbort(err)) {
+            return;
+          }
+          handleError(err);
+        });
+    }
 
     return audio;
   }

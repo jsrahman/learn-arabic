@@ -33,7 +33,18 @@ export const AlphabetDrillGrid: React.FC<AlphabetDrillGridProps> = ({
         letter.audioUrl,
         undefined,
         1.0,
-        () => {
+        (err) => {
+          if (err && typeof err === "object") {
+            const anyErr = err as Record<string, unknown>;
+            if (
+              anyErr.name === "AbortError" ||
+              anyErr.code === 20 ||
+              (typeof anyErr.message === "string" &&
+                (anyErr.message.includes("interrupted") || anyErr.message.includes("pause")))
+            ) {
+              return;
+            }
+          }
           toast.error(
             isBangla
               ? "এই হরফের অডিও লোড করা যায়নি"
@@ -114,7 +125,10 @@ export const AlphabetDrillGrid: React.FC<AlphabetDrillGridProps> = ({
                 </p>
               </div>
 
-              <div className="mt-2 sm:mt-3 w-full flex justify-center">
+              <div
+                className="mt-2 sm:mt-3 w-full flex justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <AudioButton
                   audioUrl={letter.audioUrl}
                   arabicText={letter.name}

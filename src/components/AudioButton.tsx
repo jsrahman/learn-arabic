@@ -59,6 +59,19 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
         },
         preferences.audioSpeed || 1.0,
         (err) => {
+          // If the audio was interrupted or stopped intentionally, don't show an error toast
+          if (err && typeof err === "object") {
+            const anyErr = err as Record<string, unknown>;
+            if (
+              anyErr.name === "AbortError" ||
+              anyErr.code === 20 ||
+              (typeof anyErr.message === "string" &&
+                (anyErr.message.includes("interrupted") || anyErr.message.includes("pause")))
+            ) {
+              setIsPlaying(false);
+              return;
+            }
+          }
           console.warn("Audio playback failed:", err);
           setIsPlaying(false);
           toast.error(
@@ -73,6 +86,18 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
         }
       );
     } catch (err) {
+      if (err && typeof err === "object") {
+        const anyErr = err as Record<string, unknown>;
+        if (
+          anyErr.name === "AbortError" ||
+          anyErr.code === 20 ||
+          (typeof anyErr.message === "string" &&
+            (anyErr.message.includes("interrupted") || anyErr.message.includes("pause")))
+        ) {
+          setIsPlaying(false);
+          return;
+        }
+      }
       console.warn("Audio playback error:", err);
       setIsPlaying(false);
       toast.error(

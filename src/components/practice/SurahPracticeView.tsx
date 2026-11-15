@@ -116,6 +116,7 @@ export const SurahPracticeView: React.FC<SurahPracticeViewProps> = ({
 
                 <div
                   onClickCapture={() => onSelectVerse?.(verse.number)}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <AudioButton
                     audioUrl={verse.audioUrl}
