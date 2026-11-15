@@ -134,3 +134,20 @@ test("Regression: Hooks must not auto-increment XP on mount or in effect loops",
     "ThemeWrapper must memoize updateProgress with useCallback"
   );
 });
+
+test("Offline: Service worker and offlineManager support multi-page offline mode and RSC fallback", () => {
+  const swContent = fs.readFileSync(path.join(projectRoot, "public/sw.js"), "utf-8");
+  assert.ok(swContent.includes("CACHE_NAME = \"quranpath-core-v1.2.0\""), "SW CACHE_NAME is v1.2.0");
+  assert.ok(swContent.includes("isRSC"), "SW handles Next.js RSC requests");
+  assert.ok(swContent.includes("extractAssetUrls"), "SW extracts Next.js static asset URLs");
+  assert.ok(swContent.includes("/path"), "SW precaches /path");
+  assert.ok(swContent.includes("/practice"), "SW precaches /practice");
+  assert.ok(swContent.includes("/quiz"), "SW precaches /quiz");
+  assert.ok(swContent.includes("/progress"), "SW precaches /progress");
+  assert.ok(swContent.includes("/profile"), "SW precaches /profile");
+
+  const offlineMgrContent = fs.readFileSync(path.join(projectRoot, "src/lib/offlineManager.ts"), "utf-8");
+  assert.ok(offlineMgrContent.includes("OFFLINE_CORE_ROUTES"), "offlineManager defines OFFLINE_CORE_ROUTES");
+  assert.ok(offlineMgrContent.includes("OFFLINE_QUIZ_ROUTES"), "offlineManager defines OFFLINE_QUIZ_ROUTES");
+  assert.ok(offlineMgrContent.includes("extractHtmlAssetUrls"), "offlineManager extracts HTML asset URLs");
+});

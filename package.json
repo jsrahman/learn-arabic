@@ -11,12 +11,13 @@
     "test:mobile": "tsx scripts/verify-mobile.ts"
   },
   "dependencies": {
+    "canvas-confetti": "^1.9.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.460.0",
     "next": "14.2.20",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "lucide-react": "^0.460.0",
-    "canvas-confetti": "^1.9.3",
-    "clsx": "^2.1.1",
+    "react-hot-toast": "^2.6.1",
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
@@ -30,4 +31,3 @@
     "typescript": "^5.6.3"
   }
 }
-

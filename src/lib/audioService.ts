@@ -161,12 +161,12 @@ class AudioService {
     osc.stop(now + 0.04);
   }
 
-  // Play recitation audio stream / local clip with offline speech fallback
+  // Play recitation audio stream / local clip with speech fallback or error callback
   public playRecitation(
     audioUrl: string,
     onEnded?: () => void,
     rate = 1.0,
-    fallbackText?: string
+    fallbackOrOnError?: string | ((error: unknown) => void)
   ): HTMLAudioElement {
     this.stopAudio();
 
@@ -174,10 +174,12 @@ class AudioService {
     audio.playbackRate = rate;
     this.currentAudio = audio;
 
-    const triggerFallback = () => {
+    const handleError = (err: unknown) => {
       this.currentAudio = null;
-      if (fallbackText) {
-        this.speakArabic(fallbackText, rate).then(() => {
+      if (typeof fallbackOrOnError === "function") {
+        fallbackOrOnError(err);
+      } else if (typeof fallbackOrOnError === "string" && fallbackOrOnError.trim().length > 0) {
+        this.speakArabic(fallbackOrOnError, rate).then(() => {
           if (onEnded) onEnded();
         });
       } else if (onEnded) {
@@ -190,13 +192,12 @@ class AudioService {
       if (onEnded) onEnded();
     };
 
-    audio.onerror = () => {
-      triggerFallback();
+    audio.onerror = (e) => {
+      handleError(e);
     };
 
     audio.play().catch((err) => {
-      console.warn("Audio play prevented or failed, fallback to SpeechSynthesis:", err);
-      triggerFallback();
+      handleError(err);
     });
 
     return audio;

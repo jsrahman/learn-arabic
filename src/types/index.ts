@@ -395,3 +395,156 @@ export interface QuizScorePillProps {
   passedText?: string;
   failedText?: string;
 }
+
+// ============================================================================
+// 10. LANDING PAGE & HOME CONTRACTS
+// ============================================================================
+
+export interface HomeTierFilter {
+  id: string;
+  label: string;
+  count: number;
+}
+
+export interface HomeTestimonialItem {
+  id: string;
+  quote: string;
+  name: string;
+  role: string;
+  rating: number;
+  badge: string;
+}
+
+export interface HomeFaqItem {
+  id: number;
+  question: string;
+  answer: string;
+}
+
+export interface HomeTrustMetric {
+  value: string;
+  label: string;
+  desc: string;
+}
+
+export interface HomeTranslations {
+  spiritualRibbon: string;
+  headlineStart: string;
+  headlineHighlight: string;
+  headlineEnd: string;
+  subtitle: string;
+  ctaStart: string;
+  ctaPractice: string;
+  highlight1: string;
+  highlight2: string;
+  highlight3: string;
+  heroRatingText: string;
+  heroFreeBadge: string;
+  heroVisualTitle: string;
+  heroVisualSubtitle: string;
+  heroVisualMakhraj: string;
+  heroVisualListen: string;
+  heroTajweedVerified: string;
+  trustLevelsValue: string;
+  trustLevelsLabel: string;
+  trustLevelsDesc: string;
+  trustQuizzesValue: string;
+  trustQuizzesLabel: string;
+  trustQuizzesDesc: string;
+  trustLettersValue: string;
+  trustLettersLabel: string;
+  trustLettersDesc: string;
+  trustFreeValue: string;
+  trustFreeLabel: string;
+  trustFreeDesc: string;
+  painTag: string;
+  painTitle: string;
+  painSubtitle: string;
+  pain1Title: string;
+  pain1Desc: string;
+  pain2Title: string;
+  pain2Desc: string;
+  pain3Title: string;
+  pain3Desc: string;
+  solutionHeading: string;
+  solutionSubheading: string;
+  playgroundTag: string;
+  playgroundTitle: string;
+  playgroundSubtitle: string;
+  openFullGrid: string;
+  sound: string;
+  makhrajLabel: string;
+  formsHeader: string;
+  formBeginning: string;
+  formMiddle: string;
+  formEnding: string;
+  formIsolated: string;
+  curriculumArch: string;
+  curriculumTitle: string;
+  curriculumSubtitle: string;
+  activeStage: string;
+  levelOf: string;
+  stageGoal: string;
+  resumeLevel: string;
+  startLevel: string;
+  levelMasteryGauge: string;
+  mastered: string;
+  lessons: string;
+  estimated: string;
+  exploreRoadmap: string;
+  whyUs: string;
+  pillarsTitle: string;
+  pillarsSubtitle: string;
+  pillar1Title: string;
+  pillar1Desc: string;
+  pillar2Title: string;
+  pillar2Desc: string;
+  pillar3Title: string;
+  pillar3Desc: string;
+  pillar4Title: string;
+  pillar4Desc: string;
+  beginLevel1: string;
+  socialProofTag: string;
+  socialProofTitle: string;
+  socialProofSubtitle: string;
+  testimonial1Quote: string;
+  testimonial1Author: string;
+  testimonial1Role: string;
+  testimonial1Badge: string;
+  testimonial2Quote: string;
+  testimonial2Author: string;
+  testimonial2Role: string;
+  testimonial2Badge: string;
+  testimonial3Quote: string;
+  testimonial3Author: string;
+  testimonial3Role: string;
+  testimonial3Badge: string;
+  faqTag: string;
+  faqTitle: string;
+  faqSubtitle: string;
+  faq1Q: string;
+  faq1A: string;
+  faq2Q: string;
+  faq2A: string;
+  faq3Q: string;
+  faq3A: string;
+  faq4Q: string;
+  faq4A: string;
+  faq5Q: string;
+  faq5A: string;
+  finalCtaTag: string;
+  finalCtaTitle: string;
+  finalCtaSubtitle: string;
+  finalCtaBtn: string;
+  finalCtaSecondary: string;
+  finalCtaHadith: string;
+  finalCtaHadithSource: string;
+  finalCtaGuarantees: string;
+  tierFilterAll: string;
+  tierFilter1: string;
+  tierFilter2: string;
+  tierFilter3: string;
+  tierFilter4: string;
+}
+
+

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Volume2, VolumeX, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 import { audioService } from "@/lib/audioService";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { cn } from "@/lib/utils";
@@ -25,8 +26,9 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { preferences } = useThemeContext();
+  const isBangla = preferences.explanationLanguage === "bn";
 
-  const handlePlay = async (e: React.MouseEvent) => {
+  const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isPlaying) {
       audioService.stopAudio();
@@ -34,25 +36,52 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
       return;
     }
 
+    if (!audioUrl) {
+      toast.error(
+        isBangla
+          ? "এই পাঠের অডিও ফাইল পাওয়া যায়নি"
+          : "Audio file not available for this item",
+        {
+          id: "audio-missing",
+          duration: 3000,
+        }
+      );
+      return;
+    }
+
     setIsPlaying(true);
 
     try {
-      if (audioUrl) {
-        audioService.playRecitation(
-          audioUrl,
-          () => {
-            setIsPlaying(false);
-          },
-          preferences.audioSpeed || 1.0,
-          arabicText
-        );
-      } else if (arabicText) {
-        await audioService.speakArabic(arabicText, preferences.audioSpeed || 0.9);
-        setIsPlaying(false);
-      }
+      audioService.playRecitation(
+        audioUrl,
+        () => {
+          setIsPlaying(false);
+        },
+        preferences.audioSpeed || 1.0,
+        (err) => {
+          console.warn("Audio playback failed:", err);
+          setIsPlaying(false);
+          toast.error(
+            isBangla
+              ? "অডিও লোড করা যায়নি (ফাইল পাওয়া যায়নি)"
+              : "Could not load audio file",
+            {
+              id: "audio-err",
+              duration: 3000,
+            }
+          );
+        }
+      );
     } catch (err) {
       console.warn("Audio playback error:", err);
       setIsPlaying(false);
+      toast.error(
+        isBangla ? "অডিও প্লে করা যায়নি" : "Could not play audio",
+        {
+          id: "audio-err",
+          duration: 3000,
+        }
+      );
     }
   };
 

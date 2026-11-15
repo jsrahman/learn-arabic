@@ -29,7 +29,12 @@ export function useLessonViewer(lessonId: string) {
   const progressPercent = Math.round(((currentSlideIndex + 1) / lesson.slides.length) * 100);
 
   const matchedLetter = ARABIC_ALPHABET.find(
-    (l) => l.arabic === slide.arabic || l.name.toLowerCase() === slide.arabic.toLowerCase()
+    (l) =>
+      l.arabic === slide.arabic ||
+      l.name.toLowerCase() === slide.arabic.toLowerCase() ||
+      (slide.audioPrompt &&
+        (l.arabic === slide.audioPrompt ||
+          l.name.toLowerCase() === slide.audioPrompt.toLowerCase()))
   );
   const slideAudioUrl = slide.audioUrl || matchedLetter?.audioUrl;
 

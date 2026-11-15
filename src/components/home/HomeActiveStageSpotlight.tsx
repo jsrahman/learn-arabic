@@ -3,39 +3,30 @@
 import React from "react";
 import Link from "next/link";
 import { Target, Play, ArrowRight } from "lucide-react";
-import type { LearningLevel } from "@/types";
+import { toBanglaNumber } from "@/utils";
+import type { LearningLevel, HomeTranslations } from "@/types";
 
 interface HomeActiveStageSpotlightProps {
+  t: HomeTranslations;
   activeLevel: LearningLevel;
   activeLevelCompletedCount: number;
   activeLevelPercent: number;
   isBangla: boolean;
-  activeStageText: string;
-  levelOfText: string;
-  stageGoalText: string;
-  resumeLevelText: string;
-  startLevelText: string;
-  levelMasteryGaugeText: string;
-  masteredText: string;
-  lessonsText: string;
-  estimatedText: string;
 }
 
 export const HomeActiveStageSpotlight: React.FC<HomeActiveStageSpotlightProps> = ({
+  t,
   activeLevel,
   activeLevelCompletedCount,
   activeLevelPercent,
   isBangla,
-  activeStageText,
-  levelOfText,
-  stageGoalText,
-  resumeLevelText,
-  startLevelText,
-  levelMasteryGaugeText,
-  masteredText,
-  lessonsText,
-  estimatedText,
 }) => {
+  const displayLevelNumber = isBangla ? toBanglaNumber(activeLevel.number) : activeLevel.number;
+  const displayCompletedCount = isBangla ? toBanglaNumber(activeLevelCompletedCount) : activeLevelCompletedCount;
+  const displayLessonsCount = isBangla ? toBanglaNumber(activeLevel.lessonsCount) : activeLevel.lessonsCount;
+  const displayPercent = isBangla ? toBanglaNumber(activeLevelPercent) : activeLevelPercent;
+  const displayEstimated = isBangla ? toBanglaNumber(activeLevel.estimatedMinutes) : activeLevel.estimatedMinutes;
+
   return (
     <div className="relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-sand-50 border border-gold-500/30 shadow-2xl overflow-hidden group">
       {/* Atmospheric background glow */}
@@ -57,16 +48,16 @@ export const HomeActiveStageSpotlight: React.FC<HomeActiveStageSpotlightProps> =
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-extrabold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              {activeStageText}
+              {t.activeStage}
             </span>
             <span className="px-3 py-1 rounded-full bg-sand-200/10 border border-sand-200/20 text-sand-200 text-xs font-medium">
-              {isBangla ? (activeLevel.tierBangla || activeLevel.tier) : activeLevel.tier} • {levelOfText} {activeLevel.number} / 18
+              {isBangla ? (activeLevel.tierBangla || activeLevel.tier) : activeLevel.tier} • {t.levelOf} {displayLevelNumber} / {isBangla ? toBanglaNumber(18) : "18"}
             </span>
           </div>
 
           <div>
             <h3 className="text-xl sm:text-3xl font-extrabold text-gold-100 tracking-tight flex flex-wrap items-baseline gap-2 sm:gap-3">
-              <span>{levelOfText} {activeLevel.number}: {isBangla ? activeLevel.titleBangla || activeLevel.title : activeLevel.title}</span>
+              <span>{t.levelOf} {displayLevelNumber}: {isBangla ? activeLevel.titleBangla || activeLevel.title : activeLevel.title}</span>
               <span className="font-arabic text-lg sm:text-2xl font-normal text-gold-300/80" dir="rtl">
                 {activeLevel.titleArabic}
               </span>
@@ -84,7 +75,7 @@ export const HomeActiveStageSpotlight: React.FC<HomeActiveStageSpotlightProps> =
             <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-emerald-900/60 border border-emerald-700/60 text-xs text-sand-200">
               <Target className="w-4 h-4 text-gold-400 shrink-0" />
               <span>
-                <strong className="text-gold-200 mr-1">{stageGoalText}</strong>
+                <strong className="text-gold-200 mr-1">{t.stageGoal}</strong>
                 {isBangla ? activeLevel.objectivesBangla[0] : activeLevel.objectives[0]}
               </span>
             </div>
@@ -99,8 +90,8 @@ export const HomeActiveStageSpotlight: React.FC<HomeActiveStageSpotlightProps> =
               <Play className="w-4 h-4 fill-current" />
               <span>
                 {activeLevelPercent > 0
-                  ? `${resumeLevelText} ${activeLevel.number}`
-                  : `${startLevelText} ${activeLevel.number}`}
+                  ? `${t.resumeLevel} ${displayLevelNumber}`
+                  : `${t.startLevel} ${displayLevelNumber}`}
               </span>
               <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
@@ -111,7 +102,7 @@ export const HomeActiveStageSpotlight: React.FC<HomeActiveStageSpotlightProps> =
         <div className="lg:col-span-4 flex flex-col items-center sm:items-end justify-center">
           <div className="p-6 rounded-3xl bg-sand-50/5 border border-sand-50/10 backdrop-blur-md text-center w-full max-w-xs space-y-4">
             <span className="text-[11px] font-bold uppercase tracking-widest text-gold-300 block">
-              {levelMasteryGaugeText}
+              {t.levelMasteryGauge}
             </span>
 
             {/* Circular Gauge Readout */}
@@ -139,25 +130,25 @@ export const HomeActiveStageSpotlight: React.FC<HomeActiveStageSpotlightProps> =
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="font-mono text-2xl font-extrabold text-gold-200">
-                  {activeLevelPercent}%
+                  {displayPercent}%
                 </span>
                 <span className="text-[9px] uppercase tracking-wider text-sand-300">
-                  {masteredText}
+                  {t.mastered}
                 </span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-sand-50/10">
               <div className="p-2 rounded-xl bg-sand-50/5">
-                <span className="text-[10px] text-sand-400 block">{lessonsText}</span>
+                <span className="text-[10px] text-sand-400 block">{t.lessons}</span>
                 <span className="font-mono font-bold text-sand-100">
-                  {activeLevelCompletedCount}/{activeLevel.lessonsCount}
+                  {displayCompletedCount}/{displayLessonsCount}
                 </span>
               </div>
               <div className="p-2 rounded-xl bg-sand-50/5">
-                <span className="text-[10px] text-sand-400 block">{estimatedText}</span>
+                <span className="text-[10px] text-sand-400 block">{t.estimated}</span>
                 <span className="font-mono font-bold text-sand-100">
-                  ~{activeLevel.estimatedMinutes}{isBangla ? "মি." : "m"}
+                  ~{displayEstimated}{isBangla ? "মি." : "m"}
                 </span>
               </div>
             </div>

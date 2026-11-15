@@ -5,6 +5,7 @@ import { PWAProvider } from "@/components/PWAProvider";
 import { PWAInstallModal } from "@/components/PWAInstallModal";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "QuranPath — পবিত্র কুরআন পাঠ ও তাজবীদ শিক্ষা",
@@ -63,6 +64,33 @@ export default function RootLayout({
             <main className="flex-1 w-full">{children}</main>
             <Footer />
             <PWAInstallModal />
+            <Toaster
+              position="bottom-center"
+              toastOptions={{
+                duration: 3500,
+                style: {
+                  background: "#0c1d24",
+                  color: "#fdfbf7",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  fontSize: "13px",
+                  borderRadius: "14px",
+                  padding: "10px 16px",
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.3)",
+                },
+                error: {
+                  iconTheme: {
+                    primary: "#ef4444",
+                    secondary: "#ffffff",
+                  },
+                },
+                success: {
+                  iconTheme: {
+                    primary: "#10b981",
+                    secondary: "#ffffff",
+                  },
+                },
+              }}
+            />
           </PWAProvider>
         </ThemeWrapper>
       </body>

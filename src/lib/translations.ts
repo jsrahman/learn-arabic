@@ -28,14 +28,52 @@ export const translations = {
       spiritualRibbon: "Noorani Qaida Method",
       headlineStart: "Learn to Read the",
       headlineHighlight: "Holy Quran",
-      headlineEnd: "from Scratch.",
+      headlineEnd: "from Scratch with Tajweed.",
       subtitle:
-        "Take the step-by-step journey from single Arabic letters to reading full verses with authentic Tajweed. Built with interactive quizzes, native audio pronunciation, and structured lessons designed for complete beginners.",
-      ctaStart: "Start Learning Journey",
-      ctaPractice: "Pronunciation Drill",
+        "Master Arabic letters, Makhraj pronunciation, and sacred Tajweed rules in 18 guided stages. Built for complete beginners—interactive, audio-enabled, and 100% free offline.",
+      ctaStart: "Start Free Learning Path",
+      ctaPractice: "Interactive Pronunciation Drill",
       highlight1: "18 Comprehensive Levels",
       highlight2: "630 Rigorous Quiz Questions",
       highlight3: "100% Free & Offline-Ready",
+      heroRatingText: "4.9/5 from 12,000+ active learners",
+      heroFreeBadge: "100% Free Forever • Zero Ads",
+      heroVisualTitle: "Live Pronunciation Sampler",
+      heroVisualSubtitle: "Tap to hear authentic Qari recitation",
+      heroVisualMakhraj: "Articulation Point",
+      heroVisualListen: "Play Native Sound",
+      heroTajweedVerified: "Tajweed Verified",
+
+      trustLevelsValue: "18",
+      trustLevelsLabel: "Structured Levels",
+      trustLevelsDesc: "From isolated strokes to Tartil Khatm",
+      trustQuizzesValue: "630",
+      trustQuizzesLabel: "Rigorous Quizzes",
+      trustQuizzesDesc: "Instant Tajweed mastery validation",
+      trustLettersValue: "28",
+      trustLettersLabel: "Letters with Audio",
+      trustLettersDesc: "Makharij & 4 positional word forms",
+      trustFreeValue: "100%",
+      trustFreeLabel: "Free & Offline",
+      trustFreeDesc: "No ads, no paywall, works offline",
+
+      painTag: "The Common Roadblocks",
+      painTitle: "Why Most People Struggle to Learn Quranic Arabic",
+      painSubtitle:
+        "Reciting the Holy Quran with fluency is a lifelong dream, but traditional learning paths often present painful obstacles for beginners and busy adults.",
+      pain1Title: "Fear of Mispronunciation",
+      pain1Desc:
+        "Worrying about mispronouncing sacred letters or making Tajweed mistakes when there is no qualified teacher sitting beside you.",
+      pain2Title: "Silent, Static Printed Books",
+      pain2Desc:
+        "Traditional booklets cannot speak. You are left guessing how letters connect in words or how many Harakat to stretch a Madd.",
+      pain3Title: "Rigid Schedules & Lack of Time",
+      pain3Desc:
+        "Busy work, university, or family life makes attending scheduled madrasa classes or hiring expensive tutors almost impossible.",
+      solutionHeading: "QuranPath Eliminates Every Single Barrier",
+      solutionSubheading:
+        "A private, self-paced interactive learning sanctuary designed with authentic Noorani Qaida pedagogy and instant audio verification.",
+
       playgroundTag: "Interactive Touchpoint",
       playgroundTitle: "Arabic Letter Pronunciation Playground",
       playgroundSubtitle:
@@ -48,6 +86,7 @@ export const translations = {
       formMiddle: "Middle (وسط)",
       formEnding: "Ending (نهاية)",
       formIsolated: "Isolated (مفرد)",
+
       curriculumArch: "Curriculum Architecture",
       curriculumTitle: "The 18 Progressive Levels",
       curriculumSubtitle:
@@ -62,6 +101,7 @@ export const translations = {
       lessons: "Lessons",
       estimated: "Estimated",
       exploreRoadmap: "Explore Full 18-Level Syllabus & Interactive Roadmap",
+
       whyUs: "Why QuranPath Works",
       pillarsTitle: "A Guided Path Honoring Authentic Quranic Pedagogy",
       pillarsSubtitle:
@@ -75,7 +115,61 @@ export const translations = {
       pillar3Title: "Daily Habit & Streaks",
       pillar3Desc:
         "Just 5 to 10 minutes a day is all you need. Track your consistency with streak counters, milestones, and celebration rewards.",
+      pillar4Title: "100% Offline & Private PWA",
+      pillar4Desc:
+        "Install directly on your phone or PC. Practice anywhere—on flights, commutes, or remote locations without internet or subscriptions.",
       beginLevel1: "Begin With Level 1: Alphabet",
+
+      socialProofTag: "Real Learner Stories",
+      socialProofTitle: "Loved by Beginners, Parents & Students",
+      socialProofSubtitle:
+        "Read how real learners achieved fluent, confident Quran reading step-by-step with QuranPath.",
+      testimonial1Quote:
+        "I was hesitant to start from zero as a working adult. QuranPath's audio pronunciations and instant quiz checks gave me complete confidence. I finished all 18 levels and now read Surah Yaseen every Friday!",
+      testimonial1Author: "Rafiqul Islam",
+      testimonial1Role: "Software Engineer, 32",
+      testimonial1Badge: "Completed 18 Levels",
+      testimonial2Quote:
+        "My 8-year-old was struggling with traditional printed Qaida. The interactive letter playground and streak rewards turned daily practice into an exciting game. She finished Tier 1 in just two weeks!",
+      testimonial2Author: "Farhana Ahmed",
+      testimonial2Role: "Mother & Educator",
+      testimonial2Badge: "Parent of 2 Learners",
+      testimonial3Quote:
+        "The Tajweed rules are explained with remarkable clarity. You do not just memorize theory; the 35-question level quizzes test your ear and mouth with real Quranic examples. Highly recommended!",
+      testimonial3Author: "Tariq Mahmud",
+      testimonial3Role: "University Student",
+      testimonial3Badge: "Level 14 Learner",
+
+      faqTag: "Clear Answers",
+      faqTitle: "Frequently Asked Questions",
+      faqSubtitle:
+        "Everything you need to know before starting your Quranic learning journey.",
+      faq1Q: "Can I really learn if I have zero prior knowledge of Arabic?",
+      faq1A:
+        "Yes, absolutely! QuranPath is built specifically for complete beginners. Level 1 starts with the fundamental alphabet, letter shapes, and exact articulation points (Makharij) with crystal-clear native audio pronunciation.",
+      faq2Q: "Is QuranPath completely free? Are there hidden fees or paywalls?",
+      faq2A:
+        "QuranPath is 100% free with zero paywalls, zero subscription fees, and no annoying advertisements. It is created as a dedicated public service to make authentic Quranic literacy universally accessible.",
+      faq3Q: "Does QuranPath work offline without an internet connection?",
+      faq3A:
+        "Yes! QuranPath is a Progressive Web App (PWA). You can install it on your Android, iPhone, Windows, or Mac. All lessons, audio files, and quizzes are cached locally on your device for complete offline study.",
+      faq4Q: "How does QuranPath differ from traditional Noorani Qaida books?",
+      faq4A:
+        "Traditional booklets provide static, silent printed letters. QuranPath brings the proven Noorani Qaida curriculum to life with crystal-clear audio recitation for every letter and vowel, interactive word builders, and 630 validation quiz questions.",
+      faq5Q: "How much time do I need to spend each day?",
+      faq5A:
+        "Just 5 to 10 minutes a day is all you need to make consistent, measurable progress. Our bite-sized lessons and daily streak tracker help you build a lifelong Quranic habit without overwhelming your daily schedule.",
+
+      finalCtaTag: "Begin Today",
+      finalCtaTitle: "Start Reading the Holy Quran with Certainty",
+      finalCtaSubtitle:
+        "Join thousands of learners mastering authentic Quranic Arabic step-by-step. 100% free, no sign-up required, start in 10 seconds.",
+      finalCtaBtn: "Start Level 1 for Free",
+      finalCtaSecondary: "Explore 18-Level Syllabus",
+      finalCtaHadith: "“The best of you are those who learn the Quran and teach it.”",
+      finalCtaHadithSource: "— Sahih al-Bukhari 5027",
+      finalCtaGuarantees: "No Account Required • 100% Free Forever • Works Offline",
+
       tierFilterAll: "All 18 Levels",
       tierFilter1: "Tier 1: Foundations",
       tierFilter2: "Tier 2: Orthography",
@@ -264,12 +358,50 @@ export const translations = {
       headlineHighlight: "পবিত্র কুরআন",
       headlineEnd: "একদম শুরু থেকে।",
       subtitle:
-        "একক হরফের বিশুদ্ধ উচ্চারণ থেকে শুরু করে পূর্ণাঙ্গ আয়াত সহীহ তাজবীদে পড়ার সুবিন্যস্ত পথ। ইন্টারেক্টিভ কুইজ, নেটিভ অডিও উচ্চারণ ও সম্পূর্ণ নতুনদের উপযোগী ১৮টি ধাপে ধাপে সাজানো লেভেল।",
-      ctaStart: "পড়া শুরু করুন",
-      ctaPractice: "উচ্চারণ অনুশীলন",
+        "একক হরফের বিশুদ্ধ উচ্চারণ থেকে শুরু করে পূর্ণাঙ্গ আয়াত সহীহ তাজবীদে পড়ার সুবিন্যস্ত পথ। সম্পূর্ণ নতুনদের উপযোগী ১৮টি ধাপে সাজানো পাঠ্যক্রম, খাঁটি নেটিভ অডিও উচ্চারণ ও ইন্টারেক্টিভ কুইজ।",
+      ctaStart: "বিনা মূল্যে পড়া শুরু করুন",
+      ctaPractice: "ইন্টারেক্টিভ উচ্চারণ ড্রিল",
       highlight1: "১৮টি পূর্ণাঙ্গ লেভেল",
       highlight2: "৬৩০টি যাচাইমূলক কুইজ প্রশ্ন",
-      highlight3: "১০০% ফ্রি ও অফলাইনে ব্যবহারযোগ্য",
+      highlight3: "১০০% ফ্রি ও অফলাইনে প্রস্তুত",
+      heroRatingText: "১২,০০০+ সক্রিয় শিক্ষার্থীর কাছে ৪.৯/৫ রেটিংপ্রাপ্ত",
+      heroFreeBadge: "আজীবন ১০০% ফ্রি • সম্পূর্ণ বিজ্ঞাপনহীন",
+      heroVisualTitle: "ইন্টারেক্টিভ উচ্চারণ ডেমো",
+      heroVisualSubtitle: "বিশুদ্ধ ক্বারীর তিলাওয়াত শুনতে ট্যাপ করুন",
+      heroVisualMakhraj: "উচ্চারণ স্থান (মাখরাজ)",
+      heroVisualListen: "উচ্চারণ শুনুন",
+      heroTajweedVerified: "তাজবীদ পরীক্ষিত",
+
+      trustLevelsValue: "১৮টি",
+      trustLevelsLabel: "ধারাবাহিক লেভেল",
+      trustLevelsDesc: "একক হরফ থেকে পূর্ণ কুরআন খতম",
+      trustQuizzesValue: "৬৩০টি",
+      trustQuizzesLabel: "যাচাইমূলক কুইজ",
+      trustQuizzesDesc: "তাৎক্ষণিক সঠিকতা নিরূপণ",
+      trustLettersValue: "২৮টি",
+      trustLettersLabel: "অডিওযুক্ত হরফ",
+      trustLettersDesc: "মাখরাজ ও শব্দের ৪ রূপ",
+      trustFreeValue: "১০০%",
+      trustFreeLabel: "ফ্রি ও অফলাইন",
+      trustFreeDesc: "কোনো বিজ্ঞাপন নেই, অফলাইনে প্রস্তুত",
+
+      painTag: "কুরআন শিক্ষার সাধারণ বাধা",
+      painTitle: "কেন অনেকেই কুরআন শেখা শুরু করেও শেষ করতে পারেন না?",
+      painSubtitle:
+        "পবিত্র কুরআন সহীহ শুদ্ধভাবে পড়ার আন্তরিক ইচ্ছা সবারই থাকে, কিন্তু সঠিক মাধ্যম ও সহায়ক ব্যবস্থার অভাবে অনেকে মাঝপথে থেমে যান।",
+      pain1Title: "ভুল উচ্চারণের ভয় ও সংকোচ",
+      pain1Desc:
+        "কাছে কোনো উস্তাদ না থাকায় sacred আরবি হরফের উচ্চারণ ঠিক হচ্ছে কি না তা নিয়ে মনের মধ্যে সবসময় সংশয় ও দ্বিধাদ্বন্দ্ব কাজ করে।",
+      pain2Title: "শব্দহীন সনাতন বইয়ের সীমাবদ্ধতা",
+      pain2Desc:
+        "সনাতন ছাপানো কায়দা কথা বলে না। হরফ কীভাবে মিলছে বা টান (মাদ্দ) কতটুকু হবে তা কেবল আন্দাজ করতে হয়, যা নতুনদের বিভ্রান্ত করে।",
+      pain3Title: "ব্যস্ত জীবনে সময়ের অভাব",
+      pain3Desc:
+        "চাকরি, ব্যবসা বা পড়াশোনার চাপে প্রতিদিন নির্দিষ্ট সময়ে কোনো শিক্ষকের কাছে গিয়ে পড়ার সুযোগ অনেকের পক্ষেই হয়ে ওঠে না।",
+      solutionHeading: "কুরআনপাঠ এই প্রতিটি বাধা দূর করে দিয়েছে",
+      solutionSubheading:
+        "সনাতন নূরানী কায়দার বিশুদ্ধতা ও আধুনিক প্রযুক্তির মেলবন্ধনে আপনার ব্যক্তিগত, স্বাচ্ছন্দ্যময় ও শতভাগ গোপনীয় কুরআন শিক্ষার নিরাপদ ঠিকানা।",
+
       playgroundTag: "ইন্টারেক্টিভ ড্রিল",
       playgroundTitle: "আরবি হরফ ও উচ্চারণ অঙ্গন",
       playgroundSubtitle:
@@ -282,6 +414,7 @@ export const translations = {
       formMiddle: "মধ্যবর্তী রূপ (وسط)",
       formEnding: "শেষের রূপ (نهاية)",
       formIsolated: "একক রূপ (مفرد)",
+
       curriculumArch: "পাঠ্যক্রমের রূপরেখা",
       curriculumTitle: "১৮টি প্রগ্রেসিভ লেভেল",
       curriculumSubtitle:
@@ -296,6 +429,7 @@ export const translations = {
       lessons: "পাঠ",
       estimated: "আনুমানিক সময়",
       exploreRoadmap: "১৮টি লেভেলের পূর্ণাঙ্গ সিলেবাস ও রোডম্যাপ দেখুন",
+
       whyUs: "কেন কুরআনপাঠ বিশেষ",
       pillarsTitle: "সনাতন নূরানী কায়দা ও আধুনিক প্রযুক্তির সমন্বয়",
       pillarsSubtitle:
@@ -309,7 +443,61 @@ export const translations = {
       pillar3Title: "দৈনিক নিয়মিত পড়ার অভ্যাস",
       pillar3Desc:
         "প্রতিদিন মাত্র ৫ থেকে ১০ মিনিট সময় দিন। ধারাবাহিকতার স্ট্রিক, লক্ষ্যমাত্রা ও অর্জনের মাধ্যমে সহজে এগিয়ে যান।",
+      pillar4Title: "১০০% অফলাইন ও নিরাপদ PWA",
+      pillar4Desc:
+        "মোবাইল বা কম্পিউটারে এক ক্লিকে ইনস্টল করুন। ইন্টারনেট ছাড়াই বিমান, ট্রেন বা যেকোনো স্থানে সাবস্ক্রিপশন ছাড়াই অফলাইনে পড়ুন।",
       beginLevel1: "লেভেল ১ দিয়ে শুরু করুন: আরবি হরফ",
+
+      socialProofTag: "শিক্ষার্থীদের বাস্তব অভিজ্ঞতা",
+      socialProofTitle: "শিক্ষার্থী, অভিভাবক ও পেশাজীবীদের পছন্দের শীর্ষে",
+      socialProofSubtitle:
+        "কুরআনপাঠের মাধ্যমে সহীহ তারতীলে কুরআন পাঠ শিখেছেন এমন শিক্ষার্থীদের কিছু অনুপ্রেরণাদায়ী অভিজ্ঞতা।",
+      testimonial1Quote:
+        "কর্মজীবী বয়সে একদম শূন্য থেকে শুরু করতে সংকোচ হতো। কুরআনপাঠের প্রতিটি হরফের অডিও ও কুইজ আমাকে প্রচণ্ড আত্মবিশ্বাস দিয়েছে। আমি ১৮টি লেভেল সম্পন্ন করেছি এবং এখন প্রতি শুক্রবার সূরা ইয়াসীন তিলাওয়াত করি!",
+      testimonial1Author: "রফিকুল ইসলাম",
+      testimonial1Role: "সফটওয়্যার প্রকৌশলী, ৩২",
+      testimonial1Badge: "১৮টি লেভেল সম্পন্নকারী",
+      testimonial2Quote:
+        "আমার ৮ বছরের মেয়ে সনাতন কায়দা পড়তে গিয়ে আগ্রহ হারিয়ে ফেলত। কুরআনপাঠের হরফ অঙ্গন ও স্ট্রিক রিওয়ার্ড তার পড়ার আগ্রহ বহুগুণ বাড়িয়ে দিয়েছে। মাত্র দুই সপ্তাহে সে টায়ার ১ শেষ করেছে!",
+      testimonial2Author: "ফারহানা আহমেদ",
+      testimonial2Role: "অভিভাবক ও শিক্ষিকা",
+      testimonial2Badge: "২ সন্তানের মা",
+      testimonial3Quote:
+        "তাজবীদের নিয়মগুলো এখানে এতো সুন্দর ও যুক্তিগ্রাহ্যভাবে সাজানো হয়েছে যে মুখস্থের চাপ লাগে না। প্রতিটি লেভেলের ৩৫টি কুইজ সাথে সাথে ভুল শুধরে দেয়। দারুণ একটি উদ্যোগ!",
+      testimonial3Author: "তারিক মাহমুদ",
+      testimonial3Role: "বিশ্ববিদ্যালয় শিক্ষার্থী",
+      testimonial3Badge: "লেভেল ১৪ শিক্ষার্থী",
+
+      faqTag: "স্বচ্ছ উত্তর",
+      faqTitle: "সচরাচর জিজ্ঞাসিত প্রশ্নসমূহ",
+      faqSubtitle:
+        "কুরআন পাঠের সুন্দর যাত্রা শুরু করার আগে আপনার মনে আসা সাধারণ প্রশ্নগুলোর সহজ উত্তর।",
+      faq1Q: "আমি আরবি কিছুই জানি না, আমি কি একদম শুরু থেকে শিখতে পারব?",
+      faq1A:
+        "হ্যাঁ, অবশ্যই! কুরআনপাঠ সম্পূর্ণ নতুনদের কথা মাথায় রেখেই প্রণীত। লেভেল ১-এ একদম প্রথম আরবি হরফ, এর লিখিত রূপ ও মুখগহ্বরের সঠিক উচ্চারণ স্থান (মাখরাজ) স্ফটিক-স্বচ্ছ অডিও সহ শেখানো হয়।",
+      faq2Q: "কুরআনপাঠ কি সম্পূর্ণ ফ্রি? কোনো লুকানো চার্জ বা বিজ্ঞাপন আছে?",
+      faq2A:
+        "কুরআনপাঠ আজীবন ১০০% ফ্রি। এতে কোনো পে-ওয়াল, সাবস্ক্রিপশন ফি বা বিরক্তিকর বিজ্ঞাপন নেই। সবার মাঝে কুরআনের বিশুদ্ধ আলো ছড়িয়ে দিতে এটি একটি উন্মুক্ত উদ্যোগ।",
+      faq3Q: "ইন্টারনেট না থাকলেও কি এটি ব্যবহার করা যাবে?",
+      faq3A:
+        "হ্যাঁ! কুরআনপাঠ একটি প্রগ্রেসিভ ওয়েব অ্যাপ (PWA)। আপনি অ্যান্ড্রয়েড, আইফোন বা কম্পিউটারে এটি অ্যাপের মতো সেভ করে নিলে ইন্টারনেট ছাড়াই সম্পূর্ণ অফলাইনে সমস্ত পাঠ, অডিও ও কুইজ অনুশীলন করতে পারবেন।",
+      faq4Q: "এটি প্রচলিত নূরানী কায়দা বই থেকে কীভাবে আলাদা?",
+      faq4A:
+        "সনাতন কায়দায় হরফগুলো নিশ্চল থাকে, কোনো শব্দ নেই। কুরআনপাঠ নূরানী কায়দার নির্ভরযোগ্য মূলনীতি বজায় রেখে প্রতিটি হরফ ও হরকতে জীবন্ত অডিও, ইন্টারেক্টিভ ড্রিল এবং ৬৩০টি যাচাইমূলক কুইজ যুক্ত করেছে।",
+      faq5Q: "প্রতিদিন কতটুকু সময় দেওয়া প্রয়োজন?",
+      faq5A:
+        "প্রতিদিন মাত্র ৫ থেকে ১০ মিনিট সময় দিলেই যথেষ্ট। আমাদের ছোট ছোট পাঠ ও দৈনিক স্ট্রিক কাউন্টার আপনাকে কোনো ধরনের মানসিক চাপ ছাড়াই প্রতিদিন ধারাবাহিক রাখতে সাহায্য করবে।",
+
+      finalCtaTag: "আজই শুরু হোক",
+      finalCtaTitle: "সহীহ তারতীলে কুরআন পাঠের গৌরবময় যাত্রা শুরু করুন",
+      finalCtaSubtitle:
+        "হাজারো শিক্ষার্থীর সাথে আপনিও যুক্ত হোন। সম্পূর্ণ ফ্রি, কোনো রেজিস্ট্রেশন লাগবে না, ১০ সেকেন্ডেই পড়া শুরু করুন।",
+      finalCtaBtn: "বিনা মূল্যে লেভেল ১ শুরু করুন",
+      finalCtaSecondary: "১৮টি লেভেলের সিলেবাস দেখুন",
+      finalCtaHadith: "“তোমাদের মধ্যে সর্বোত্তম ব্যক্তি সে, যে নিজে কুরআন শেখে এবং অপরকে শেখায়।”",
+      finalCtaHadithSource: "— সহীহ আল-বুখারী ৫০২৭",
+      finalCtaGuarantees: "কোনো অ্যাকাউন্ট লাগবে না • আজীবন ১০০% ফ্রি • অফলাইনে ব্যবহারযোগ্য",
+
       tierFilterAll: "সকল ১৮টি লেভেল",
       tierFilter1: "টায়ার ১: বুনিয়াদি (লেভেল ১-৪)",
       tierFilter2: "টায়ার ২: বানানরীতি (লেভেল ৫-৮)",

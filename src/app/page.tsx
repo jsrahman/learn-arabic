@@ -3,109 +3,92 @@
 import React from "react";
 import { useHomePlayground } from "@/hooks/useHomePlayground";
 import { HomeHero } from "@/components/home/HomeHero";
+import { HomeTrustStrip } from "@/components/home/HomeTrustStrip";
+import { HomeProblemSolution } from "@/components/home/HomeProblemSolution";
+import { HomePillars } from "@/components/home/HomePillars";
 import { HomeAlphabetPlayground } from "@/components/home/HomeAlphabetPlayground";
 import { HomeActiveStageSpotlight } from "@/components/home/HomeActiveStageSpotlight";
 import { HomeCurriculumPreview } from "@/components/home/HomeCurriculumPreview";
-import { HomePillars } from "@/components/home/HomePillars";
+import { HomeTestimonials } from "@/components/home/HomeTestimonials";
+import { HomeFaq } from "@/components/home/HomeFaq";
 import { HomePwaShowcase } from "@/components/home/HomePwaShowcase";
+import { HomeFinalCta } from "@/components/home/HomeFinalCta";
 
 export default function HomePage() {
-  const {
-    progress,
-    isBangla,
-    t,
-    isInstalled,
-    promptInstall,
-    selectedLetter,
-    selectedTier,
-    tierFilters,
-    filteredLevels,
-    activeLevel,
-    activeLevelCompletedCount,
-    activeLevelPercent,
-    handleSelectLetter,
-    handleSelectTier,
-  } = useHomePlayground();
+  const hp = useHomePlayground();
+  const { t } = hp;
 
   return (
-    <div className="w-full bg-arabesque">
+    <div className="w-full bg-arabesque overflow-x-hidden">
       <HomeHero
-        spiritualRibbon={t.spiritualRibbon}
-        headlineStart={t.headlineStart}
-        headlineHighlight={t.headlineHighlight}
-        headlineEnd={t.headlineEnd}
-        subtitle={t.subtitle}
-        ctaStart={t.ctaStart}
-        ctaPractice={t.ctaPractice}
-        highlight1={t.highlight1}
-        highlight2={t.highlight2}
-        highlight3={t.highlight3}
+        t={t}
+        selectedLetter={hp.selectedLetter}
+        isBangla={hp.isBangla}
       />
 
+      <HomeTrustStrip metrics={hp.trustMetrics} />
+
+      <HomeProblemSolution t={t} ctaText={t.beginLevel1} />
+
+      <HomePillars t={t} />
+
       <HomeAlphabetPlayground
-        selectedLetter={selectedLetter}
-        onSelectLetter={handleSelectLetter}
-        isBangla={isBangla}
-        playgroundTag={t.playgroundTag}
-        playgroundTitle={t.playgroundTitle}
-        playgroundSubtitle={t.playgroundSubtitle}
-        openFullGridText={t.openFullGrid}
-        soundLabel={t.sound}
-        makhrajLabel={t.makhrajLabel}
-        formsHeader={t.formsHeader}
-        formBeginning={t.formBeginning}
-        formMiddle={t.formMiddle}
-        formEnding={t.formEnding}
-        formIsolated={t.formIsolated}
+        t={t}
+        selectedLetter={hp.selectedLetter}
+        onSelectLetter={hp.handleSelectLetter}
+        isBangla={hp.isBangla}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <HomeActiveStageSpotlight
-          activeLevel={activeLevel}
-          activeLevelCompletedCount={activeLevelCompletedCount}
-          activeLevelPercent={activeLevelPercent}
-          isBangla={isBangla}
-          activeStageText={t.activeStage}
-          levelOfText={t.levelOf}
-          stageGoalText={t.stageGoal}
-          resumeLevelText={t.resumeLevel}
-          startLevelText={t.startLevel}
-          levelMasteryGaugeText={t.levelMasteryGauge}
-          masteredText={t.mastered}
-          lessonsText={t.lessons}
-          estimatedText={t.estimated}
+          t={t}
+          activeLevel={hp.activeLevel}
+          activeLevelCompletedCount={hp.activeLevelCompletedCount}
+          activeLevelPercent={hp.activeLevelPercent}
+          isBangla={hp.isBangla}
         />
       </div>
 
       <HomeCurriculumPreview
-        curriculumArchText={t.curriculumArch}
-        curriculumTitleText={t.curriculumTitle}
-        curriculumSubtitleText={t.curriculumSubtitle}
-        tierFilters={tierFilters}
-        selectedTier={selectedTier}
-        onSelectTier={handleSelectTier}
-        filteredLevels={filteredLevels}
-        progress={progress}
-        exploreRoadmapText={t.exploreRoadmap}
+        t={t}
+        tierFilters={hp.tierFilters}
+        selectedTier={hp.selectedTier}
+        onSelectTier={hp.handleSelectTier}
+        filteredLevels={hp.filteredLevels}
+        progress={hp.progress}
       />
 
-      <HomePillars
-        whyUsText={t.whyUs}
-        pillarsTitleText={t.pillarsTitle}
-        pillarsSubtitleText={t.pillarsSubtitle}
-        pillar1TitleText={t.pillar1Title}
-        pillar1DescText={t.pillar1Desc}
-        pillar2TitleText={t.pillar2Title}
-        pillar2DescText={t.pillar2Desc}
-        pillar3TitleText={t.pillar3Title}
-        pillar3DescText={t.pillar3Desc}
-        beginLevel1Text={t.beginLevel1}
+      <HomeTestimonials
+        socialProofTag={t.socialProofTag}
+        socialProofTitle={t.socialProofTitle}
+        socialProofSubtitle={t.socialProofSubtitle}
+        testimonials={hp.testimonials}
+      />
+
+      <HomeFaq
+        faqTag={t.faqTag}
+        faqTitle={t.faqTitle}
+        faqSubtitle={t.faqSubtitle}
+        faqItems={hp.faqItems}
+        openFaqId={hp.openFaqId}
+        onToggleFaq={hp.handleToggleFaq}
       />
 
       <HomePwaShowcase
-        isInstalled={isInstalled}
-        onPromptInstall={promptInstall}
-        isBangla={isBangla}
+        isInstalled={hp.isInstalled}
+        onPromptInstall={hp.promptInstall}
+        isBangla={hp.isBangla}
+      />
+
+      <HomeFinalCta
+        finalCtaTag={t.finalCtaTag}
+        finalCtaTitle={t.finalCtaTitle}
+        finalCtaSubtitle={t.finalCtaSubtitle}
+        finalCtaBtn={t.finalCtaBtn}
+        finalCtaSecondary={t.finalCtaSecondary}
+        finalCtaHadith={t.finalCtaHadith}
+        finalCtaHadithSource={t.finalCtaHadithSource}
+        finalCtaGuarantees={t.finalCtaGuarantees}
       />
     </div>
   );

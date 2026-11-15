@@ -41,26 +41,66 @@ export const OFFLINE_AUDIO_FILES = [
   "/audio/alphabet/zay.mp3",
 ];
 
-export const OFFLINE_ROUTES = [
+export const OFFLINE_CORE_ROUTES = [
   "/",
   "/path",
   "/practice",
   "/quiz",
   "/progress",
   "/profile",
+];
+
+// All 18 level quizzes for complete offline coverage
+export const OFFLINE_QUIZ_ROUTES = Array.from(
+  { length: 18 },
+  (_, i) => `/quiz/q${i + 1}`
+);
+
+// Foundation lesson routes for instant offline availability
+export const OFFLINE_LESSON_ROUTES = [
   "/learn/l1-1",
-  "/quiz/q1",
+  "/learn/l1-2",
+  "/learn/l1-3",
+  "/learn/l1-4",
+  "/learn/l2-1",
+  "/learn/l2-2",
+  "/learn/l2-3",
+  "/learn/l2-4",
+];
+
+export const OFFLINE_ASSETS = [
   "/manifest.json",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
   "/icons/icon-maskable.png",
   "/icons/apple-touch-icon.png",
+  "/icons/icon.svg",
   "/favicon.ico",
+];
+
+export const OFFLINE_ROUTES = [
+  ...OFFLINE_CORE_ROUTES,
+  ...OFFLINE_QUIZ_ROUTES,
+  ...OFFLINE_LESSON_ROUTES,
+  ...OFFLINE_ASSETS,
 ];
 
 export const ALL_OFFLINE_TARGETS = [...OFFLINE_ROUTES, ...OFFLINE_AUDIO_FILES];
 
-const CACHE_NAME = "quranpath-core-v1.1.0";
+const CACHE_NAME = "quranpath-core-v1.2.0";
+
+/**
+ * Helper to parse HTML and extract all Next.js static scripts and stylesheets.
+ */
+function extractHtmlAssetUrls(html: string): string[] {
+  const urls: string[] = [];
+  const scriptRegex = /(?:src|href)="(\/_next\/static\/[^"]+)"/g;
+  let match: RegExpExecArray | null;
+  while ((match = scriptRegex.exec(html)) !== null) {
+    urls.push(match[1]);
+  }
+  return Array.from(new Set(urls));
+}
 
 export async function checkOfflineStatus(): Promise<OfflineStatus> {
   const isOnline = typeof window !== "undefined" ? navigator.onLine : true;
@@ -80,7 +120,7 @@ export async function checkOfflineStatus(): Promise<OfflineStatus> {
     let cachedCount = 0;
 
     for (const target of ALL_OFFLINE_TARGETS) {
-      const match = await cache.match(target);
+      const match = await cache.match(target, { ignoreSearch: true });
       if (match) {
         cachedCount++;
       }
@@ -119,14 +159,36 @@ export async function downloadAllForOffline(
     const cache = await caches.open(CACHE_NAME);
     let count = 0;
     const total = ALL_OFFLINE_TARGETS.length;
+    const discoveredAssets = new Set<string>();
 
     for (let i = 0; i < total; i++) {
       const url = ALL_OFFLINE_TARGETS[i];
       try {
         const response = await fetch(url, { cache: "reload" });
         if (response && response.status === 200) {
-          await cache.put(url, response);
+          await cache.put(url, response.clone());
           count++;
+
+          const contentType = response.headers.get("content-type") || "";
+          if (contentType.includes("text/html")) {
+            // 1. Precache client-side Next.js RSC payload
+            try {
+              const rscResp = await fetch(url, { headers: { RSC: "1" }, cache: "reload" });
+              if (rscResp && rscResp.status === 200) {
+                await cache.put(url + "?_rsc=1", rscResp.clone());
+                await cache.put(new Request(url, { headers: { RSC: "1" } }), rscResp);
+              }
+            } catch (_) {}
+
+            // 2. Discover and collect linked JS/CSS chunks
+            try {
+              const html = await response.text();
+              const linkedAssets = extractHtmlAssetUrls(html);
+              for (const assetUrl of linkedAssets) {
+                discoveredAssets.add(assetUrl);
+              }
+            } catch (_) {}
+          }
         }
       } catch (e) {
         console.warn(`[OfflineManager] Failed to cache ${url}:`, e);
@@ -136,6 +198,17 @@ export async function downloadAllForOffline(
         const percent = Math.round(((i + 1) / total) * 100);
         onProgress(percent, url);
       }
+    }
+
+    // 3. Cache all discovered Next.js static JS/CSS bundles
+    for (const assetUrl of Array.from(discoveredAssets)) {
+      try {
+        const assetResp = await fetch(assetUrl, { cache: "reload" });
+        if (assetResp && assetResp.status === 200) {
+          await cache.put(assetUrl, assetResp);
+          count++;
+        }
+      } catch (_) {}
     }
 
     return { success: count > 0, cachedCount: count };

@@ -5,6 +5,7 @@ import {
   checkOfflineStatus,
   downloadAllForOffline,
   initAutoOfflineCaching,
+  ALL_OFFLINE_TARGETS,
   OfflineStatus,
 } from "@/lib/offlineManager";
 import { useThemeContext } from "@/components/ThemeWrapper";
@@ -17,7 +18,7 @@ export function useOfflineStatus() {
     isOnline: true,
     isFullyCached: false,
     cachedCount: 0,
-    totalCount: 44,
+    totalCount: ALL_OFFLINE_TARGETS.length,
     percent: 0,
   });
 

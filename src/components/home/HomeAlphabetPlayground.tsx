@@ -5,53 +5,34 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ARABIC_ALPHABET, ArabicLetter } from "@/data/alphabet";
 import { AudioButton } from "@/components/AudioButton";
+import type { HomeTranslations } from "@/types";
 
 interface HomeAlphabetPlaygroundProps {
+  t: HomeTranslations;
   selectedLetter: ArabicLetter;
   onSelectLetter: (letter: ArabicLetter) => void;
   isBangla: boolean;
-  playgroundTag: string;
-  playgroundTitle: string;
-  playgroundSubtitle: string;
-  openFullGridText: string;
-  soundLabel: string;
-  makhrajLabel: string;
-  formsHeader: string;
-  formBeginning: string;
-  formMiddle: string;
-  formEnding: string;
-  formIsolated: string;
 }
 
 export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
+  t,
   selectedLetter,
   onSelectLetter,
   isBangla,
-  playgroundTag,
-  playgroundTitle,
-  playgroundSubtitle,
-  openFullGridText,
-  soundLabel,
-  makhrajLabel,
-  formsHeader,
-  formBeginning,
-  formMiddle,
-  formEnding,
-  formIsolated,
 }) => {
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="playground" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
       <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 bg-sand-100/80 dark:bg-night-900/80 border border-sand-200 dark:border-night-800 shadow-card">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              {playgroundTag}
+              {t.playgroundTag}
             </span>
             <h2 className="text-xl sm:text-3xl font-bold text-sand-950 dark:text-sand-50 tracking-tight">
-              {playgroundTitle}
+              {t.playgroundTitle}
             </h2>
             <p className="text-xs sm:text-sm text-sand-600 dark:text-sand-400 mt-1">
-              {playgroundSubtitle}
+              {t.playgroundSubtitle}
             </p>
           </div>
 
@@ -59,7 +40,7 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
             href="/practice"
             className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sand-200/60 dark:bg-night-800 border border-sand-300 dark:border-night-700 min-h-[44px]"
           >
-            <span>{openFullGridText}</span>
+            <span>{t.openFullGrid}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -89,13 +70,13 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
                   : `${selectedLetter.name} (${selectedLetter.nameBangla})`}
               </h3>
               <span className="text-sm font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
-                {soundLabel}: {selectedLetter.transliteration}
+                {t.sound}: {selectedLetter.transliteration}
               </span>
             </div>
 
             <div className="p-4 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800 space-y-2">
               <p className="text-xs font-bold text-sand-700 dark:text-sand-300 uppercase tracking-wider">
-                {makhrajLabel}
+                {t.makhrajLabel}
               </p>
               <p className="text-sm text-sand-800 dark:text-sand-200 leading-relaxed">
                 {isBangla ? selectedLetter.makhrajBangla : selectedLetter.makhraj}
@@ -111,7 +92,7 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs font-bold text-sand-600 dark:text-sand-400 uppercase tracking-wider">
-                  {formsHeader}
+                  {t.formsHeader}
                 </p>
                 <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
                   بداية ← وسط ← نهاية
@@ -120,7 +101,7 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-2 text-center" dir="rtl">
                 <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
                   <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
-                    {formBeginning}
+                    {t.formBeginning}
                   </span>
                   <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.initial}
@@ -128,7 +109,7 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
                 </div>
                 <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
                   <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
-                    {formMiddle}
+                    {t.formMiddle}
                   </span>
                   <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.medial}
@@ -136,7 +117,7 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
                 </div>
                 <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
                   <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
-                    {formEnding}
+                    {t.formEnding}
                   </span>
                   <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.final}
@@ -144,7 +125,7 @@ export const HomeAlphabetPlayground: React.FC<HomeAlphabetPlaygroundProps> = ({
                 </div>
                 <div className="p-3 sm:p-2.5 rounded-xl bg-sand-100 dark:bg-night-900 border border-sand-200 dark:border-night-800">
                   <span className="text-xs sm:text-[11px] text-sand-600 dark:text-sand-400 font-medium block mb-1 leading-snug">
-                    {formIsolated}
+                    {t.formIsolated}
                   </span>
                   <span className="font-arabic text-2xl sm:text-3xl text-emerald-950 dark:text-gold-200 leading-relaxed" dir="rtl">
                     {selectedLetter.forms.isolated}

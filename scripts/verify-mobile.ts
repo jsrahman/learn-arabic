@@ -680,17 +680,33 @@ async function main() {
     const appManifestPath = path.join(PROJECT_ROOT, ".next/app-build-manifest.json");
 
     if (!skipBuild) {
+      const binPath = path.join(PROJECT_ROOT, "node_modules/.bin");
+      const buildEnv = {
+        ...process.env,
+        PATH: `${binPath}:${process.env.PATH || ""}`,
+        NEXT_TELEMETRY_DISABLED: "1",
+        NODE_ENV: "production" as const,
+      };
+
       try {
         execSync("npm run build", {
           stdio: "pipe",
           cwd: PROJECT_ROOT,
-          env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", NODE_ENV: "production" },
+          env: buildEnv,
         });
       } catch (err: any) {
-        const stdout = err?.stdout?.toString() || "";
-        const stderr = err?.stderr?.toString() || "";
-        const msg = err?.message || "";
-        throw new Error(`Next.js production build failed (status: ${err?.status}, signal: ${err?.signal}):\nSTDOUT:\n${stdout}\nSTDERR:\n${stderr}\nMSG:\n${msg}`);
+        try {
+          execSync("pnpm build", {
+            stdio: "pipe",
+            cwd: PROJECT_ROOT,
+            env: buildEnv,
+          });
+        } catch (pnpmErr: any) {
+          const stdout = err?.stdout?.toString() || pnpmErr?.stdout?.toString() || "";
+          const stderr = err?.stderr?.toString() || pnpmErr?.stderr?.toString() || "";
+          const msg = err?.message || pnpmErr?.message || "";
+          throw new Error(`Next.js production build failed:\nSTDOUT:\n${stdout}\nSTDERR:\n${stderr}\nMSG:\n${msg}`);
+        }
       }
     }
 

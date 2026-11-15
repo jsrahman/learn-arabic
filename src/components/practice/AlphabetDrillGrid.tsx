@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Filter } from "lucide-react";
+import toast from "react-hot-toast";
 import { AudioButton } from "@/components/AudioButton";
 import { audioService } from "@/lib/audioService";
 import { cn } from "@/utils";
@@ -28,9 +29,26 @@ export const AlphabetDrillGrid: React.FC<AlphabetDrillGridProps> = ({
 }) => {
   const handlePlayLetter = (letter: ArabicLetter) => {
     if (letter.audioUrl) {
-      audioService.playRecitation(letter.audioUrl, undefined, 1.0, letter.name);
-    } else if (letter.name) {
-      audioService.speakArabic(letter.name, 0.9);
+      audioService.playRecitation(
+        letter.audioUrl,
+        undefined,
+        1.0,
+        () => {
+          toast.error(
+            isBangla
+              ? "এই হরফের অডিও লোড করা যায়নি"
+              : "Could not load audio for this letter",
+            { id: `audio-err-${letter.id}` }
+          );
+        }
+      );
+    } else {
+      toast.error(
+        isBangla
+          ? "এই হরফের অডিও ফাইল পাওয়া যায়নি"
+          : "Audio file not available for this letter",
+        { id: `audio-missing-${letter.id}` }
+      );
     }
   };
 
