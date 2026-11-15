@@ -53,6 +53,7 @@ export function useLessonViewer(lessonId: string) {
 
   const handleAnswerSelect = useCallback(
     (index: number) => {
+      if (selectedAnswer !== null) return;
       setSelectedAnswer(index);
       if (slide.checkQuestion) {
         if (index === slide.checkQuestion.correctIndex) {
@@ -62,7 +63,7 @@ export function useLessonViewer(lessonId: string) {
         }
       }
     },
-    [slide.checkQuestion]
+    [selectedAnswer, slide.checkQuestion]
   );
 
   const handleCloseModal = useCallback(() => {

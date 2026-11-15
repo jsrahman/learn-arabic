@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { LEARNING_LEVELS } from "@/data/levels";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
+import { toBanglaNumber } from "@/utils";
 import type { UserProgress } from "@/types";
 
 interface LevelBreakdownCardProps {
@@ -38,11 +39,11 @@ export const LevelBreakdownCard: React.FC<LevelBreakdownCardProps> = ({
           return (
             <div
               key={level.id}
-              className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-850 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4"
+              className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-sand-50 dark:bg-night-950 border border-sand-200 dark:border-night-855 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4"
             >
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-800 text-gold-300 flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">
-                  {String(level.number).padStart(2, "0")}
+                  {isBangla ? toBanglaNumber(level.number) : String(level.number).padStart(2, "0")}
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
@@ -52,7 +53,7 @@ export const LevelBreakdownCard: React.FC<LevelBreakdownCardProps> = ({
                     <DifficultyBadge difficulty={level.difficulty} isBangla={isBangla} />
                   </div>
                   <p className="text-[11px] sm:text-xs text-sand-500 mt-0.5">
-                    {completedInLevel} / {level.lessonsCount} {isBangla ? "টি পাঠ সম্পন্ন" : "lessons completed"}
+                    {isBangla ? toBanglaNumber(completedInLevel) : completedInLevel} / {isBangla ? toBanglaNumber(level.lessonsCount) : level.lessonsCount} {isBangla ? "টি পাঠ সম্পন্ন" : "lessons completed"}
                   </p>
                 </div>
               </div>
@@ -60,7 +61,7 @@ export const LevelBreakdownCard: React.FC<LevelBreakdownCardProps> = ({
               <div className="w-full sm:w-64 space-y-1">
                 <div className="flex justify-between text-[11px] sm:text-xs text-sand-500">
                   <span>{masteryText}</span>
-                  <span>{levelPct}%</span>
+                  <span>{isBangla ? toBanglaNumber(levelPct) : levelPct}%</span>
                 </div>
                 <div className="w-full h-2 rounded-full bg-sand-200 dark:bg-night-800 overflow-hidden">
                   <div
@@ -74,12 +75,12 @@ export const LevelBreakdownCard: React.FC<LevelBreakdownCardProps> = ({
                 <div className="flex items-center gap-1">
                   <span>{quizScoreText}:</span>
                   <span className="font-bold text-sand-900 dark:text-sand-100">
-                    {quizScore !== null ? `${quizScore}%` : notAttemptedText}
+                    {quizScore !== null ? `${isBangla ? toBanglaNumber(quizScore) : quizScore}%` : notAttemptedText}
                   </span>
                 </div>
                 <Link
                   href={`/quiz/q${level.number}`}
-                  className="ml-2 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 hover:underline px-2.5 py-1.5 rounded-lg bg-emerald-500/10 min-h-[44px] flex items-center"
+                  className="ml-auto sm:ml-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 px-3.5 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all min-h-[44px] min-w-[44px] inline-flex items-center justify-center shrink-0 active:scale-95"
                 >
                   {isBangla ? "কুইজ দিন" : "Quiz"}
                 </Link>

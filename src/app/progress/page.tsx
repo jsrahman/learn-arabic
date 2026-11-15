@@ -22,7 +22,7 @@ export default function ProgressPage() {
   } = useProgressDashboard();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-10">
       <ProgressHeader
         analyticsTag={t.analyticsTag}
         title={t.title}

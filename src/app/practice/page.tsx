@@ -11,6 +11,7 @@ export default function PracticePage() {
   const {
     isBangla,
     preferences,
+    fontSizeClass,
     t,
     activeTab,
     selectedCategory,
@@ -21,6 +22,7 @@ export default function PracticePage() {
     handleSelectTab,
     handleSelectCategory,
     handleSelectSurah,
+    handleToggleVerse,
   } = usePracticeDrill();
 
   const categories = [
@@ -79,8 +81,10 @@ export default function PracticePage() {
           selectedSurah={selectedSurah}
           activeVerseNum={activeVerseNum}
           onSelectSurah={handleSelectSurah}
+          onSelectVerse={handleToggleVerse}
           isBangla={isBangla}
           showTransliteration={preferences.showTransliteration}
+          fontSizeClass={fontSizeClass}
           surahPrefixText={t.surahPrefix}
           meccanText={t.meccan}
           medinanText={t.medinan}

@@ -19,23 +19,23 @@ export const StatCard: React.FC<StatCardProps> = ({
   return (
     <div
       className={cn(
-        "rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4",
+        "rounded-2xl sm:rounded-3xl p-3 sm:p-5 md:p-6 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card flex items-center gap-2.5 sm:gap-4 min-w-0",
         className
       )}
     >
       <div
         className={cn(
-          "w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold shrink-0",
+          "w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold shrink-0",
           iconBgColor
         )}
       >
         {icon}
       </div>
-      <div>
-        <span className="text-[11px] sm:text-xs font-medium text-sand-500 block">
+      <div className="min-w-0 flex-1">
+        <span className="text-[10px] sm:text-xs font-medium text-sand-500 block truncate">
           {label}
         </span>
-        <span className="text-lg sm:text-2xl font-extrabold text-sand-950 dark:text-sand-50">
+        <span className="text-sm sm:text-xl md:text-2xl font-extrabold text-sand-950 dark:text-sand-50 block truncate">
           {value}
         </span>
       </div>

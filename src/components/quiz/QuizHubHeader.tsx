@@ -32,7 +32,7 @@ export const QuizHubHeader: React.FC<QuizHubHeaderProps> = ({
 
       <Link
         href="/quiz/q1"
-        className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs shadow-md transition-all active:scale-95 shrink-0 min-h-[44px]"
+        className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-sand-50 font-bold text-xs shadow-md transition-all active:scale-95 shrink-0 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-night-900"
       >
         <Zap className="w-4 h-4 fill-current" />
         <span>{launchLevel1Text}</span>

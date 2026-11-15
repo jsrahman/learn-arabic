@@ -34,9 +34,9 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
       <button
         type="button"
         onClick={onOpenResetConfirm}
-        className="text-xs font-semibold px-4 py-2 rounded-xl text-sand-600 dark:text-sand-400 hover:text-rose-600 border border-sand-300 dark:border-night-700 hover:border-rose-400 flex items-center gap-1.5 transition-colors min-h-[44px]"
+        className="text-xs font-semibold px-4 py-2.5 rounded-xl text-sand-600 dark:text-sand-400 hover:text-rose-600 dark:hover:text-rose-400 border border-sand-300 dark:border-night-700 hover:border-rose-400 dark:hover:border-rose-500/50 flex items-center justify-center gap-2 transition-colors min-h-[44px] min-w-[44px] active:scale-95"
       >
-        <RotateCcw className="w-3.5 h-3.5" />
+        <RotateCcw className="w-4 h-4 shrink-0" />
         <span>{resetProgressText}</span>
       </button>
     </div>

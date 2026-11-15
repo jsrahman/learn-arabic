@@ -27,7 +27,7 @@ export default function ProfilePage() {
   } = useProfileSettings();
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-3xl mx-auto px-3.5 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
       <ProfileHeader isBangla={isBangla} title={t.title} subtitle={t.subtitle} />
 
       <div className="space-y-6">

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { Award, Sparkles, ArrowRight } from "lucide-react";
+import { Award, Sparkles, ArrowRight, X } from "lucide-react";
 import { LESSONS } from "@/data/lessons";
+import { toBanglaNumber } from "@/utils";
 import type { Lesson } from "@/types";
 
 interface LessonCompletedModalProps {
@@ -15,17 +16,42 @@ export const LessonCompletedModal: React.FC<LessonCompletedModalProps> = ({
   isOpen,
   lesson,
   isBangla,
+  onClose,
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const nextLessonKey = `l${lesson.levelId}-${lesson.lessonNumber + 1}`;
   const hasNextLesson = !!LESSONS[nextLessonKey];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="max-w-md w-full rounded-3xl p-8 bg-sand-50 dark:bg-night-900 border border-gold-500/40 shadow-2xl text-center space-y-6">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-gold-200 mx-auto flex items-center justify-center shadow-lg animate-bounce-short">
-          <Award className="w-10 h-10" />
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-md w-full max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 bg-sand-50 dark:bg-night-900 border border-gold-500/40 shadow-2xl text-center space-y-5 sm:space-y-6 my-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={isBangla ? "বন্ধ করুন" : "Close modal"}
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 w-11 h-11 rounded-full flex items-center justify-center text-sand-500 hover:text-sand-900 dark:hover:text-sand-100 hover:bg-sand-200/60 dark:hover:bg-night-800/60 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-gold-200 mx-auto flex items-center justify-center shadow-lg animate-bounce-short">
+          <Award className="w-8 h-8 sm:w-10 sm:h-10" />
         </div>
 
         <div className="space-y-2">
@@ -57,7 +83,7 @@ export const LessonCompletedModal: React.FC<LessonCompletedModalProps> = ({
             >
               <span>
                 {isBangla
-                  ? `পরবর্তী পাঠ ${lesson.lessonNumber + 1} এ যান (৪টির মধ্যে)`
+                  ? `পরবর্তী পাঠ ${toBanglaNumber(lesson.lessonNumber + 1)} এ যান (৪টির মধ্যে)`
                   : `Continue to Lesson ${lesson.lessonNumber + 1} of 4`}
               </span>
               <ArrowRight className="w-4 h-4" />
@@ -70,7 +96,7 @@ export const LessonCompletedModal: React.FC<LessonCompletedModalProps> = ({
               <Sparkles className="w-4 h-4 text-gold-300" />
               <span>
                 {isBangla
-                  ? `লেভেল ${lesson.levelId} এর পূর্ণাঙ্গ কুইজ দিন (৩৫টি প্রশ্ন)`
+                  ? `লেভেল ${toBanglaNumber(lesson.levelId)} এর পূর্ণাঙ্গ কুইজ দিন (৩৫টি প্রশ্ন)`
                   : `Take Level ${lesson.levelId} Mastery Quiz (35 Questions)`}
               </span>
               <ArrowRight className="w-4 h-4" />
@@ -83,7 +109,7 @@ export const LessonCompletedModal: React.FC<LessonCompletedModalProps> = ({
           >
             <Sparkles className="w-4 h-4 text-amber-500" />
             <span>
-              {isBangla ? `লেভেল ${lesson.levelId} কুইজে যান` : `Jump to Level ${lesson.levelId} Quiz`}
+              {isBangla ? `লেভেল ${toBanglaNumber(lesson.levelId)} কুইজে যান` : `Jump to Level ${lesson.levelId} Quiz`}
             </span>
           </Link>
 

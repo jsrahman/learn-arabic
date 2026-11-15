@@ -1,6 +1,6 @@
 import React from "react";
 import { DownloadCloud, CheckCircle2, Wifi, WifiOff, Loader2 } from "lucide-react";
-import { cn } from "@/utils";
+import { cn, toBanglaNumber } from "@/utils";
 import type { OfflineStatus } from "@/lib/offlineManager";
 
 interface OfflineCacheCardProps {
@@ -21,14 +21,14 @@ export const OfflineCacheCard: React.FC<OfflineCacheCardProps> = ({
   isBangla,
 }) => {
   return (
-    <div className="rounded-3xl p-6 sm:p-8 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-5 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-teal-800/10 text-teal-700 dark:text-teal-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-teal-800/10 text-teal-700 dark:text-teal-400 flex items-center justify-center shrink-0">
             <DownloadCloud className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">
+            <h2 className="text-base sm:text-lg font-bold text-sand-900 dark:text-sand-100">
               {isBangla ? "অফলাইন স্টোরেজ ও ক্যাশ" : "Offline Storage & Cache"}
             </h2>
             <p className="text-xs text-sand-500">
@@ -41,7 +41,7 @@ export const OfflineCacheCard: React.FC<OfflineCacheCardProps> = ({
 
         <span
           className={cn(
-            "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border",
+            "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border shrink-0",
             !offlineStatus.isOnline
               ? "bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300"
               : offlineStatus.isFullyCached || downloadSuccess
@@ -74,7 +74,9 @@ export const OfflineCacheCard: React.FC<OfflineCacheCardProps> = ({
             {isBangla ? "ডিভাইস অফলাইন ক্যাশ স্থিতি:" : "Device Offline Storage:"}
           </span>
           <span className="font-mono text-emerald-700 dark:text-emerald-400 font-bold">
-            {offlineStatus.isFullyCached || downloadSuccess ? "100%" : `${offlineStatus.percent}%`}
+            {offlineStatus.isFullyCached || downloadSuccess
+              ? isBangla ? `${toBanglaNumber(100)}%` : "100%"
+              : `${isBangla ? toBanglaNumber(offlineStatus.percent) : offlineStatus.percent}%`}
           </span>
         </div>
 
@@ -88,7 +90,7 @@ export const OfflineCacheCard: React.FC<OfflineCacheCardProps> = ({
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-sand-600 dark:text-sand-400">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 text-xs text-sand-600 dark:text-sand-400">
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>{isBangla ? "১৮টি লেভেল ও ৭২টি পাঠ" : "18 Levels & 72 Lessons"}</span>
@@ -130,7 +132,7 @@ export const OfflineCacheCard: React.FC<OfflineCacheCardProps> = ({
             <Loader2 className="w-4 h-4 animate-spin text-gold-300" />
             <span>
               {isBangla
-                ? `অফলাইন ডাটা সেভ হচ্ছে... (${downloadPercent}%)`
+                ? `অফলাইন ডাটা সেভ হচ্ছে... (${toBanglaNumber(downloadPercent)}%)`
                 : `Caching to device... (${downloadPercent}%)`}
             </span>
           </>

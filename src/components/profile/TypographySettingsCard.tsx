@@ -60,7 +60,7 @@ export const TypographySettingsCard: React.FC<TypographySettingsCardProps> = ({
                   onUpdatePreferences({ arabicFontSize: s.value as "normal" | "large" | "xlarge" })
                 }
                 className={cn(
-                  "py-2.5 px-2 sm:px-3 rounded-xl text-xs font-semibold border transition-all min-h-[44px] flex items-center justify-center",
+                  "py-2.5 px-1.5 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold border transition-all min-h-[44px] flex items-center justify-center active:scale-95",
                   preferences.arabicFontSize === s.value
                     ? "bg-emerald-800 text-gold-200 border-emerald-700 shadow-sm"
                     : "bg-sand-50 dark:bg-night-950 text-sand-800 dark:text-sand-200 border-sand-300 dark:border-night-800 hover:border-emerald-600/40"
@@ -83,21 +83,27 @@ export const TypographySettingsCard: React.FC<TypographySettingsCardProps> = ({
           </div>
           <button
             type="button"
+            role="switch"
+            aria-checked={preferences.showTransliteration}
             aria-label={showTranslitText}
             onClick={() =>
               onUpdatePreferences({ showTransliteration: !preferences.showTransliteration })
             }
-            className={cn(
-              "w-12 h-6 rounded-full transition-colors relative p-0.5 shrink-0 min-h-[44px] flex items-center",
-              preferences.showTransliteration ? "bg-emerald-600" : "bg-sand-300 dark:bg-night-800"
-            )}
+            className="min-h-[44px] min-w-[48px] inline-flex items-center justify-center p-1 rounded-full cursor-pointer focus:outline-none shrink-0"
           >
-            <div
+            <span
               className={cn(
-                "w-5 h-5 rounded-full bg-sand-50 shadow-md transition-transform",
-                preferences.showTransliteration ? "translate-x-6" : "translate-x-0"
+                "w-12 h-6 rounded-full transition-colors relative flex items-center p-0.5 pointer-events-none",
+                preferences.showTransliteration ? "bg-emerald-600" : "bg-sand-300 dark:bg-night-800"
               )}
-            />
+            >
+              <span
+                className={cn(
+                  "w-5 h-5 rounded-full bg-sand-50 shadow-md transition-transform",
+                  preferences.showTransliteration ? "translate-x-6" : "translate-x-0"
+                )}
+              />
+            </span>
           </button>
         </div>
       </div>

@@ -34,31 +34,31 @@ export const ThemeSettingsCard: React.FC<ThemeSettingsCardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 p-1 rounded-2xl bg-sand-200 dark:bg-night-800 border border-sand-300 dark:border-night-700">
+        <div className="w-full sm:w-auto flex items-center gap-2 p-1.5 rounded-2xl bg-sand-200 dark:bg-night-800 border border-sand-300 dark:border-night-700">
           <button
             type="button"
             onClick={() => onSelectTheme("light")}
             className={cn(
-              "px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all min-h-[44px]",
+              "flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all min-h-[44px] min-w-[44px] active:scale-95",
               currentTheme === "light"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-700 dark:hover:text-emerald-300"
             )}
           >
-            <Sun className="w-3.5 h-3.5" />
+            <Sun className="w-4 h-4 shrink-0" />
             <span>{themeLightText}</span>
           </button>
           <button
             type="button"
             onClick={() => onSelectTheme("dark")}
             className={cn(
-              "px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all min-h-[44px]",
+              "flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all min-h-[44px] min-w-[44px] active:scale-95",
               currentTheme === "dark"
                 ? "bg-emerald-800 text-gold-200 shadow-sm"
-                : "text-sand-700 dark:text-sand-300"
+                : "text-sand-700 dark:text-sand-300 hover:text-emerald-700 dark:hover:text-emerald-300"
             )}
           >
-            <Moon className="w-3.5 h-3.5" />
+            <Moon className="w-4 h-4 shrink-0" />
             <span>{themeDarkText}</span>
           </button>
         </div>

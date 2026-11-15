@@ -70,6 +70,7 @@ export default function QuizArenaPage() {
         paletteTitle={t.paletteTitle}
         correctLabel={t.correct}
         answeredLabel={t.answered}
+        isBangla={isBangla}
       />
 
       {/* Progress Bar */}

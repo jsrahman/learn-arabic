@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LEARNING_LEVELS } from "@/data/levels";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
-import { cn } from "@/utils";
+import { cn, toBanglaNumber } from "@/utils";
 import type { Quiz, UserProgress } from "@/types";
 
 interface QuizHubCardProps {
@@ -47,7 +47,7 @@ export const QuizHubCard: React.FC<QuizHubCardProps> = ({
         <div className="flex items-center justify-between gap-2 mb-3.5">
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
-              {isBangla ? `লেভেল ${quiz.levelId}` : `Level ${String(quiz.levelId).padStart(2, "0")}`}
+              {isBangla ? `লেভেল ${toBanglaNumber(quiz.levelId)}` : `Level ${String(quiz.levelId).padStart(2, "0")}`}
             </span>
 
             <DifficultyBadge difficulty={level.difficulty} isBangla={isBangla} />
@@ -62,7 +62,7 @@ export const QuizHubCard: React.FC<QuizHubCardProps> = ({
                   : "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30"
               )}
             >
-              {bestScore}%
+              {isBangla ? toBanglaNumber(bestScore) : bestScore}%
             </span>
           )}
         </div>
@@ -74,14 +74,14 @@ export const QuizHubCard: React.FC<QuizHubCardProps> = ({
           {isBangla ? quiz.descriptionBangla || quiz.description : quiz.description}
         </p>
 
-        <div className="flex items-center gap-3 text-xs text-sand-500 mb-6 font-mono pt-3 border-t border-sand-200/70 dark:border-night-800/70">
+        <div className="flex items-center gap-3 text-xs text-sand-600 dark:text-sand-400 mb-6 font-mono pt-3 border-t border-sand-200/70 dark:border-night-800/70">
           <span className="font-semibold text-sand-800 dark:text-sand-200">
-            {quiz.questions.length} {isBangla ? "টি প্রশ্ন" : "Questions"}
+            {isBangla ? toBanglaNumber(quiz.questions.length) : quiz.questions.length} {isBangla ? "টি প্রশ্ন" : "Questions"}
           </span>
           <span>•</span>
-          <span>{passText} {quiz.passingScore}%</span>
+          <span>{passText} {isBangla ? toBanglaNumber(quiz.passingScore) : quiz.passingScore}%</span>
           <span>•</span>
-          <span className="text-gold-600 dark:text-gold-400 font-bold">+100 {isBangla ? "এক্সপি" : "XP"}</span>
+          <span className="text-amber-700 dark:text-gold-400 font-bold">+{isBangla ? toBanglaNumber(100) : 100} {isBangla ? "এক্সপি" : "XP"}</span>
         </div>
       </div>
 
@@ -89,14 +89,14 @@ export const QuizHubCard: React.FC<QuizHubCardProps> = ({
         {isUnlocked ? (
           <Link
             href={`/quiz/${quiz.id}`}
-            className="w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-750 hover:to-teal-750 text-gold-100 shadow-sm transition-all duration-200 active:scale-[0.98] min-h-[44px]"
+            className="w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-750 hover:to-teal-750 text-gold-100 shadow-sm transition-all duration-200 active:scale-[0.98] min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-night-900"
           >
             <span>{bestScore !== null ? retakeQuizText : launchQuizText}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         ) : (
-          <div className="w-full py-2.5 px-4 rounded-xl font-medium text-xs flex items-center justify-center gap-2 bg-sand-200/40 dark:bg-night-850/40 text-sand-500 dark:text-sand-500 border border-sand-200/50 dark:border-night-800/50 cursor-not-allowed min-h-[44px]">
-            <span>{isBangla ? `প্রথমে লেভেল ${quiz.levelId} সম্পন্ন করুন` : `Unlock Level ${quiz.levelId} First`}</span>
+          <div className="w-full py-2.5 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 bg-sand-200/70 dark:bg-night-800/70 text-sand-700 dark:text-sand-300 border border-sand-300/80 dark:border-night-700/80 cursor-not-allowed min-h-[44px] select-none">
+            <span>{isBangla ? `প্রথমে লেভেল ${toBanglaNumber(quiz.levelId)} সম্পন্ন করুন` : `Unlock Level ${quiz.levelId} First`}</span>
           </div>
         )}
       </div>

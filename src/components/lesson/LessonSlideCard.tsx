@@ -57,7 +57,7 @@ export const LessonSlideCard: React.FC<LessonSlideCardProps> = ({
         <div className="my-2 select-none">
           <span
             className={cn(
-              "font-arabic font-normal text-emerald-950 dark:text-gold-100 tracking-wider",
+              "font-arabic font-normal text-emerald-950 dark:text-gold-100",
               fontSizeClass
             )}
             dir="rtl"
@@ -160,12 +160,18 @@ export const LessonSlideCard: React.FC<LessonSlideCardProps> = ({
               const isSelected = selectedAnswer === idx;
               const isCorrect = idx === slide.checkQuestion?.correctIndex;
 
-              let stateClasses = "bg-sand-50 dark:bg-night-950 border-sand-300 dark:border-night-800";
+              let stateClasses =
+                "bg-sand-50 dark:bg-night-950 border-sand-300 dark:border-night-700 text-sand-900 dark:text-sand-100 hover:border-emerald-500/60 dark:hover:border-emerald-500/60";
               if (selectedAnswer !== null) {
                 if (isCorrect) {
-                  stateClasses = "bg-emerald-500/20 border-emerald-500 text-emerald-900 dark:text-emerald-200";
+                  stateClasses =
+                    "bg-emerald-500/20 border-emerald-600 dark:border-emerald-500 text-emerald-950 dark:text-emerald-100 font-semibold cursor-not-allowed";
                 } else if (isSelected) {
-                  stateClasses = "bg-rose-500/20 border-rose-500 text-rose-900 dark:text-rose-200";
+                  stateClasses =
+                    "bg-rose-500/20 border-rose-600 dark:border-rose-500 text-rose-950 dark:text-rose-100 font-semibold cursor-not-allowed";
+                } else {
+                  stateClasses =
+                    "bg-sand-50/50 dark:bg-night-950/50 border-sand-200 dark:border-night-800 text-sand-500 dark:text-sand-400 opacity-60 cursor-not-allowed";
                 }
               }
 
@@ -174,8 +180,11 @@ export const LessonSlideCard: React.FC<LessonSlideCardProps> = ({
                   key={idx}
                   type="button"
                   onClick={() => onAnswerSelect(idx)}
+                  disabled={selectedAnswer !== null}
+                  aria-disabled={selectedAnswer !== null ? "true" : undefined}
                   className={cn(
-                    "p-3 rounded-xl text-xs font-medium text-left border transition-all active:scale-[0.98] min-h-[44px]",
+                    "px-4 py-3 rounded-xl text-xs sm:text-sm font-medium text-left border transition-all min-h-[44px] flex items-center",
+                    selectedAnswer === null ? "active:scale-[0.98]" : "cursor-not-allowed",
                     stateClasses
                   )}
                 >

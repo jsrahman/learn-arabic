@@ -13,14 +13,14 @@ export const AppInstallCard: React.FC<AppInstallCardProps> = ({
   isBangla,
 }) => {
   return (
-    <div className="rounded-3xl p-6 sm:p-8 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 bg-sand-100/90 dark:bg-night-900/90 border border-sand-200 dark:border-night-800 shadow-card space-y-4 sm:space-y-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-emerald-800/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-emerald-800/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
             <Smartphone className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-sand-900 dark:text-sand-100">
+            <h2 className="text-base sm:text-lg font-bold text-sand-900 dark:text-sand-100">
               {isBangla ? "কুরআনপাঠ ওয়েব অ্যাপ ইনস্টল" : "Install QuranPath App"}
             </h2>
             <p className="text-xs text-sand-500">
@@ -32,7 +32,7 @@ export const AppInstallCard: React.FC<AppInstallCardProps> = ({
         </div>
 
         {isInstalled && (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 shrink-0">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>{isBangla ? "ইনস্টল করা হয়েছে" : "Installed"}</span>
           </span>
