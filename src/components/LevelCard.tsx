@@ -2,7 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
-import { Lock, CheckCircle2, ArrowRight, Play, BookOpen, Clock, Sparkles } from "lucide-react";
+import {
+  Lock,
+  CheckCircle2,
+  ArrowRight,
+  Play,
+  BookOpen,
+  Clock,
+  Sparkles,
+} from "lucide-react";
 import type { LevelCardProps } from "@/types";
 import { useThemeContext } from "@/components/ThemeWrapper";
 import { DifficultyBadge } from "@/components/DifficultyBadge";
@@ -18,7 +26,7 @@ export const LevelCard: React.FC<LevelCardProps> = ({
 
   const progressPercent = Math.min(
     100,
-    Math.round((completedLessonsInLevel / level.lessonsCount) * 100)
+    Math.round((completedLessonsInLevel / level.lessonsCount) * 100),
   );
   const isCompleted = progressPercent === 100;
   const isInProgress = isUnlocked && progressPercent > 0 && !isCompleted;
@@ -35,16 +43,40 @@ export const LevelCard: React.FC<LevelCardProps> = ({
         "before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:transition-all before:duration-500",
         isUnlocked
           ? "bg-gradient-to-b from-white/95 via-sand-50/90 to-sand-100/70 dark:from-[#0f242d]/95 dark:via-[#0c1d24]/90 dark:to-[#08151a]/95 border-sand-300/90 dark:border-white/10 hover:border-emerald-600/50 dark:hover:border-gold-500/50 shadow-sm hover:shadow-xl hover:-translate-y-1.5 before:bg-gradient-to-r before:from-transparent before:via-emerald-500/70 dark:before:via-gold-400/80 before:to-transparent"
-          : "bg-sand-100/50 dark:bg-[#071318]/60 border-sand-200/60 dark:border-white/5 opacity-75 before:bg-transparent"
+          : "bg-sand-100/50 dark:bg-[#071318]/60 border-sand-200/60 dark:border-white/5 opacity-75 before:bg-transparent",
       )}
     >
       {/* Subtle Islamic Geometric Rosette Ambient Watermark */}
       <div className="absolute -top-10 -right-10 w-40 h-40 pointer-events-none opacity-[0.035] dark:opacity-[0.06] group-hover:opacity-[0.07] dark:group-hover:opacity-[0.12] transition-opacity duration-500">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-current text-emerald-950 dark:text-gold-300">
-          <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="1.5" fill="none" />
-          <path d="M50 5 L50 95 M5 50 L95 50 M18 18 L82 82 M18 82 L82 18" stroke="currentColor" strokeWidth="1" />
-          <polygon points="50,15 85,50 50,85 15,50" stroke="currentColor" strokeWidth="1" fill="none" />
-          <polygon points="25,25 75,25 75,75 25,75" stroke="currentColor" strokeWidth="1" fill="none" />
+        <svg
+          viewBox="0 0 100 100"
+          className="w-full h-full fill-current text-emerald-950 dark:text-gold-300"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            fill="none"
+          />
+          <path
+            d="M50 5 L50 95 M5 50 L95 50 M18 18 L82 82 M18 82 L82 18"
+            stroke="currentColor"
+            strokeWidth="1"
+          />
+          <polygon
+            points="50,15 85,50 50,85 15,50"
+            stroke="currentColor"
+            strokeWidth="1"
+            fill="none"
+          />
+          <polygon
+            points="25,25 75,25 75,75 25,75"
+            stroke="currentColor"
+            strokeWidth="1"
+            fill="none"
+          />
         </svg>
       </div>
 
@@ -64,8 +96,8 @@ export const LevelCard: React.FC<LevelCardProps> = ({
                 isCompleted
                   ? "bg-gradient-to-br from-emerald-500/20 to-teal-500/25 text-emerald-700 dark:text-emerald-300 border-emerald-500/40 shadow-emerald-500/10"
                   : isUnlocked
-                  ? "bg-gradient-to-br from-emerald-800/15 via-emerald-700/10 to-gold-500/10 text-emerald-950 dark:text-gold-200 border-emerald-700/30 dark:border-gold-500/30"
-                  : "bg-sand-200/70 dark:bg-white/5 text-sand-400 dark:text-sand-500 border-sand-300/50 dark:border-white/5"
+                    ? "bg-gradient-to-br from-emerald-800/15 via-emerald-700/10 to-gold-500/10 text-emerald-950 dark:text-gold-200 border-emerald-700/30 dark:border-gold-500/30"
+                    : "bg-sand-200/70 dark:bg-white/5 text-sand-400 dark:text-sand-500 border-sand-300/50 dark:border-white/5",
               )}
             >
               {isCompleted ? (
@@ -80,18 +112,11 @@ export const LevelCard: React.FC<LevelCardProps> = ({
               <span className="text-[10px] font-bold uppercase tracking-wider text-sand-500 dark:text-sand-400">
                 {isBangla ? level.tierBangla || level.tier : level.tier}
               </span>
-              <DifficultyBadge difficulty={level.difficulty} isBangla={isBangla} />
+              <DifficultyBadge
+                difficulty={level.difficulty}
+                isBangla={isBangla}
+              />
             </div>
-          </div>
-
-          {/* Clean Calligraphic Arabic Title inside illuminated pill */}
-          <div className="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-xl bg-sand-200/50 dark:bg-gold-500/10 border border-sand-300/60 dark:border-gold-400/20 backdrop-blur-sm group-hover:border-emerald-600/30 dark:group-hover:border-gold-400/40 transition-colors shrink-0">
-            <span
-              className="font-arabic text-xl sm:text-2xl font-normal text-emerald-950 dark:text-gold-300 shrink-0 select-none leading-relaxed block"
-              dir="rtl"
-            >
-              {level.titleArabic}
-            </span>
           </div>
         </div>
 
@@ -121,12 +146,19 @@ export const LevelCard: React.FC<LevelCardProps> = ({
           <div className="flex items-center gap-2.5 font-mono text-[11px] text-sand-600 dark:text-sand-400">
             <span className="flex items-center gap-1">
               <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              {isBangla ? toBanglaNumber(level.lessonsCount) : level.lessonsCount} {isBangla ? "টি পাঠ" : "lessons"}
+              {isBangla
+                ? toBanglaNumber(level.lessonsCount)
+                : level.lessonsCount}{" "}
+              {isBangla ? "টি পাঠ" : "lessons"}
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-              ~{isBangla ? toBanglaNumber(level.estimatedMinutes) : level.estimatedMinutes}{isBangla ? " মি." : "m"}
+              ~
+              {isBangla
+                ? toBanglaNumber(level.estimatedMinutes)
+                : level.estimatedMinutes}
+              {isBangla ? " মি." : "m"}
             </span>
           </div>
 
@@ -165,12 +197,16 @@ export const LevelCard: React.FC<LevelCardProps> = ({
               "w-full min-h-[44px] py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-emerald-500",
               isCompleted
                 ? "bg-sand-200/80 hover:bg-sand-300 dark:bg-white/10 dark:hover:bg-white/15 text-emerald-950 dark:text-sand-100 border border-sand-300/80 dark:border-white/15 shadow-sm"
-                : "bg-gradient-to-r from-emerald-800 via-emerald-750 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-gold-100 dark:from-emerald-600 dark:via-emerald-500 dark:to-teal-600 dark:hover:from-emerald-500 dark:hover:to-teal-500 dark:text-white shadow-md hover:shadow-emerald-900/20"
+                : "bg-gradient-to-r from-emerald-800 via-emerald-750 to-teal-800 hover:from-emerald-700 hover:to-teal-700 text-gold-100 dark:from-emerald-600 dark:via-emerald-500 dark:to-teal-600 dark:hover:from-emerald-500 dark:hover:to-teal-500 dark:text-white shadow-md hover:shadow-emerald-900/20",
             )}
           >
             {isCompleted ? (
               <>
-                <span>{isBangla ? `লেভেল ${toBanglaNumber(level.number)} রিভিউ` : `Review Level ${level.number}`}</span>
+                <span>
+                  {isBangla
+                    ? `লেভেল ${toBanglaNumber(level.number)} রিভিউ`
+                    : `Review Level ${level.number}`}
+                </span>
                 <ArrowRight className="w-3.5 h-3.5 text-sand-500 dark:text-sand-400 group-hover:translate-x-0.5 transition-transform" />
               </>
             ) : (
@@ -178,8 +214,12 @@ export const LevelCard: React.FC<LevelCardProps> = ({
                 <Play className="w-3 h-3 fill-current text-gold-300 dark:text-gold-200" />
                 <span>
                   {isInProgress
-                    ? isBangla ? "পড়া চালিয়ে যান" : "Continue Learning"
-                    : isBangla ? `লেভেল ${toBanglaNumber(level.number)} শুরু` : `Start Level ${level.number}`}
+                    ? isBangla
+                      ? "পড়া চালিয়ে যান"
+                      : "Continue Learning"
+                    : isBangla
+                      ? `লেভেল ${toBanglaNumber(level.number)} শুরু`
+                      : `Start Level ${level.number}`}
                 </span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </>
